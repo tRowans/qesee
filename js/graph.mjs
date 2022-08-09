@@ -511,7 +511,7 @@ export function tannerGraph(graphSVG,nodes,links) {
         {
             label: 'Select everything',
             action: function() {selectEvery();}
-        }
+        },
     ]
 
    
@@ -568,8 +568,7 @@ export function tannerGraph(graphSVG,nodes,links) {
             };
         });
 
-    
     buildNeighbours(nodeNeighbours);
     buildGraph();
-
+    update();
 }
