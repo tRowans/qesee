@@ -20,7 +20,7 @@ document.getElementById('inputHZ')
         fr.readAsText(this.files[0]);
     });
 document.getElementById('draw')
-    .addEventListener('click', function() {
+    .addEventListener('click', async function() {
         nodes = [];
         links = [];
         const validity = processPCM(HX,HZ,nodes,links);

@@ -2,6 +2,7 @@ import {createContextMenu} from './menu.mjs';
 
 export function tannerGraph(graphSVG,nodes,links) {
 
+
     //----------VARIABLES----------
 
     var width = graphSVG.attr("width");
@@ -238,7 +239,6 @@ export function tannerGraph(graphSVG,nodes,links) {
         else if (d.id.indexOf("z") >= 0) {return 200;}
         else {return 300;}
     }
-    */
 
     function ticked(link, node) {
         if (oneD.checked) {
@@ -262,6 +262,7 @@ export function tannerGraph(graphSVG,nodes,links) {
                 .attr("cy", function(d) {return d.y;});
             }
         }
+    */
 
     function dragstarted(event, d) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -567,8 +568,17 @@ export function tannerGraph(graphSVG,nodes,links) {
                 createContextMenu(event, emptyMenu);
             };
         });
-
-    buildNeighbours(nodeNeighbours);
-    buildGraph();
-    update();
+    
+    graphSVG.append('text')
+        .text('Loading...')
+        .attr('class', 'loadingMessage')
+        .attr('font-size', '48px')
+        .attr('x', width/2)
+        .attr('y', width/2-48);
+    setTimeout(function() {
+        buildNeighbours(nodeNeighbours);
+        buildGraph();
+        graphSVG.select('.loadingMessage').remove();
+        update();
+    }, 0);
 }
