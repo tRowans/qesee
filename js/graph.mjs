@@ -1,10 +1,9 @@
 import {createContextMenu} from './menu.mjs';
 
-export function tannerGraph(graphSVG,nodes,links) {
-
+export function tannerGraph(graphSVG,nodes,links,error,syndrome) {
 
     //----------VARIABLES----------
-
+    
     var width = graphSVG.attr("width");
     var height = graphSVG.attr("height");
 
@@ -14,6 +13,22 @@ export function tannerGraph(graphSVG,nodes,links) {
     graphSVG
         .append('g')
         .attr('class', 'nodes');
+
+    if (error === undefined) {
+        error = [];
+        for (var i=0; i<nodes.length; i++) {
+            error.push('i');
+        }
+    }
+    if (syndrome === undefined) {
+        syndrome = [[],[]];
+        for (var i=0; i<links.length; i++) {
+            if (links[i]['source'][0] === 'x') {
+                syndrome[0].push('0');
+            }
+            else syndrome[1].push('0');
+        }
+    }
 
     var activeNodes = [];
     var activeLinks = [];
@@ -25,7 +40,7 @@ export function tannerGraph(graphSVG,nodes,links) {
         .force('link', d3.forceLink()
             .links(activeLinks)
             .id(function(d) {return d.id;}))
-        .force('charge', d3.forceManyBody().strength(-30))
+        .force('charge', d3.forceManyBody().strength(-20))
         .force('center', d3.forceCenter(width/2, height/2));
 
     //----------BUILD----------
@@ -72,6 +87,46 @@ export function tannerGraph(graphSVG,nodes,links) {
             return true;
         }
         else return false;
+    }
+
+    function assignNodeClass(id) {
+        //type
+        var cl = id[0];
+        //status
+        if (cl === 'q') {
+            if (error[0][id.slice(1)] === '1') {
+                if (error[1][id.slice(1)] === '1') {
+                    cl = cl + 'y';
+                }
+                else cl = cl + 'x';
+            }
+            else if (error[1][id.slice(1)] === '1') {
+                cl = cl + 'z';
+            }
+            else cl = cl + 'i';
+        }
+        else if (cl === 'x') {
+            cl = cl + syndrome[0][id.slice(1)];
+        }
+        else cl = cl + syndrome[1][id.slice(1)];
+        //selected y/n
+        if (selectedNodes.indexOf(id) >= 0) {
+            cl = cl + 'y';
+        }
+        else cl = cl + 'n';
+
+        return cl;
+    }
+
+    function assignLinkClass(sourceId,targetId) {
+        var sourceState = d3.select('#'+sourceId).attr('class')[1];
+        var targetState = d3.select('#'+targetId).attr('class')[1];
+        if (sourceState === '1') {
+            if (targetState === 'x' && sourceId[0] !== 'x') return 'xErr';
+            else if (targetState === 'z' && sourceId[0] !== 'z') return 'zErr';
+            else if (targetState === 'y') return 'yErr';
+        }
+        return 'noErr';
     }
 
     //----------UPDATES----------
@@ -135,10 +190,7 @@ export function tannerGraph(graphSVG,nodes,links) {
             .data(activeLinks);
 
         link.enter()
-            .append('line')
-            .attr('stroke', 'white')
-            .attr('stroke-opacity', '0.6')
-            .attr('stroke-width', '3');
+            .append('line');
 
         link.exit().remove();
 
@@ -149,15 +201,6 @@ export function tannerGraph(graphSVG,nodes,links) {
 
         node.enter()
             .append('circle')
-            .attr('id', function(d) {return d.id;})
-            .attr('r', 5)
-            .attr('stroke', '#fff')
-            .attr('stroke-width', '1.5px')
-            .attr('fill', function(d) {
-                if (d.id.indexOf('x') >= 0) return 'blue';
-                else if (d.id.indexOf('z') >= 0) return 'red';
-                else return 'black';
-            })
             .call(d3.drag()
                 .on('start', dragstarted)
                 .on('drag', dragged)
@@ -181,29 +224,15 @@ export function tannerGraph(graphSVG,nodes,links) {
         
         node.exit().remove();
 
-        //rematch bound data to circle properties (can unmatch when removing nodes)
+        //Set IDs and classes (do this after adding/removing or things get mismatched
         d3.select('.nodes')
             .selectAll('circle')
             .attr('id', function(d) {return d.id;})
-            .attr('fill', function(d) {
-                if (d.id.indexOf('x') >= 0) return 'blue';
-                else if (d.id.indexOf('z') >= 0) return 'red';
-                else return 'black';
-            })
-            .attr('stroke', function(d) {
-                if (selectedNodes.indexOf(d.id) >= 0) {
-                    return 'yellow';
-                }
-                else {
-                    return '#fff';
-                };
-            })
-            .attr('stroke-width', function(d) {
-                if (selectedNodes.indexOf(d.id) >= 0) {
-                    return '3px';
-                }
-                else return '1.5px';
-            });
+            .attr('class', function(d) {return assignNodeClass(d.id)});
+
+        d3.select('.links')
+            .selectAll('line')
+            .attr('class', function(d) {return assignLinkClass(d.source.id,d.target.id);});
 
         //These are necessary or it won't draw the most recently added element
         //for some special js reason
@@ -219,19 +248,26 @@ export function tannerGraph(graphSVG,nodes,links) {
             .nodes(activeNodes)
             .on('tick', function() {
                 link
-                    .attr("x1", function(d) {return d.source.x;})
-                    .attr("y1", function(d) {return d.source.y;})
-                    .attr("x2", function(d) {return d.target.x;})
-                    .attr("y2", function(d) {return d.target.y;});
+                    .attr("x1", function(d) {return keepInBounds(d.source.x, width);})
+                    .attr("y1", function(d) {return keepInBounds(d.source.y, height);})
+                    .attr("x2", function(d) {return keepInBounds(d.target.x, width);})
+                    .attr("y2", function(d) {return keepInBounds(d.target.y, height);});
                 node
-                    .attr("cx", function(d) {return d.x;})
-                    .attr("cy", function(d) {return d.y;});
+                    .attr("cx", function(d) {return keepInBounds(d.x, width);})
+                    .attr("cy", function(d) {return keepInBounds(d.y, height);});
             });
 
         simulation.alpha(1).restart();
     }
 
     //----------POSITION----------
+   
+    function keepInBounds(pos, bound) {
+        if (pos < 0) return 0;
+        else if (pos > bound) return bound;
+        else return pos;
+    }
+
 
     /*
     function pos1D(d) {
@@ -309,9 +345,6 @@ export function tannerGraph(graphSVG,nodes,links) {
         while (i < selectedNodes.length) {
             var n = selectedNodes[i];
             var nodeType = n[0];
-            if (nodeType === 's') {
-                nodeType = n[1];
-            }
             if (which === nodeType || which === undefined) {
                 removeFromSelected(n);
                 removeNode(n);
@@ -335,7 +368,7 @@ export function tannerGraph(graphSVG,nodes,links) {
             var neighbours = nodeNeighbours[selectedNodes[i]];
             for (var j=0; j<neighbours.length; j++) {
                 if (sType === 'x' || sType === 'z') {
-                    if (neighbours[j][1] !== sType) continue;
+                    if (neighbours[j][0] !== sType) continue;
                 }
                 if (findNodeIndex(neighbours[j]) !== undefined) {
                     neighbourhood.add(neighbours[j]);
@@ -370,7 +403,7 @@ export function tannerGraph(graphSVG,nodes,links) {
             var neighbours = nodeNeighbours[selectedNodes[i]];
             for (var j=0; j<neighbours.length; j++) {
                 if (sType === 'x' || sType === 'z') {
-                    if (neighbours[j][1] !== sType) continue;
+                    if (neighbours[j][0] !== sType) continue;
                 }
                 if (findNodeIndex(neighbours[j]) === undefined) {
                     addNode(neighbours[j]);
@@ -388,13 +421,13 @@ export function tannerGraph(graphSVG,nodes,links) {
 
     function selectEvery(which) {
         for (var i=0; i<activeNodes.length; i++) {
-            var n = activeNodes[i].id;
-            var nodeType = n[0];
-            if (nodeType === 's') {
-                nodeType = n[1];
-            }
-            if (which === nodeType || which === undefined) {
-                addToSelected(n);
+            var nodeClass = d3.select('#'+activeNodes[i].id).attr('class');
+            var nodeType = nodeClass[0];
+            var nodeStatus = nodeClass[1];
+            if (which[0] === nodeType || which[0] === undefined) {
+                if (which[1] === nodeStatus || which[1] === undefined) {
+                    addToSelected(activeNodes[i].id);
+                }
             }
         }
     }
@@ -500,6 +533,18 @@ export function tannerGraph(graphSVG,nodes,links) {
         {
             label: 'Select all qubits',
             action: function() {selectEvery('q');}
+        },
+        {
+            label: 'Select all X error qubits',
+            action: function() {selectEvery('qx');}
+        },
+        {
+            label: 'Select all Z error qubits',
+            action: function() {selectEvery('qz');}
+        },
+        {
+            label: 'Select all Y error qubits',
+            action: function() {selectEvery('qy');}
         },
         {
             label: 'Select all X stabilisers',

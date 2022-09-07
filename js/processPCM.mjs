@@ -1,14 +1,8 @@
-import { parse } from './lib/csv/index.js';
-
-export function processPCM(textHX,textHZ,nodes,links) {
-    const HX = parse(textHX);
-    const HZ = parse(textHZ);
-    //console.log(HX);
-    //console.log(HZ);
+export function processPCM(HX,HZ,nodes,links) {
     if (HX[0].length !== HX[1].length) return false;
     
     for (var i=0; i<HX.length; i++) {
-        var stab = {'id': 'sx'+i};
+        var stab = {'id': 'x'+i};
         nodes.push(stab);
         for (var j=0; j<HX[i].length; j++) {
             if (i === 0) {
@@ -16,17 +10,17 @@ export function processPCM(textHX,textHZ,nodes,links) {
                 nodes.push(qubit);
             }
             if (HX[i][j] === '1') {
-                var link = {'source': 'sx'+i, 'target': 'q'+j};
+                var link = {'source': 'x'+i, 'target': 'q'+j};
                 links.push(link);
             }
         }
     }
     for (var i=0; i<HZ.length; i++) {
-        var stab = {'id': 'sz'+i};
+        var stab = {'id': 'z'+i};
         nodes.push(stab);
         for (var j=0; j<HZ[i].length; j++) {
             if (HZ[i][j] === '1') {
-                var link = {'source': 'sz'+i, 'target': 'q'+j};
+                var link = {'source': 'z'+i, 'target': 'q'+j};
                 links.push(link);
             }
         }
