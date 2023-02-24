@@ -1,9 +1,9 @@
 import {createContextMenu} from './menu.mjs';
 
-export function tannerGraph(graphSVG,nodes,links,error,syndrome) {
+export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndromeZ,nsteps) {
 
     //----------VARIABLES----------
-    
+
     var width = graphSVG.attr("width");
     var height = graphSVG.attr("height");
 
@@ -13,22 +13,147 @@ export function tannerGraph(graphSVG,nodes,links,error,syndrome) {
     graphSVG
         .append('g')
         .attr('class', 'nodes');
+    graphSVG
+        .append('g')
+        .attr('class', 'buttons');
 
-    if (error === undefined) {
-        error = [];
-        for (var i=0; i<nodes.length; i++) {
-            error.push('i');
-        }
-    }
-    if (syndrome === undefined) {
-        syndrome = [[],[]];
-        for (var i=0; i<links.length; i++) {
-            if (links[i]['source'][0] === 'x') {
-                syndrome[0].push('0');
+    var forwardButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    forwardButton
+        .append('rect')
+        .attr('class', 'button')
+        .attr('x', width-100)
+        .attr('y', height-100)
+        .attr('width', '50')
+        .attr('height', '50')
+        .attr('stroke', 'black')
+        .attr('fill', 'white')
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            d3.select(this)
+                .attr('fill', 'white');
+        });
+    forwardButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-80)
+        .attr('y', height-70)
+        .text('>');
+    forwardButton.on('click', function() {
+        stepForward()
+    });
+
+    var backButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    backButton
+        .append('rect')
+        .attr('x', width-155)
+        .attr('y', height-100)
+        .attr('width', '50')
+        .attr('height', '50')
+        .attr('stroke', 'black')
+        .attr('fill', 'white')
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            d3.select(this)
+                .attr('fill', 'white');
+        });
+    backButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-135)
+        .attr('y', height-70)
+        .text('<');
+    backButton.on('click', function() {
+        stepBack()
+    });
+
+    var resetButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    resetButton
+        .append('rect')
+        .attr('x', width-150)
+        .attr('y', 10)
+        .attr('width', '75')
+        .attr('height', '25')
+        .attr('stroke', 'black')
+        .attr('fill', 'white')
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            d3.select(this)
+                .attr('fill', 'white');
+        });
+    resetButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-130)
+        .attr('y', 28)
+        .text('Reset');
+    resetButton.on('click', function() {
+        resetGraph()
+    });
+
+    //add all-zero error and syndrome arrays if none provided
+    //these arrays are nodes.length long which is the number
+    //of qubits + all stabilisers, so longer than the real arrays
+    //would be, but this doesn't really matter.
+   
+    if (errorX === undefined) {
+        errorX = [];
+        for (var i=0; i<(nsteps+1); i++) {
+            errorX.push([]);
+            for (var j=0; j<nodes.length; j++) {
+                errorX[i].push('0');
             }
-            else syndrome[1].push('0');
         }
     }
+
+    if (errorZ === undefined) {
+        errorZ = [];
+        for (var i=0; i<(nsteps+1); i++) {
+            errorZ.push([]);
+            for (var j=0; j<nodes.length; j++) {
+                errorZ[i].push('0');
+            }
+        }
+    }
+        
+    if (syndromeX === undefined) {
+        syndromeX = [];
+        for (var i=0; i<(nsteps+1); i++) {
+            syndromeX.push([]);
+            for (var j=0; j<nodes.length; j++) {
+                syndromeX[i].push('0');
+            }
+        }
+    }
+       
+    if (syndromeZ === undefined) {
+        syndromeZ = [];
+        for (var i=0; i<(nsteps+1); i++) {
+            syndromeZ.push([]);
+            for (var j=0; j<nodes.length; j++) {
+                syndromeZ[i].push('0');
+            }
+        }
+    }
+
+    var timestep = 0;
 
     var activeNodes = [];
     var activeLinks = [];
@@ -94,21 +219,21 @@ export function tannerGraph(graphSVG,nodes,links,error,syndrome) {
         var cl = id[0];
         //status
         if (cl === 'q') {
-            if (error[0][id.slice(1)] === '1') {
-                if (error[1][id.slice(1)] === '1') {
+            if (errorX[timestep][id.slice(1)] === '1') {
+                if (errorZ[timestep][id.slice(1)] === '1') {
                     cl = cl + 'y';
                 }
                 else cl = cl + 'x';
             }
-            else if (error[1][id.slice(1)] === '1') {
+            else if (errorZ[id.slice(1)] === '1') {
                 cl = cl + 'z';
             }
             else cl = cl + 'i';
         }
         else if (cl === 'x') {
-            cl = cl + syndrome[0][id.slice(1)];
+            cl = cl + syndromeX[timestep][id.slice(1)];
         }
-        else cl = cl + syndrome[1][id.slice(1)];
+        else cl = cl + syndromeZ[timestep][id.slice(1)];
         //selected y/n
         if (selectedNodes.indexOf(id) >= 0) {
             cl = cl + 'y';
@@ -315,6 +440,29 @@ export function tannerGraph(graphSVG,nodes,links,error,syndrome) {
         if (!event.active) simulation.alphaTarget(0);
         d.fx = null;
         d.fy = null;
+    }
+
+    //----------BUTTONS----------
+
+    function stepForward() {
+        if (timestep < nsteps) {
+            timestep++;
+            update();
+        }
+    }
+
+    function stepBack() {
+        if (timestep > 0) {
+            timestep--;
+            update();
+        }
+    }
+
+    function resetGraph() {
+        while (activeNodes.length > 0) {
+            removeNode(activeNodes[0].id);
+        }
+        buildGraph();
     }
 
     //----------MENUS----------

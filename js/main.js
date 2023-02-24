@@ -1,11 +1,14 @@
 import {tannerGraph} from './graph.mjs';
-import {processPCM} from './processPCM.mjs';
+import {processPCM} from './process.mjs';
+import {checkSteps} from './process.mjs';
 import {parse} from './lib/csv/index.js';
 
 var HX;
 var HZ;
-var error;
-var syndrome;
+var errorX;
+var errorZ;
+var syndromeX;
+var syndromeZ;
 var nodes;
 var links;
 var graphSVG = d3.select('svg');
@@ -22,16 +25,28 @@ document.getElementById('inputHZ')
         fr.onload = function() {HZ = parse(fr.result);}
         fr.readAsText(this.files[0]);
     });
-document.getElementById('inputError')
+document.getElementById('inputXError')
     .addEventListener('change', function() {
         var fr = new FileReader();
-        fr.onload = function() {error = parse(fr.result);}
+        fr.onload = function() {errorX = parse(fr.result);}
         fr.readAsText(this.files[0]);
     });
-document.getElementById('inputSyndrome')
+document.getElementById('inputZError')
     .addEventListener('change', function() {
         var fr = new FileReader();
-        fr.onload = function() {syndrome = parse(fr.result);}
+        fr.onload = function() {errorZ = parse(fr.result);}
+        fr.readAsText(this.files[0]);
+    });
+document.getElementById('inputXSyndrome')
+    .addEventListener('change', function() {
+        var fr = new FileReader();
+        fr.onload = function() {syndromeX = parse(fr.result);}
+        fr.readAsText(this.files[0]);
+    }); 
+document.getElementById('inputZSyndrome')
+    .addEventListener('change', function() {
+        var fr = new FileReader();
+        fr.onload = function() {syndromeZ = parse(fr.result);}
         fr.readAsText(this.files[0]);
     }); 
 document.getElementById('draw')
@@ -39,11 +54,20 @@ document.getElementById('draw')
         nodes = [];
         links = [];
         const validity = processPCM(HX,HZ,nodes,links);
-        if (validity === true) {
-            var code = new tannerGraph(graphSVG,nodes,links,error,syndrome);
+        const nsteps = checkSteps(errorX,errorZ,syndromeX,syndromeZ);
+        if (validity && (nsteps !== -1)) {
+            var code = new tannerGraph(graphSVG,nodes,links,
+                        errorX,errorZ,syndromeX,syndromeZ,nsteps);
         }
-        else if (validity === false) {
+        else {
+            var errorMsg = 'Error:'; 
+            if (!validity) {
+                errorMsg = errorMsg + 'X and Z parity check matrices must have the same number of columns';
+            }
+            if (equalSteps === -1) {
+                errorMsg = errorMsg + 'error/syndrome data must have a consistent number of timesteps'
+            }
             graphSVG.append('text')
-                    .text('Error: X and Z parity check matrices must have the same number of columns');
+                .text(errorMsg);
         }
     });

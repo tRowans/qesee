@@ -28,3 +28,17 @@ export function processPCM(HX,HZ,nodes,links) {
 
     return true;
 }
+
+export function checkSteps(errorX,errorZ,syndromeX,syndromeZ) {
+    var nsteps;
+    if (errorX !== undefined) nsteps = errorX.length;
+    else if (errorZ !== undefined) nsteps = errorZ.length;
+    else if (syndromeX !== undefined) nsteps = syndromeX.length;
+    else if (syndromeZ !== undefined) nsteps = syndromeZ.length;
+    else nsteps = 1;
+    if (errorX !== undefined && errorX.length !== nsteps) return -1;
+    if (errorZ !== undefined && errorZ.length !== nsteps) return -1;
+    if (syndromeX !== undefined && syndromeX.length !== nsteps) return -1;
+    if (syndromeZ !== undefined && syndromeZ.length !== nsteps) return -1;
+    return nsteps-1;
+}
