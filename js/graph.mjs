@@ -16,6 +16,9 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     graphSVG
         .append('g')
         .attr('class', 'buttons');
+    graphSVG
+        .append('g')
+        .attr('class', 'timestep');
 
     var forwardButton = d3
         .select('.buttons')
@@ -155,6 +158,13 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
     var timestep = 0;
 
+    var step_counter = d3
+        .select('.timestep')
+        .append('text')
+        .attr('x', '15')
+        .attr('y', '15')
+        .text(`${timestep}/${nsteps}`)
+
     var activeNodes = [];
     var activeLinks = [];
     var selectedNodes = [];
@@ -225,7 +235,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                 }
                 else cl = cl + 'x';
             }
-            else if (errorZ[id.slice(1)] === '1') {
+            else if (errorZ[timestep][id.slice(1)] === '1') {
                 cl = cl + 'z';
             }
             else cl = cl + 'i';
@@ -381,6 +391,9 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                     .attr("cx", function(d) {return keepInBounds(d.x, width);})
                     .attr("cy", function(d) {return keepInBounds(d.y, height);});
             });
+
+        step_counter
+            .text(`${timestep}/${nsteps}`);
 
         simulation.alpha(1).restart();
     }
@@ -760,13 +773,21 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             else {
                 createContextMenu(event, emptyMenu);
             };
+        })
+        .on('keypress', function(event) {
+            if (event.keyCode == 106) {
+                stepBack();
+            }
+            else if (event.keyCode == 107) {
+                stepForward();
+            };
         });
     
     graphSVG.append('text')
         .text('Loading...')
         .attr('class', 'loadingMessage')
         .attr('font-size', '48px')
-        .attr('x', width/2)
+        .attr('x', width/2-50)
         .attr('y', width/2-48);
     setTimeout(function() {
         buildNeighbours(nodeNeighbours);
