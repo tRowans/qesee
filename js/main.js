@@ -72,14 +72,38 @@ document.getElementById('draw')
                         errorX,errorZ,syndromeX,syndromeZ,nsteps);
         }
         else {
-            var errorMsg = 'Error:'; 
+            var errorMsg = '\n';
             if (!validity) {
-                errorMsg = errorMsg + 'X and Z parity check matrices must have the same number of columns';
+                errorMsg = errorMsg + 'Error: X and Z parity check matrices must have the same number of columns\n';
             }
-            if (equalSteps === -1) {
-                errorMsg = errorMsg + 'error/syndrome data must have a consistent number of timesteps'
+            if (nsteps === -1) {
+                errorMsg = errorMsg + 'Error: error/syndrome data must have a consistent number of timesteps\n'
             }
-            graphSVG.append('text')
-                .text(errorMsg);
+            alert(errorMsg);
         }
+    });
+
+document.getElementById('download')
+    .addEventListener('click', async function() {
+        var svg = document.getElementById("svg");
+        var serializer = new XMLSerializer();
+        var source = serializer.serializeToString(svg);
+        if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+            source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+        }
+        if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
+            source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+        }
+        console.log(source);
+        const graphEnd = /<g\sclass="buttons"/.exec(source);
+        source = source.substr(0,graphEnd.index) + '</svg>';
+        console.log(source);
+        source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+        var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'graph';
+        document.body.appendChild(a);
+        a.click()
+        document.body.removeChild(a)
     });

@@ -1,5 +1,5 @@
 export function processPCM(HX,HZ,nodes,links) {
-    if (HX[0].length !== HX[1].length) return false;
+    if (HX[0].length !== HZ[0].length) return false;
     
     for (var i=0; i<HX.length; i++) {
         var stab = {'id': 'x'+i};
