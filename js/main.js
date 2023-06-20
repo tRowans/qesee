@@ -27,27 +27,39 @@ document.getElementById('inputHZ')
     });
 document.getElementById('inputXError')
     .addEventListener('change', function() {
-        var fr = new FileReader();
-        fr.onload = function() {errorX = parse(fr.result);}
-        fr.readAsText(this.files[0]);
+        if (this.files.length) {
+            var fr = new FileReader();
+            fr.onload = function() {errorX = parse(fr.result);}
+            fr.readAsText(this.files[0]);
+        }
+        else errorX = undefined;
     });
 document.getElementById('inputZError')
     .addEventListener('change', function() {
-        var fr = new FileReader();
-        fr.onload = function() {errorZ = parse(fr.result);}
-        fr.readAsText(this.files[0]);
+        if (this.files.length) {
+            var fr = new FileReader();
+            fr.onload = function() {errorZ = parse(fr.result);}
+            fr.readAsText(this.files[0]);
+        }
+        else errorZ = undefined;
     });
 document.getElementById('inputXSyndrome')
     .addEventListener('change', function() {
-        var fr = new FileReader();
-        fr.onload = function() {syndromeX = parse(fr.result);}
-        fr.readAsText(this.files[0]);
+        if (this.files.length) {
+            var fr = new FileReader();
+            fr.onload = function() {syndromeX = parse(fr.result);}
+            fr.readAsText(this.files[0]);
+        }
+        else syndromeX = undefined;
     }); 
 document.getElementById('inputZSyndrome')
     .addEventListener('change', function() {
-        var fr = new FileReader();
-        fr.onload = function() {syndromeZ = parse(fr.result);}
-        fr.readAsText(this.files[0]);
+        if (this.files.length) {
+            var fr = new FileReader();
+            fr.onload = function() {syndromeZ = parse(fr.result);}
+            fr.readAsText(this.files[0]);
+        }
+        else syndromeZ = undefined;
     }); 
 document.getElementById('draw')
     .addEventListener('click', async function() {

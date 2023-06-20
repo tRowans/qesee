@@ -8,6 +8,10 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     var height = graphSVG.attr("height");
 
     graphSVG
+        .selectAll('g')
+        .remove();
+
+    graphSVG
         .append('g')
         .attr('class', 'links');
     graphSVG
