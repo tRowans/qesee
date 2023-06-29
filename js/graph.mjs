@@ -348,8 +348,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                     };
                 }
                 else {
-                    for (var i=0; i<selectedNodes.length; i++) {
-                        removeFromSelected(selectedNodes[i]);
+                    while (selectedNodes.length > 0) {
+                        removeFromSelected(selectedNodes[0]);
                     }
                     addToSelected(this.id);
                 }
