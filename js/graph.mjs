@@ -791,7 +791,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         }
     }
 
-    d3.select('body')
+    d3.select('svg')
         .on('click', function(event) {
             if (!keepSelected(event)) {
                 while (selectedNodes.length > 0) {
