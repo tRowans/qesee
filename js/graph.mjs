@@ -604,6 +604,16 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         }
     }
 
+    function selectComponent() {
+        var componentSizeOld = 0;
+        var componentSizeNew = 1;
+        while (componentSizeOld !== componentSizeNew) {
+            componentSizeOld = selectedNodes.length;
+            selectNeighbourhood();
+            componentSizeNew = selectedNodes.length;
+        }
+    }
+
     var qubitMenu = [
         {
             label: 'Hide selection',
@@ -638,6 +648,10 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             action: function() {selectNeighbourhood();}
         },
         {
+            label: 'Select connected component',
+            action: function() {selectComponent();}
+        },
+        {
             label: 'Display all X neighbours',
             action: function() {displayNeighbourhood('x');}
         },
@@ -667,6 +681,10 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         {
             label: 'Display full support',
             action: function() {displayNeighbourhood();}
+        },
+        {
+            label: 'Select connected component',
+            action: function() {selectComponent();}
         }
     ];
 
@@ -698,6 +716,10 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         {
             label: 'Display all neighbours',
             action: function() {displayNeighbourhood();}
+        },
+        {
+            label: 'Select connected component',
+            action: function() {selectComponent();}
         }
     ];
 
