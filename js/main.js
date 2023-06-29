@@ -82,6 +82,9 @@ document.getElementById('draw')
         }
         else {
             var errorMsg = '\n';
+            if (HX === undefined || HZ === undefined) {
+                errorMsg = errorMsg + 'Error: Please provide both an X and Z parity check matrix\n';
+            }
             if (!validity) {
                 errorMsg = errorMsg + 'Error: X and Z parity check matrices must have the same number of columns\n';
             }

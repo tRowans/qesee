@@ -1,4 +1,5 @@
 export function processPCM(HX,HZ,nodes,links) {
+    if (HX === undefined || HZ === undefined) return false;
     if (HX[0].length !== HZ[0].length) return false;
     
     for (var i=0; i<HX.length; i++) {
