@@ -301,17 +301,11 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     }
 
     function addToSelected(id) {
-        d3.select('#' + id)
-            .attr('stroke', 'yellow')
-            .attr('stroke-width', '3px')
         selectedNodes.push(id);
         update();
     }
 
     function removeFromSelected(id) {
-        d3.select('#' + id)
-            .attr('stroke', '#fff')
-            .attr('stroke-width', '1.5px');
         for (var i=0; i<selectedNodes.length; i++) {
             if (selectedNodes[i] == id) {
                 selectedNodes.splice(i,1);
