@@ -11,8 +11,11 @@ var syndromeX;
 var syndromeZ;
 var nodes;
 var links;
-var graphSVG = d3.select('svg');
-
+var graphSVG = d3
+    .select('svg')
+    .attr('width', 0.8*window.innerHeight)
+    .attr('height', 0.8*window.innerHeight);
+        
 document.getElementById('inputHX')
     .addEventListener('change', function() {
         if (this.files.length) {
