@@ -591,14 +591,14 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         }
     }
 
-    function selectPendant() {
+    function selectByDegree(targetDegree) {
         for (var i=0; i<activeNodes.length; i++) {
             var neighbours = nodeNeighbours[activeNodes[i].id];
             var degree = 0;
             for (var j=0; j<neighbours.length; j++) {
                 if (findNodeIndex(neighbours[j]) !== undefined) degree++;
             }
-            if (degree === 1) {
+            if (degree === targetDegree) {
                 addToSelected(activeNodes[i].id);
             }
         }
@@ -732,7 +732,11 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         },
         {
             label: 'Select all pendant vertices',
-            action: function() {selectPendant();}
+            action: function() {selectByDegree(1);}
+        },
+        {
+            label: 'Select all isolated vertices',
+            action: function() {selectByDegree(0);}
         }
     ]
 
