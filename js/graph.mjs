@@ -591,6 +591,19 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         }
     }
 
+    function selectPendant() {
+        for (var i=0; i<activeNodes.length; i++) {
+            var neighbours = nodeNeighbours[activeNodes[i].id];
+            var degree = 0;
+            for (var j=0; j<neighbours.length; j++) {
+                if (findNodeIndex(neighbours[j]) !== undefined) degree++;
+            }
+            if (degree === 1) {
+                addToSelected(activeNodes[i].id);
+            }
+        }
+    }
+
     var qubitMenu = [
         {
             label: 'Hide selection',
@@ -717,6 +730,10 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             label: 'Select everything',
             action: function() {selectEvery();}
         },
+        {
+            label: 'Select all pendant vertices',
+            action: function() {selectPendant();}
+        }
     ]
 
    
