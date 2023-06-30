@@ -1,4 +1,4 @@
-import {createContextMenu} from './menu.mjs';
+import {createContextMenu} from './menu.js';
 
 export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndromeZ,nsteps) {
 

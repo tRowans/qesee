@@ -1,6 +1,6 @@
-import {tannerGraph} from './graph.mjs';
-import {processPCM} from './process.mjs';
-import {checkSteps} from './process.mjs';
+import {tannerGraph} from './graph.js';
+import {processPCM} from './process.js';
+import {checkSteps} from './process.js';
 import {parse} from './lib/csv/index.js';
 
 var HX;
