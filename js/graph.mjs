@@ -115,6 +115,37 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         resetGraph()
     });
 
+    var chargeButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    chargeButton
+        .append('rect')
+        .attr('x', width-250)
+        .attr('y', 10)
+        .attr('width', '75')
+        .attr('height', '25')
+        .attr('stroke', 'black')
+        .attr('fill', 'white')
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            d3.select(this)
+                .attr('fill', 'white');
+        });
+    chargeButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-235)
+        .attr('y', 28)
+        .text('Charge');
+    chargeButton.on('click', function() {
+        adjustParams()
+    });
+
+
     //add all-zero error and syndrome arrays if none provided
     //these arrays are nodes.length long which is the number
     //of qubits + all stabilisers, so longer than the real arrays
@@ -174,12 +205,14 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     var selectedNodes = [];
     var nodeNeighbours = {}; 
 
+    var charge = -20;
+
     var simulation = d3
         .forceSimulation()
         .force('link', d3.forceLink()
             .links(activeLinks)
             .id(function(d) {return d.id;}))
-        .force('charge', d3.forceManyBody().strength(-20))
+        .force('charge', d3.forceManyBody().strength(charge))
         .force('center', d3.forceCenter(width/2, height/2));
 
     //----------BUILD----------
@@ -474,6 +507,15 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             removeNode(activeNodes[0].id);
         }
         buildGraph();
+    }
+
+    function adjustParams() {
+        let newCharge = window.prompt('Enter new charge value (default is -20)');
+        if (!(newCharge === null) && !(newCharge === '')) {
+            charge = newCharge;
+            simulation.force('charge').strength(charge);
+            update();
+        }
     }
 
     //----------MENUS----------
