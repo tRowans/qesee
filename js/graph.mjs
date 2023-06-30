@@ -3,9 +3,13 @@ import {createContextMenu} from './menu.mjs';
 export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndromeZ,nsteps) {
 
     //----------VARIABLES----------
+    
+    var width = 0.8*window.innerHeight;
+    var height = 0.8*window.innerHeight;
 
-    var width = graphSVG.attr("width");
-    var height = graphSVG.attr("height");
+    graphSVG
+        .attr('width', width)
+        .attr('height', height);
 
     graphSVG
         .selectAll('g')
