@@ -4,7 +4,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
     //----------VARIABLES----------
     
-    var width = 0.8*window.innerHeight;
+    var width = window.innerWidth;
     var height = 0.8*window.innerHeight;
 
     graphSVG

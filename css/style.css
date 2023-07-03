@@ -1,5 +1,6 @@
 body {
     background-color: gray;
+    overflow-x: scroll;
 }
 
 #controls{ 
