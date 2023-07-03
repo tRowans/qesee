@@ -2,6 +2,17 @@ body {
     background-color: gray;
 }
 
+#controls{ 
+    float: left;
+}
+
+#credits {
+    float: right;
+    text-align: right;
+    white-space: pre-wrap;
+}
+
+
 circle {
     r: 5;
 }
