@@ -1,7 +1,7 @@
 import {tannerGraph} from './graph.js';
 import {processPCM} from './process.js';
 import {checkSteps} from './process.js';
-import {parse} from './lib/csv/index.js';
+import {parse} from './lib/index.js';
 
 var HX;
 var HZ;
