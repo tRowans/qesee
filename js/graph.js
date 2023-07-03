@@ -860,7 +860,9 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             else {
                 createContextMenu(event, emptyMenu);
             };
-        })
+        });
+
+    d3.select('body')
         .on('keypress', function(event) {
             if (event.keyCode == 106) {
                 stepBack();
