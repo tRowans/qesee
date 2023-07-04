@@ -305,6 +305,12 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         return 'noErr';
     }
 
+    function assignRX(id) {
+        var cl = id[0];
+        if (cl === 'q') return 5;
+        else return 1;
+    }
+
     //----------UPDATES----------
 
     function addNode(id) {
@@ -399,8 +405,9 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             .selectAll('rect')
             .attr('id', function(d) {return d.id;})
             .attr('class', function(d) {return assignNodeClass(d.id)})
-            .attr('width', 10)      //width and height need to be set as actual attributes
-            .attr('height', 10);    //and cannot be CSS styled for some reason
+            .attr('width', 10)                                  //width and height need to be set as actual attributes
+            .attr('height', 10)                                 //and cannot be CSS styled for some reason
+            .attr('rx', function(d) {return assignRX(d.id)});   //rx cannot be CSS styled on safari
 
         d3.select('.links')
             .selectAll('line')

@@ -24,25 +24,21 @@ body {
     stroke: #fff;
     stroke-width: 1.5px;
     fill: black;
-    rx: 5;
 }
 .qxn {
     stroke: blue;
     stroke-width: 3px;
     fill: black;
-    rx: 5;
 }
 .qzn {
     stroke: red;
     stroke-width: 3px;
     fill: black;
-    rx: 5;
 }
 .qyn {
     stroke: green;
     stroke-width: 3px;
     fill: black;
-    rx: 5;
 }
 /* These four are all the same style but link class is found using node class 
  * and it needs error information (i,x,y,z) even if this does not affect node colour
@@ -51,77 +47,65 @@ body {
     stroke: yellow;
     stroke-width: 4px;
     fill: black;
-    rx: 5;
 }
 .qxy {
     stroke: yellow;
     stroke-width: 4px;
     fill: black;
-    rx: 5;
 }
 .qzy {
     stroke: yellow;
     stroke-width: 4px;
     fill: black;
-    rx: 5;
 }
 .qyy {
     stroke: yellow;
     stroke-width: 4px;
     fill: black;
-    rx: 5;
 }
 
 .x0n {
     stroke: #fff;
     stroke-width: 1.5px;
     fill: blue;
-    rx: 1;
 }
 .x1n {
     stroke: black;
     stroke-width: 4px;
     fill: blue;
-    rx: 1;
 }
 /* Need to include 0/1 info for selected nodes even if does not affect style, as above*/
 .x0y {
     stroke: yellow;
     stroke-width: 4px;
     fill: blue;
-    rx: 1;
 }
 .x1y {
     stroke: yellow;
     stroke-width: 4px;
     fill: blue;
-    rx: 1;
 }
 
 .z0n {
     stroke: #fff;
     stroke-width: 1.5px;
     fill: red;
-    rx: 1;
 }
 .z1n {
     stroke: black;
     stroke-width: 4px;
     fill: red;
-    rx: 1;
 }
 /* And here as well */
 .z0y {
     stroke: yellow;
     stroke-width: 4px;
     fill: red;
-    rx: 1;
 }
 .z1y {
     stroke: yellow;
     stroke-width: 4px;
     fill: red;
-    rx: 1;
 }
 
 /*Links connecting qubit errors to stabilisers which detect them are coloured appropriately*/
