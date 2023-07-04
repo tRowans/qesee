@@ -102,11 +102,10 @@ document.getElementById('download')
         var nodeList = svg.childNodes[1].childNodes;
         for (var i=0; i<nodeList.length; ++i) {
             var nodeSource = serializer.serializeToString(nodeList[i]);
-            nodeSource = nodeSource.replace(/circle\sxmlns="http\:\/\/www\.w3\.org\/2000\/svg"/, 'circle');
+            nodeSource = nodeSource.replace(/rect\sxmlns="http\:\/\/www\.w3\.org\/2000\/svg"/, 'rect');
             var styleDef = window.getComputedStyle(nodeList[i]);
             var nodeStyles = '';
-            var nodeStyles = (' r="' + styleDef['r'] + '"'
-                            + ' stroke="' + styleDef['stroke']  + '"'
+            var nodeStyles = (' stroke="' + styleDef['stroke']  + '"'
                             + ' stroke-width="' + styleDef['stroke-width'] + '"'
                             + ' fill="' + styleDef['fill']) + '"';
             nodeSource = nodeSource.replace(/\/>/, nodeStyles + '/>');
