@@ -1,6 +1,5 @@
 import {tannerGraph} from './graph.js';
-import {processPCM} from './process.js';
-import {checkSteps} from './process.js';
+import {processData} from './process.js';
 import {parse} from './lib/index.js';
 
 var HX;
@@ -71,24 +70,10 @@ document.getElementById('draw')
     .addEventListener('click', async function() {
         nodes = [];
         links = [];
-        const validity = processPCM(HX,HZ,nodes,links);
-        const nsteps = checkSteps(errorX,errorZ,syndromeX,syndromeZ);
-        if (validity && (nsteps !== -1)) {
+        const nsteps = processData(nodes,links,HX,HZ,errorX,errorZ,syndromeX,syndromeZ);
+        if (nsteps !== -1) {
             var code = new tannerGraph(graphSVG,nodes,links,
                         errorX,errorZ,syndromeX,syndromeZ,nsteps);
-        }
-        else {
-            var errorMsg = '\n';
-            if (HX === undefined || HZ === undefined) {
-                errorMsg = errorMsg + 'Error: Please provide both an X and Z parity check matrix\n';
-            }
-            if (!validity) {
-                errorMsg = errorMsg + 'Error: X and Z parity check matrices must have the same number of columns\n';
-            }
-            if (nsteps === -1) {
-                errorMsg = errorMsg + 'Error: error/syndrome data must have a consistent number of timesteps\n'
-            }
-            alert(errorMsg);
         }
     });
 

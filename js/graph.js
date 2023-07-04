@@ -1,6 +1,6 @@
 import {createContextMenu} from './menu.js';
 
-export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndromeZ,nsteps) {
+export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndromeZ,nSteps) {
 
     //----------VARIABLES----------
     
@@ -157,7 +157,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
    
     if (errorX === undefined) {
         errorX = [];
-        for (var i=0; i<(nsteps+1); i++) {
+        for (var i=0; i<(nSteps+1); i++) {
             errorX.push([]);
             for (var j=0; j<nodes.length; j++) {
                 errorX[i].push('0');
@@ -167,7 +167,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
     if (errorZ === undefined) {
         errorZ = [];
-        for (var i=0; i<(nsteps+1); i++) {
+        for (var i=0; i<(nSteps+1); i++) {
             errorZ.push([]);
             for (var j=0; j<nodes.length; j++) {
                 errorZ[i].push('0');
@@ -177,7 +177,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         
     if (syndromeX === undefined) {
         syndromeX = [];
-        for (var i=0; i<(nsteps+1); i++) {
+        for (var i=0; i<(nSteps+1); i++) {
             syndromeX.push([]);
             for (var j=0; j<nodes.length; j++) {
                 syndromeX[i].push('0');
@@ -187,7 +187,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
        
     if (syndromeZ === undefined) {
         syndromeZ = [];
-        for (var i=0; i<(nsteps+1); i++) {
+        for (var i=0; i<(nSteps+1); i++) {
             syndromeZ.push([]);
             for (var j=0; j<nodes.length; j++) {
                 syndromeZ[i].push('0');
@@ -202,7 +202,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .append('text')
         .attr('x', '15')
         .attr('y', '15')
-        .text(`${timestep}/${nsteps}`)
+        .text(`${timestep}/${nSteps}`)
 
     var activeNodes = [];
     var activeLinks = [];
@@ -430,7 +430,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             });
 
         step_counter
-            .text(`${timestep}/${nsteps}`);
+            .text(`${timestep}/${nSteps}`);
 
         simulation.alpha(1).restart();
     }
@@ -495,7 +495,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     //----------BUTTONS----------
 
     function stepForward() {
-        if (timestep < nsteps) {
+        if (timestep < nSteps) {
             timestep++;
             update();
         }
