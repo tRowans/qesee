@@ -366,11 +366,11 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
         var node = graphSVG
             .select('.nodes')
-            .selectAll('circle')
+            .selectAll('rect')
             .data(activeNodes);
 
         node.enter()
-            .append('circle')
+            .append('rect')
             .call(d3.drag()
                 .on('start', dragstarted)
                 .on('drag', dragged)
@@ -396,9 +396,11 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
         //Set IDs and classes (do this after adding/removing or things get mismatched
         d3.select('.nodes')
-            .selectAll('circle')
+            .selectAll('rect')
             .attr('id', function(d) {return d.id;})
-            .attr('class', function(d) {return assignNodeClass(d.id)});
+            .attr('class', function(d) {return assignNodeClass(d.id)})
+            .attr('width', 10)      //width and height need to be set as actual attributes
+            .attr('height', 10);    //and cannot be CSS styled for some reason
 
         d3.select('.links')
             .selectAll('line')
@@ -412,7 +414,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
         node = graphSVG
             .select('.nodes')
-            .selectAll('circle');
+            .selectAll('rect');
 
         simulation
             .nodes(activeNodes)
@@ -422,9 +424,9 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                     .attr("y1", function(d) {return keepInBounds(d.source.y, height);})
                     .attr("x2", function(d) {return keepInBounds(d.target.x, width);})
                     .attr("y2", function(d) {return keepInBounds(d.target.y, height);});
-                node
-                    .attr("cx", function(d) {return keepInBounds(d.x, width);})
-                    .attr("cy", function(d) {return keepInBounds(d.y, height);});
+                node        
+                    .attr("x", function(d) {return keepInBounds(d.x, width) - 5;})      //need these -5s because rect position
+                    .attr("y", function(d) {return keepInBounds(d.y, height) - 5;});    //is measured from the corner not centre
             });
 
         step_counter
@@ -457,8 +459,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                 .attr("x2", function(d) {return d.target.x;})
                 .attr("y2", function(d) {return pos1D(d.target);});
             node
-                .attr("cx", function(d) {return d.x;})
-                .attr("cy", function(d) {return pos1D(d);});
+                .attr("x", function(d) {return d.x;})
+                .attr("y", function(d) {return pos1D(d);});
             }
         else {
             link
@@ -467,8 +469,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                 .attr("x2", function(d) {return d.target.x;})
                 .attr("y2", function(d) {return d.target.y;});
             node
-                .attr("cx", function(d) {return d.x;})
-                .attr("cy", function(d) {return d.y;});
+                .attr("x", function(d) {return d.x;})
+                .attr("y", function(d) {return d.y;});
             }
         }
     */
@@ -826,7 +828,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     */
 
     function keepSelected(event) {
-        if (event.target.nodeName === 'circle') {
+        if (event.target.nodeName === 'rect') {
             return true;
         }
         else if (event.shiftKey) {
