@@ -973,8 +973,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .text('Loading...')
         .attr('class', 'loadingMessage')
         .attr('font-size', '48px')
-        .attr('x', width/2-50)
-        .attr('y', width/2-48);
+        .attr('x', width/2-width*0.1)
+        .attr('y', height/2);
     setTimeout(function() {
         buildNeighbours(nodeNeighbours);
         buildGraph();
