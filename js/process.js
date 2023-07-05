@@ -1,11 +1,11 @@
 export function processData(nodes,links,HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
     if (HX === undefined || HZ === undefined) {
         alert("Error: Please provide both an X and Z parity check matrix");
-        return false;
+        return -1;
     }
     if (HX[0].length !== HZ[0].length) {
         alert("Error: X and Z parity check matrices must have the same number of columnns");
-        return false;
+        return -1;
     }
     
     for (var i=0; i<HX.length; i++) {
