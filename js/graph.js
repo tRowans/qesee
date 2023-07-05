@@ -396,6 +396,12 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                     }
                     addToSelected(this.id);
                 }
+            })
+            .on('mouseover', function(event, d) {
+                displayNodeInfo(event, d);
+            })
+            .on('mouseout', function() {
+                d3.select('svg').selectAll('.infoPopup').remove()
             });
         
         node.exit().remove();
@@ -529,6 +535,38 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             simulation.force('charge').strength(charge);
             update();
         }
+    }
+
+    //----------NODE INFO POPUP----------
+
+    function displayNodeInfo(event, d) {
+        const id = d.id;
+        var infoPopup = d3
+            .select('svg')
+            .append('g')
+            .attr('class', 'infoPopup');
+
+        infoPopup
+            .append('rect')
+            .attr('class', 'infoPopup')
+            .attr('x', event.pageX)
+            .attr('y', event.pageY)
+            .attr('width', function() {
+                return 10 + 10*(id.length) + 5;
+            })
+            .attr('height', '30')
+            .attr('fill', 'white');
+
+        infoPopup
+            .append('text')
+            .attr('class', 'infoPopup')
+            .attr('x', function() {
+                return event.pageX + 10;
+            })
+            .attr('y', function() {
+                return event.pageY + 20;
+            })
+            .text(id);
     }
 
     //----------MENUS----------
