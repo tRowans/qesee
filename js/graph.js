@@ -99,7 +99,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .append('rect')
         .attr('x', width-150)
         .attr('y', 10)
-        .attr('width', '75')
+        .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
         .attr('fill', 'white')
@@ -114,7 +114,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     resetButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-130)
+        .attr('x', width-118)
         .attr('y', 28)
         .attr('pointer-events', 'none')
         .text('Reset');
@@ -130,7 +130,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .append('rect')
         .attr('x', width-150)
         .attr('y', 40)
-        .attr('width', '75')
+        .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
         .attr('fill', 'white')
@@ -145,7 +145,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     chargeButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-135)
+        .attr('x', width-123)
         .attr('y', 58)
         .attr('pointer-events', 'none')
         .text('Charge');
@@ -161,7 +161,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .append('rect')
         .attr('x', width-150)
         .attr('y', 70)
-        .attr('width', '75')
+        .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
         .attr('fill', function() {
@@ -187,12 +187,43 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     toggleButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-148)
+        .attr('x', width-135)
         .attr('y', 88)
         .attr('pointer-events', 'none')
         .text('Toggle IDs');
     toggleButton.on('click', function() {
         displayIDs = !displayIDs;
+    });
+
+    var swapButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    swapButton
+        .append('rect')
+        .attr('x', width-150)
+        .attr('y', 100)
+        .attr('width', '100')
+        .attr('height', '25')
+        .attr('stroke', 'black')
+        .attr('fill', 'white')
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            d3.select(this)
+                .attr('fill', 'white');
+        });
+    swapButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-142)
+        .attr('y', 118)
+        .attr('pointer-events', 'none')
+        .text('Swap colours');
+    swapButton.on('click', function() {
+        swapXZcolours();
     });
 
 
@@ -244,6 +275,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     var timestep = 0;
 
     var displayIDs = false;
+
+    var swappedXZ = false;
 
     var step_counter = d3
         .select('.timestep')
@@ -582,6 +615,18 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             charge = newCharge;
             simulation.force('charge').strength(charge);
             update();
+        }
+    }
+
+    function swapXZcolours() {
+        var csslink = document.getElementsByTagName('link')[0];
+        if (!swappedXZ) {
+            csslink.href = 'css/style_swapped.css';
+            swappedXZ = true;
+        }
+        else {
+            csslink.href = 'css/style.css';
+            swappedXZ = false;
         }
     }
 
