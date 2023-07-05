@@ -54,6 +54,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button')
         .attr('x', width-80)
         .attr('y', height-70)
+        .attr('pointer-events', 'none')
         .text('>');
     forwardButton.on('click', function() {
         stepForward()
@@ -84,6 +85,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button')
         .attr('x', width-135)
         .attr('y', height-70)
+        .attr('pointer-events', 'none')
         .text('<');
     backButton.on('click', function() {
         stepBack()
@@ -114,6 +116,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button')
         .attr('x', width-130)
         .attr('y', 28)
+        .attr('pointer-events', 'none')
         .text('Reset');
     resetButton.on('click', function() {
         resetGraph()
@@ -125,8 +128,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button');
     chargeButton
         .append('rect')
-        .attr('x', width-250)
-        .attr('y', 10)
+        .attr('x', width-150)
+        .attr('y', 40)
         .attr('width', '75')
         .attr('height', '25')
         .attr('stroke', 'black')
@@ -142,11 +145,54 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     chargeButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-235)
-        .attr('y', 28)
+        .attr('x', width-135)
+        .attr('y', 58)
+        .attr('pointer-events', 'none')
         .text('Charge');
     chargeButton.on('click', function() {
         adjustParams()
+    });
+
+    var toggleButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    toggleButton
+        .append('rect')
+        .attr('x', width-150)
+        .attr('y', 70)
+        .attr('width', '75')
+        .attr('height', '25')
+        .attr('stroke', 'black')
+        .attr('fill', function() {
+            if (!displayIDs) {
+                return 'white';
+            }
+            else return '#ADD8E6';
+        })
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            if (!displayIDs) {
+                d3.select(this)
+                    .attr('fill', 'white');
+            }
+            else {
+                d3.select(this)
+                    .attr('fill', '#ADD8E6');
+            }
+        });
+    toggleButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-148)
+        .attr('y', 88)
+        .attr('pointer-events', 'none')
+        .text('Toggle IDs');
+    toggleButton.on('click', function() {
+        displayIDs = !displayIDs;
     });
 
 
@@ -196,6 +242,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     }
 
     var timestep = 0;
+
+    var displayIDs = false;
 
     var step_counter = d3
         .select('.timestep')
@@ -540,33 +588,35 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     //----------NODE INFO POPUP----------
 
     function displayNodeInfo(event, d) {
-        const id = d.id;
-        var infoPopup = d3
-            .select('svg')
-            .append('g')
-            .attr('class', 'infoPopup');
+        if (displayIDs) {
+            const id = d.id;
+            var infoPopup = d3
+                .select('svg')
+                .append('g')
+                .attr('class', 'infoPopup');
 
-        infoPopup
-            .append('rect')
-            .attr('class', 'infoPopup')
-            .attr('x', event.pageX)
-            .attr('y', event.pageY)
-            .attr('width', function() {
-                return 10 + 10*(id.length) + 5;
-            })
-            .attr('height', '30')
-            .attr('fill', 'white');
+            infoPopup
+                .append('rect')
+                .attr('class', 'infoPopup')
+                .attr('x', event.pageX)
+                .attr('y', event.pageY)
+                .attr('width', function() {
+                    return 10 + 10*(id.length) + 5;
+                })
+                .attr('height', '30')
+                .attr('fill', 'white');
 
-        infoPopup
-            .append('text')
-            .attr('class', 'infoPopup')
-            .attr('x', function() {
-                return event.pageX + 10;
-            })
-            .attr('y', function() {
-                return event.pageY + 20;
-            })
-            .text(id);
+            infoPopup
+                .append('text')
+                .attr('class', 'infoPopup')
+                .attr('x', function() {
+                    return event.pageX + 10;
+                })
+                .attr('y', function() {
+                    return event.pageY + 20;
+                })
+                .text(id);
+        }
     }
 
     //----------MENUS----------
