@@ -89,7 +89,7 @@ document.getElementById('download')
             var styleDef = window.getComputedStyle(linkList[i]);
             var linkStyles = '';
             if (linkSource.match(/noErr/)) {
-                linkStyles = linkStyles + ' stroke="gray"';
+                linkStyles = linkStyles + ' stroke="black"';
             }
             else {
                 linkStyles = linkStyles + ' stroke="' + styleDef['stroke'] + '"';

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Context Menu Notes &#8212; QEsee  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Displaying Error and Syndrome Data" href="data.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="context-menu-notes">
+<h1>Context Menu Notes<a class="headerlink" href="#context-menu-notes" title="Permalink to this heading">¶</a></h1>
+<p>Aside from dragging nodes around, most interaction with the graphs drawn by QEsee is done via context menus (opened with right-click). The options in these menus are designed to be simple and intuitive and should not require much explanation, but some clarification of possibly unclear points is provided here just in case.</p>
+<p>When using “select all…” options only <em>visible</em> nodes will be selected, so e.g. “select all X stabilisers” will not select hidden X stabilisers. This is generally true for all selection functions as hidden nodes do not exist as objects in the simulation and are not simply invisible.</p>
+<p>With nothing selected you have the option to “select all pendant nodes” and “select all isolated nodes”, which select all nodes with degree 1 and 0 respectively. These are useful for cleaning up the graph after showing/hiding a new set of nodes.</p>
+<p>“Restrict to selection” hides everything except selected nodes. “Restrict to (X/Z) neighbourhood” hides everything except selected nodes and (X/Z) nodes connected to selected nodes.</p>
+<p>“Display all (X/Z) neighbours” unhides all (X/Z) nodes connected to the selection. If these nodes are already all visible it does nothing.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QEsee</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="qsg.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formatting.html">Formatting Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdg.html">About the Force-Directed Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Displaying Error and Syndrome Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Context Menu Notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="data.html" title="previous chapter">Displaying Error and Syndrome Data</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+       
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/context.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

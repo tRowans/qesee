@@ -941,11 +941,11 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             action: function() {selectEvery();}
         },
         {
-            label: 'Select all pendant vertices',
+            label: 'Select all pendant nodes',
             action: function() {selectByDegree(1);}
         },
         {
-            label: 'Select all isolated vertices',
+            label: 'Select all isolated nodes',
             action: function() {selectByDegree(0);}
         }
     ]

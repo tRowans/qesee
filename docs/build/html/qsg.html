@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quickstart Guide &#8212; QEsee  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Formatting Files" href="formatting.html" />
+    <link rel="prev" title="QEsee/docs" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="quickstart-guide">
+<h1>Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Permalink to this heading">¶</a></h1>
+<p>To quickly and easily view your code’s Tanner graph, follow these steps:</p>
+<p><strong>Step 1: Go to</strong> <a class="reference external" href="https://trowans.github.io/qesee">https://trowans.github.io/qesee</a></p>
+<p><strong>Step 2: Upload your X and Z parity check matrices</strong></p>
+<p>PCMs must be formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>) or the graph will not be drawn.</p>
+<p>You must upload both an X and Z PCM to view the graph. If you only want to view the X/Z stabiliser subgraph then you can easily hide the unwanted check nodes later. You do not need to provide error/syndrome data in order to view the graph.</p>
+<p><strong>Step 3: Click “Draw graph”</strong></p>
+<p>A loading message will be displayed while your graph is being built (this may take a while for large graphs). If you cannot see the graph and no loading message is displayed then your PCMs are probaly not formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>).</p>
+<p>Once the graph is done loading it will appear in the middle of the screen. Qubits are displayed as black circles, X stabilisers as blue squares and Z stabilisers as red squares. You can click on nodes to select them (shift-click to select multiple nodes), click and drag them to move them around or right-click for various contextual actions depending on what you have selected (see <a class="reference internal" href="context.html"><span class="doc">Context Menu Notes</span></a> for some notes on these). Using the buttons in the top right you can:</p>
+<ul class="simple">
+<li><p>Use the <em>Reset</em> button to redraw the graph. This is useful if you have hidden large parts of it and want to get them back.</p></li>
+<li><p>Use the <em>Charge</em> button to change the node separation (see <a class="reference internal" href="fdg.html"><span class="doc">About the Force-Directed Graph</span></a> for more).</p></li>
+<li><p>Use the <em>Toggle IDs</em> button to display node IDs when you hover over them. IDs are assigned based on ordering of qubits and stabilisers in the PCMs.</p></li>
+<li><p>Use the <em>Swap colours</em> button to swap the colouring of X and Z stabilisers if you prefer the opposite convention.</p></li>
+</ul>
+<p>The arrows in the bottom right will not do anything unless you upload error/syndrome data. For more on this see <a class="reference internal" href="data.html"><span class="doc">Displaying Error and Syndrome Data</span></a>.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QEsee</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formatting.html">Formatting Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdg.html">About the Force-Directed Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Displaying Error and Syndrome Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="context.html">Context Menu Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="images.html">Downloading Images</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">QEsee/docs</a></li>
+      <li>Next: <a href="formatting.html" title="next chapter">Formatting Files</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/qsg.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
