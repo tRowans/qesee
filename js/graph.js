@@ -524,7 +524,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             });
 
         step_counter
-            .text(`${timestep}/${nSteps}`);
+            .text(`${timestep+1}/${nSteps}`);
 
         simulation.alpha(1).restart();
     }
