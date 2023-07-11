@@ -283,7 +283,6 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .append('text')
         .attr('x', '15')
         .attr('y', '15')
-        .text(`${timestep}/${nSteps}`)
 
     var activeNodes = [];
     var activeLinks = [];
@@ -523,8 +522,10 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
                     .attr("y", function(d) {return keepInBounds(d.y, height) - 5;});    //is measured from the corner not centre
             });
 
-        step_counter
-            .text(`${timestep+1}/${nSteps}`);
+        if (nSteps) {
+            step_counter
+                .text(`${timestep+1}/${nSteps}`);
+        }
 
         simulation.alpha(1).restart();
     }
