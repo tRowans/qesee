@@ -4,7 +4,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
     //----------VARIABLES----------
     
-    var width = window.innerWidth;
+    var width = window.innerWidth - 20;
     var height = 0.8*window.innerHeight;
 
     graphSVG
@@ -14,6 +14,16 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     graphSVG
         .selectAll('g')
         .remove();
+
+    graphSVG
+        .append('g')
+        .attr('class', 'border')
+        .append('rect')
+        .attr('class', 'border')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('stroke', 'black')
+        .attr('fill', 'none');
 
     graphSVG
         .append('g')
@@ -35,8 +45,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     forwardButton
         .append('rect')
         .attr('class', 'button')
-        .attr('x', width-100)
-        .attr('y', height-100)
+        .attr('x', width-70)
+        .attr('y', height-70)
         .attr('width', '50')
         .attr('height', '50')
         .attr('stroke', 'black')
@@ -52,8 +62,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     forwardButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-80)
-        .attr('y', height-70)
+        .attr('x', width-50)
+        .attr('y', height-40)
         .attr('pointer-events', 'none')
         .text('>');
     forwardButton.on('click', function() {
@@ -66,8 +76,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button');
     backButton
         .append('rect')
-        .attr('x', width-155)
-        .attr('y', height-100)
+        .attr('x', width-125)
+        .attr('y', height-70)
         .attr('width', '50')
         .attr('height', '50')
         .attr('stroke', 'black')
@@ -83,8 +93,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     backButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-135)
-        .attr('y', height-70)
+        .attr('x', width-105)
+        .attr('y', height-40)
         .attr('pointer-events', 'none')
         .text('<');
     backButton.on('click', function() {
@@ -97,7 +107,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button');
     resetButton
         .append('rect')
-        .attr('x', width-150)
+        .attr('x', width-120)
         .attr('y', 10)
         .attr('width', '100')
         .attr('height', '25')
@@ -114,7 +124,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     resetButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-118)
+        .attr('x', width-88)
         .attr('y', 28)
         .attr('pointer-events', 'none')
         .text('Reset');
@@ -128,7 +138,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button');
     chargeButton
         .append('rect')
-        .attr('x', width-150)
+        .attr('x', width-120)
         .attr('y', 40)
         .attr('width', '100')
         .attr('height', '25')
@@ -145,7 +155,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     chargeButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-123)
+        .attr('x', width-93)
         .attr('y', 58)
         .attr('pointer-events', 'none')
         .text('Charge');
@@ -159,7 +169,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button');
     toggleButton
         .append('rect')
-        .attr('x', width-150)
+        .attr('x', width-120)
         .attr('y', 70)
         .attr('width', '100')
         .attr('height', '25')
@@ -187,7 +197,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     toggleButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-135)
+        .attr('x', width-105)
         .attr('y', 88)
         .attr('pointer-events', 'none')
         .text('Toggle IDs');
@@ -201,7 +211,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('class', 'button');
     swapButton
         .append('rect')
-        .attr('x', width-150)
+        .attr('x', width-120)
         .attr('y', 100)
         .attr('width', '100')
         .attr('height', '25')
@@ -218,7 +228,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     swapButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', width-142)
+        .attr('x', width-112)
         .attr('y', 118)
         .attr('pointer-events', 'none')
         .text('Swap colours');
