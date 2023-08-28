@@ -21,6 +21,13 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     graphSVG
         .append('g')
         .attr('class', 'nodes');
+    
+    graphSVG
+        .append('g')
+        .attr('class', 'buttons');
+    graphSVG
+        .append('g')
+        .attr('class', 'timestep');
 
     graphSVG
         .append('g')
@@ -31,14 +38,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('height', height)
         .attr('stroke', 'black')
         .attr('fill', 'none');
-    
-    graphSVG
-        .append('g')
-        .attr('class', 'buttons');
-    graphSVG
-        .append('g')
-        .attr('class', 'timestep');
 
+    
     var forwardButton = d3
         .select('.buttons')
         .append('g')
