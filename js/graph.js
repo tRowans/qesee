@@ -238,6 +238,48 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         swapXZcolours();
     });
 
+    var lockButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    lockButton
+        .append('rect')
+        .attr('x', width-120)
+        .attr('y', 130)
+        .attr('width', '100')
+        .attr('height', '25')
+        .attr('stroke', 'black')
+        .attr('fill', function() {
+            if (!locked) {
+                return 'white';
+            }
+            else return '#ADD8E6';
+        })
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            if (!locked) {
+                d3.select(this)
+                    .attr('fill', 'white');
+            }
+            else {
+                d3.select(this)
+                    .attr('fill', '#ADD8E6');
+            }
+        });
+    lockButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-105)
+        .attr('y', 148)
+        .attr('pointer-events', 'none')
+        .text('Lock nodes');
+    lockButton.on('click', function() {
+        locked = !locked;
+        if (locked) lockNodes();
+    });
 
     //add all-zero error and syndrome arrays if none provided
     //these arrays are nodes.length long which is the number
@@ -290,6 +332,8 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
     var swappedXZ = false;
 
+    var locked = false;
+
     var step_counter = d3
         .select('.timestep')
         .append('text')
@@ -300,6 +344,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     var activeLinks = [];
     var selectedNodes = [];
     var nodeNeighbours = {}; 
+    var lockedPositions = {};
 
     var charge = -20;
 
@@ -406,11 +451,13 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     //----------UPDATES----------
 
     function addNode(id) {
+        locked = false;
         activeNodes.push({'id': id});
         update();
     }
 
     function removeNode(id) {
+        locked = false;
         var i = 0;
         var n = findNode(id);
         while (i < activeLinks.length) {
@@ -426,6 +473,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     }
 
     function addLink(sourceId, targetId) {
+        locked = false;
         var sourceNode = findNode(sourceId);
         var targetNode = findNode(targetId);
         if ((sourceNode !== undefined) 
@@ -524,14 +572,26 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         simulation
             .nodes(activeNodes)
             .on('tick', function() {
-                link
-                    .attr("x1", function(d) {return keepInBounds(d.source.x, width);})
-                    .attr("y1", function(d) {return keepInBounds(d.source.y, height);})
-                    .attr("x2", function(d) {return keepInBounds(d.target.x, width);})
-                    .attr("y2", function(d) {return keepInBounds(d.target.y, height);});
-                node        
-                    .attr("x", function(d) {return keepInBounds(d.x, width) - 5;})      //need these -5s because rect position
-                    .attr("y", function(d) {return keepInBounds(d.y, height) - 5;});    //is measured from the corner not centre
+                if (locked) {
+                    link
+                        .attr("x1", function(d) {return lockedPositions[d.source.id][0];})
+                        .attr("y1", function(d) {return lockedPositions[d.source.id][1];})
+                        .attr("x2", function(d) {return lockedPositions[d.target.id][0];})
+                        .attr("y2", function(d) {return lockedPositions[d.target.id][1];});
+                    node
+                        .attr("x", function(d) {return lockedPositions[d.id][0] - 5;})  //need these -5s because rect position
+                        .attr("y", function(d) {return lockedPositions[d.id][1] - 5;}); //is measured from the corner not centre
+                }
+                else {
+                    link
+                        .attr("x1", function(d) {return keepInBounds(d.source.x, width);})
+                        .attr("y1", function(d) {return keepInBounds(d.source.y, height);})
+                        .attr("x2", function(d) {return keepInBounds(d.target.x, width);})
+                        .attr("y2", function(d) {return keepInBounds(d.target.y, height);});
+                    node        
+                        .attr("x", function(d) {return keepInBounds(d.x, width) - 5;})      
+                        .attr("y", function(d) {return keepInBounds(d.y, height) - 5;});    
+                }
             });
 
         if (nSteps) {
@@ -543,7 +603,9 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     }
 
     //----------POSITION----------
-   
+
+
+
     function keepInBounds(pos, bound) {
         if (pos < 0) return 0;
         else if (pos > bound) return bound;
@@ -642,6 +704,17 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
             swappedXZ = false;
         }
     }
+
+    function lockNodes() {
+        lockedPositions = {};
+        for (var i=0; i<activeNodes.length; i++) {
+            var position = [0,0];
+            position[0] = activeNodes[i].x
+            position[1] = activeNodes[i].y
+            lockedPositions[activeNodes[i].id] = position;
+        }
+    }
+
 
     //----------NODE INFO POPUP----------
 
