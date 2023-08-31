@@ -277,8 +277,7 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         .attr('pointer-events', 'none')
         .text('Lock nodes');
     lockButton.on('click', function() {
-        locked = !locked;
-        if (locked) lockNodes();
+        lockNodes();
     });
 
     //add all-zero error and syndrome arrays if none provided
@@ -344,7 +343,6 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     var activeLinks = [];
     var selectedNodes = [];
     var nodeNeighbours = {}; 
-    var lockedPositions = {};
 
     var charge = -20;
 
@@ -451,13 +449,11 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     //----------UPDATES----------
 
     function addNode(id) {
-        locked = false;
         activeNodes.push({'id': id});
         update();
     }
 
     function removeNode(id) {
-        locked = false;
         var i = 0;
         var n = findNode(id);
         while (i < activeLinks.length) {
@@ -473,7 +469,6 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     }
 
     function addLink(sourceId, targetId) {
-        locked = false;
         var sourceNode = findNode(sourceId);
         var targetNode = findNode(targetId);
         if ((sourceNode !== undefined) 
@@ -572,26 +567,14 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         simulation
             .nodes(activeNodes)
             .on('tick', function() {
-                if (locked) {
-                    link
-                        .attr("x1", function(d) {return lockedPositions[d.source.id][0];})
-                        .attr("y1", function(d) {return lockedPositions[d.source.id][1];})
-                        .attr("x2", function(d) {return lockedPositions[d.target.id][0];})
-                        .attr("y2", function(d) {return lockedPositions[d.target.id][1];});
-                    node
-                        .attr("x", function(d) {return lockedPositions[d.id][0] - 5;})  //need these -5s because rect position
-                        .attr("y", function(d) {return lockedPositions[d.id][1] - 5;}); //is measured from the corner not centre
-                }
-                else {
-                    link
-                        .attr("x1", function(d) {return keepInBounds(d.source.x, width);})
-                        .attr("y1", function(d) {return keepInBounds(d.source.y, height);})
-                        .attr("x2", function(d) {return keepInBounds(d.target.x, width);})
-                        .attr("y2", function(d) {return keepInBounds(d.target.y, height);});
-                    node        
-                        .attr("x", function(d) {return keepInBounds(d.x, width) - 5;})      
-                        .attr("y", function(d) {return keepInBounds(d.y, height) - 5;});    
-                }
+                link
+                    .attr("x1", function(d) {return keepInBounds(d.source.x, width);})
+                    .attr("y1", function(d) {return keepInBounds(d.source.y, height);})
+                    .attr("x2", function(d) {return keepInBounds(d.target.x, width);})
+                    .attr("y2", function(d) {return keepInBounds(d.target.y, height);});
+                node        
+                    .attr("x", function(d) {return keepInBounds(d.x, width) - 5;})  //need these -5s because rect position     
+                    .attr("y", function(d) {return keepInBounds(d.y, height) - 5;});    //is measured from the corner not centre   
             });
 
         if (nSteps) {
@@ -657,8 +640,14 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
 
     function dragended(event, d) {
         if (!event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
+        if (locked) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        else {
+            d.fx = null;
+            d.fy = null;
+        }
     }
 
     //----------BUTTONS----------
@@ -706,12 +695,16 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
     }
 
     function lockNodes() {
-        lockedPositions = {};
+        locked = !locked;
         for (var i=0; i<activeNodes.length; i++) {
-            var position = [0,0];
-            position[0] = activeNodes[i].x
-            position[1] = activeNodes[i].y
-            lockedPositions[activeNodes[i].id] = position;
+            if (locked) {
+                activeNodes[i].fx = activeNodes[i].x;
+                activeNodes[i].fy = activeNodes[i].y;
+            }
+            else {
+                activeNodes[i].fx = null;
+                activeNodes[i].fy = null;
+            }
         }
     }
 
