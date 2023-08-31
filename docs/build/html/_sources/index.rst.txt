@@ -19,5 +19,6 @@ Contents
    fdg
    data
    context
+   lock
    images
    future

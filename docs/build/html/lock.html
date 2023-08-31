@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>QEsee/docs &#8212; QEsee  documentation</title>
+    <title>Locking Nodes &#8212; QEsee  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -13,7 +13,8 @@
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quickstart Guide" href="qsg.html" />
+    <link rel="next" title="Downloading Images" href="images.html" />
+    <link rel="prev" title="Context Menu Notes" href="context.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -30,24 +31,9 @@
 
           <div class="body" role="main">
             
-  <section id="qesee-docs">
-<h1>QEsee/docs<a class="headerlink" href="#qesee-docs" title="Permalink to this heading">¶</a></h1>
-<p>QEsee is an interactive visualiser for Tanner graphs of quantum error correcting codes.</p>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="qsg.html">Quickstart Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="formatting.html">Formatting Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fdg.html">About the Force-Directed Graph</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">Displaying Error and Syndrome Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="context.html">Context Menu Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lock.html">Locking Nodes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="images.html">Downloading Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="future.html">Known Issues and Future Features</a></li>
-</ul>
-</div>
-</section>
+  <section id="locking-nodes">
+<h1>Locking Nodes<a class="headerlink" href="#locking-nodes" title="Permalink to this heading">¶</a></h1>
+<p>The simulation determining node positions is updated when stepping forwards/backwards through simulation data. This can cause unwanted effects, e.g. some graphs will have a tendancy to slowly rotate when the simulation is repeatedly updated without dragging, showing &amp; hiding, or otherwise perterbing node positions. If you would like to freeze the graph in a particular configuration you can click the “Lock nodes” button to freeze the positions of all the currently shown nodes. Nodes can still be dragged while the lock is applied and will be locked to their new position following the drag. If you unhide nodes that were hidden when the lock was applied then these nodes will not initially be locked, but if you drag them they will lock to their new position.</p>
 </section>
 
 
@@ -57,7 +43,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">QEsee</a></h1>
+<h1 class="logo"><a href="index.html">QEsee</a></h1>
 
 
 
@@ -67,13 +53,13 @@
 
 
 <h3>Navigation</h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="qsg.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="formatting.html">Formatting Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fdg.html">About the Force-Directed Graph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Displaying Error and Syndrome Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="context.html">Context Menu Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lock.html">Locking Nodes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Locking Nodes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="images.html">Downloading Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">Known Issues and Future Features</a></li>
 </ul>
@@ -81,8 +67,9 @@
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="qsg.html" title="next chapter">Quickstart Guide</a></li>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="context.html" title="previous chapter">Context Menu Notes</a></li>
+      <li>Next: <a href="images.html" title="next chapter">Downloading Images</a></li>
   </ul></li>
 </ul>
 </div>
@@ -116,7 +103,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
-      <a href="_sources/index.rst.txt"
+      <a href="_sources/lock.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
