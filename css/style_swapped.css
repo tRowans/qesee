@@ -5,7 +5,11 @@ body {
     font-size: 14px;
 }
 
-#controls{ 
+#PCMstuff{ 
+    float: left;
+}
+
+#Datastuff{
     float: left;
 }
 
@@ -13,6 +17,10 @@ body {
     float: right;
     text-align: right;
     white-space: pre-wrap;
+}
+
+button {
+    display: block;
 }
 
 /*

@@ -1,13 +1,7 @@
 import {tannerGraph} from './graph.js';
-import {processData} from './process.js';
+import {processData,checkValidity} from './process.js';
 import {parse} from './lib/index.js';
 
-var HX;
-var HZ;
-var errorX;
-var errorZ;
-var syndromeX;
-var syndromeZ;
 var nodes;
 var links;
 var graphSVG = d3.select('svg');
@@ -16,64 +10,63 @@ document.getElementById('inputHX')
     .addEventListener('change', function() {
         if (this.files.length) {
             var fr = new FileReader();
-            fr.onload = function() {HX = parse(fr.result);}
+            fr.onload = function() {window.HX = parse(fr.result);}
             fr.readAsText(this.files[0]);
         }
-        else HX = undefined;
+        else window.HX = undefined;
     });
 document.getElementById('inputHZ')
     .addEventListener('change', function() {
         if (this.files.length) {
             var fr = new FileReader();
-            fr.onload = function() {HZ = parse(fr.result);}
+            fr.onload = function() {window.HZ = parse(fr.result);}
             fr.readAsText(this.files[0]);
         }
-        else HZ = undefined;
+        else window.HZ = undefined;
     });
 document.getElementById('inputXError')
     .addEventListener('change', function() {
         if (this.files.length) {
             var fr = new FileReader();
-            fr.onload = function() {errorX = parse(fr.result);}
+            fr.onload = function() {window.errorX = parse(fr.result);}
             fr.readAsText(this.files[0]);
         }
-        else errorX = undefined;
+        else window.errorX = undefined;
     });
 document.getElementById('inputZError')
     .addEventListener('change', function() {
         if (this.files.length) {
             var fr = new FileReader();
-            fr.onload = function() {errorZ = parse(fr.result);}
+            fr.onload = function() {window.errorZ = parse(fr.result);}
             fr.readAsText(this.files[0]);
         }
-        else errorZ = undefined;
+        else window.errorZ = undefined;
     });
 document.getElementById('inputXSyndrome')
     .addEventListener('change', function() {
         if (this.files.length) {
             var fr = new FileReader();
-            fr.onload = function() {syndromeX = parse(fr.result);}
+            fr.onload = function() {window.syndromeX = parse(fr.result);}
             fr.readAsText(this.files[0]);
         }
-        else syndromeX = undefined;
+        else window.syndromeX = undefined;
     }); 
 document.getElementById('inputZSyndrome')
     .addEventListener('change', function() {
         if (this.files.length) {
             var fr = new FileReader();
-            fr.onload = function() {syndromeZ = parse(fr.result);}
+            fr.onload = function() {window.syndromeZ = parse(fr.result);}
             fr.readAsText(this.files[0]);
         }
-        else syndromeZ = undefined;
+        else window.syndromeZ = undefined;
     }); 
 document.getElementById('draw')
     .addEventListener('click', async function() {
         nodes = [];
         links = [];
-        const nsteps = processData(nodes,links,HX,HZ,errorX,errorZ,syndromeX,syndromeZ);
-        if (nsteps !== -1) {
-            var code = new tannerGraph(graphSVG,nodes,links,
-                        errorX,errorZ,syndromeX,syndromeZ,nsteps);
+        var valid = processData(nodes,links,window.HX,window.HZ);
+        if (valid) {
+            var code = new tannerGraph(graphSVG,nodes,links);
         }
     });
 

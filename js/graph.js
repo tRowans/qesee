@@ -1,11 +1,20 @@
 import {createContextMenu} from './menu.js';
+import {checkValidity} from './process.js';
 
-export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndromeZ,nSteps) {
+export function tannerGraph(graphSVG,nodes,links) {
 
     //----------VARIABLES----------
     
     var width = window.innerWidth - 20;
     var height = 0.8*window.innerHeight;
+
+    var errorX;
+    var errorZ;
+    var syndromeX;
+    var syndromeZ;
+    var nSteps = 0;
+        
+    makeEmptyArrays();
 
     graphSVG
         .attr('width', width)
@@ -280,51 +289,50 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         lockNodes();
     });
 
+    var loadButton = d3
+        .select('.buttons')
+        .append('g')
+        .attr('class', 'button');
+    loadButton
+        .append('rect')
+        .attr('x', width-120)
+        .attr('y', 160)
+        .attr('width', '100')
+        .attr('height', '25')
+        .attr('stroke', 'black')
+        .attr('fill', 'white')
+        .on('mouseover', function() {
+            d3.select(this)
+                .attr('fill', '#F8F0E3');
+        })
+        .on('mouseout', function() {
+            d3.select(this)
+                .attr('fill', 'white');
+        });
+    loadButton
+        .append('text')
+        .attr('class', 'button')
+        .attr('x', width-100)
+        .attr('y', 178)
+        .attr('pointer-events', 'none')
+        .text('Load data');
+    loadButton.on('click', function() {
+        errorX = window.errorX;
+        errorZ = window.errorZ;
+        syndromeX = window.syndromeX;
+        syndromeZ = window.syndromeZ;
+        nSteps = checkValidity(window.HX,window.HZ,
+            errorX,errorZ,syndromeX,syndromeZ)
+        timestep = 0;
+        makeEmptyArrays();
+        update();
+    });
+
     //add all-zero error and syndrome arrays if none provided
     //these arrays are nodes.length long which is the number
     //of qubits + all stabilisers, so longer than the real arrays
     //would be, but this doesn't really matter.
-   
-    if (errorX === undefined) {
-        errorX = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            errorX.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                errorX[i].push('0');
-            }
-        }
-    }
-
-    if (errorZ === undefined) {
-        errorZ = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            errorZ.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                errorZ[i].push('0');
-            }
-        }
-    }
-        
-    if (syndromeX === undefined) {
-        syndromeX = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            syndromeX.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                syndromeX[i].push('0');
-            }
-        }
-    }
-       
-    if (syndromeZ === undefined) {
-        syndromeZ = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            syndromeZ.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                syndromeZ[i].push('0');
-            }
-        }
-    }
-
+  
     var timestep = 0;
 
     var displayIDs = false;
@@ -647,6 +655,50 @@ export function tannerGraph(graphSVG,nodes,links,errorX,errorZ,syndromeX,syndrom
         else {
             d.fx = null;
             d.fy = null;
+        }
+    }
+
+    //----------DECODING DATA----------
+
+    function makeEmptyArrays() {
+        if (errorX === undefined) {
+            errorX = [];
+            for (var i=0; i<(nSteps+1); i++) {
+                errorX.push([]);
+                for (var j=0; j<nodes.length; j++) {
+                    errorX[i].push('0');
+                }
+            }
+        }
+
+        if (errorZ === undefined) {
+            errorZ = [];
+            for (var i=0; i<(nSteps+1); i++) {
+                errorZ.push([]);
+                for (var j=0; j<nodes.length; j++) {
+                    errorZ[i].push('0');
+                }
+            }
+        }
+            
+        if (syndromeX === undefined) {
+            syndromeX = [];
+            for (var i=0; i<(nSteps+1); i++) {
+                syndromeX.push([]);
+                for (var j=0; j<nodes.length; j++) {
+                    syndromeX[i].push('0');
+                }
+            }
+        }
+           
+        if (syndromeZ === undefined) {
+            syndromeZ = [];
+            for (var i=0; i<(nSteps+1); i++) {
+                syndromeZ.push([]);
+                for (var j=0; j<nodes.length; j++) {
+                    syndromeZ[i].push('0');
+                }
+            }
         }
     }
 
