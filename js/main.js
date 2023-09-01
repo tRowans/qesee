@@ -65,6 +65,8 @@ document.getElementById('draw')
         nodes = [];
         links = [];
         var valid = processData(nodes,links,window.HX,window.HZ);
+        window.nSteps = checkValidity(window.HX,window.HZ,
+            window.errorX,window.errorZ, window.syndromeX,window.syndromeZ);
         if (valid) {
             var code = new tannerGraph(graphSVG,nodes,links);
         }

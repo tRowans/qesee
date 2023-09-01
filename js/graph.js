@@ -8,11 +8,11 @@ export function tannerGraph(graphSVG,nodes,links) {
     var width = window.innerWidth - 20;
     var height = 0.8*window.innerHeight;
 
-    var errorX;
-    var errorZ;
-    var syndromeX;
-    var syndromeZ;
-    var nSteps = 0;
+    var errorX = window.errorX;
+    var errorZ = window.errorZ;
+    var syndromeX = window.syndromeX;
+    var syndromeZ = window.syndromeZ;
+    var nSteps = window.nSteps;
         
     makeEmptyArrays();
 
@@ -589,7 +589,11 @@ export function tannerGraph(graphSVG,nodes,links) {
             step_counter
                 .text(`${timestep+1}/${nSteps}`);
         }
-
+        else {
+            step_counter
+                .text('');
+        }
+        
         simulation.alpha(1).restart();
     }
 
