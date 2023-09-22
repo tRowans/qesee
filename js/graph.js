@@ -1006,6 +1006,10 @@ export function tannerGraph(graphSVG,nodes,links) {
             action: function() {displayNeighbourhood();}
         },
         {
+            label: 'Select neighbourhood',
+            action: function() {selectNeighbourhood();}
+        },
+        {
             label: 'Select connected component',
             action: function() {selectComponent();}
         }
@@ -1039,6 +1043,10 @@ export function tannerGraph(graphSVG,nodes,links) {
         {
             label: 'Display all neighbours',
             action: function() {displayNeighbourhood();}
+        },
+        {
+            label: 'Select neighbourhood',
+            action: function() {selectNeighbourhood();}
         },
         {
             label: 'Select connected component',
