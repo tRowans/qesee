@@ -21,5 +21,7 @@ Once the graph is done loading it will appear in the middle of the screen. Qubit
 * Use the *Charge* button to change the node separation (see :doc:`fdg` for more). 
 * Use the *Toggle IDs* button to display node IDs when you hover over them. IDs are assigned based on ordering of qubits and stabilisers in the PCMs.
 * Use the *Swap colours* button to swap the colouring of X and Z stabilisers if you prefer the opposite convention.
+* Use the *Lock nodes* button to freeze the nodes in their current positions (see :doc:`lock` for more).
+* Use the *Load data* button to load new error/syndrome data without redrawing the graph (see :doc:`data` for more).
 
 The arrows in the bottom right will not do anything unless you upload error/syndrome data. For more on this see :doc:`data`. 
