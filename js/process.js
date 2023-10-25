@@ -44,17 +44,37 @@ export function checkValidity(HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
 
 function checkNodeCounts(HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
     var errorMsg = "";
-    if (errorX !== undefined && errorX[0].length !== HX[0].length) {
-        errorMsg = errorMsg + "Error: X error data does not match number of qubits in PCMs\n";
+    if (errorX !== undefined) {
+        if (errorX.length === 0) {
+            errorMsg = errorMsg + "Error: X error data cannot have length zero\n";
+        }
+        else if (errorX[0].length !== HX[0].length) {
+            errorMsg = errorMsg + "Error: X error data does not match number of qubits in PCMs\n";
+        }
     }
-    if (errorZ !== undefined && errorZ[0].length !== HX[0].length) {
-        errorMsg = errorMsg + "Error: Z error data does not match number of qubits in PCMs\n";
+    if (errorZ !== undefined) {
+        if (errorZ.length === 0) {
+            errorMsg = errorMsg + "Error: Z error data cannot have length zero\n";
+        }
+        else if (errorZ[0].length !== HX[0].length) {
+            errorMsg = errorMsg + "Error: Z error data does not match number of qubits in PCMs\n";
+        }
     }
-    if (syndromeX !== undefined && syndromeX[0].length !== HX.length) {
-        errorMsg = errorMsg + "Error: X syndrome data does not match number of checks in X PCM\n";
+    if (syndromeX !== undefined) {
+        if (syndromeX.length === 0) {
+            errorMsg = errorMsg + "Error: X syndrome data cannot have length zero\n";
+        }
+        else if (syndromeX[0].length !== HX.length) {
+            errorMsg = errorMsg + "Error: X syndrome data does not match number of checks in X PCM\n";
+        }
     }
-    if (syndromeZ !== undefined && syndromeZ[0].length !== HZ.length) {
-        errorMsg = errorMsg + "Error: Z syndrome data does not match number of checks in Z PCM\n";
+    if (syndromeZ !== undefined) {
+        if (syndromeZ.length == 0) {
+            errorMsg = errorMsg + "Error: Z syndrome data cannot have length zero\n";
+        }
+        else if (syndromeZ[0].length !== HZ.length) {
+            errorMsg = errorMsg + "Error: Z syndrome data does not match number of checks in Z PCM\n";
+        }
     }
     if (errorMsg !== "") {
         alert(errorMsg);
