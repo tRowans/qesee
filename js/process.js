@@ -93,6 +93,9 @@ function checkSteps(errorX,errorZ,syndromeX,syndromeZ) {
             errorMsg = errorMsg + "Error: X and Z syndrome data do not have the same number of timesteps\n";
         }
     }
+    if (syndromeZ !== undefined) {
+        nSteps = syndromeZ.length;
+    }
     if (errorMsg !== "") {
         alert(errorMsg);
         return -1;
