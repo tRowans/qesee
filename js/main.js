@@ -1,10 +1,6 @@
-import {tannerGraph} from './graph.js';
+import {makeGraphBundle,interactiveGraph} from './graph.js';
 import {processData,checkValidity} from './process.js';
 import {parse} from './lib/index.js';
-
-var nodes;
-var links;
-var graphSVG = d3.select('svg');
         
 document.getElementById('inputHX')
     .addEventListener('change', function() {
@@ -62,13 +58,12 @@ document.getElementById('inputZSyndrome')
     }); 
 document.getElementById('draw')
     .addEventListener('click', async function() {
-        nodes = [];
-        links = [];
-        var valid = processData(nodes,links,window.HX,window.HZ);
+        var graphBundle = makeGraphBundle(d3.select('svg'));
+        var valid = processData(graphBundle,window.HX,window.HZ);
         window.nSteps = checkValidity(window.HX,window.HZ,
             window.errorX,window.errorZ, window.syndromeX,window.syndromeZ);
         if (valid && nSteps !== -1) {
-            var code = new tannerGraph(graphSVG,nodes,links);
+            var code = new interactiveGraph(graphBundle);
         }
     });
 

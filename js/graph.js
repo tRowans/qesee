@@ -5,14 +5,17 @@ import * as misc from './graph_modules/misc.js';
 import {createContextMenu} from './graph_modules/menus/create_menu.js';
 import * as menuOptions from './graph_modules/menus/menu_options.js';
 
-export function tannerGraph(graphSVG,nodes,links) {
+export function makeGraphBundle(svg) {
 
-    var graphVars = {
+    //big object for storing graph svg, simulation, variables and data etc
+    var graphBundle = {
+        svg: svg,
+        nodes: [],
+        links: [],
+        
         width: window.innerWidth-20,
         height: 0.8*window.innerHeight,
-
-        timestep: 0,
-        nSteps: window.nSteps,
+        
         charge: -20,
         displayIDs: false,
         swappedXZ: false,
@@ -23,116 +26,126 @@ export function tannerGraph(graphSVG,nodes,links) {
         selectedNodes: [],
         nodeNeighbours: {},
 
-        stepCounter: null
-    };
-
-    var decodingData = {
         errorX: window.errorX,
         errorZ: window.errorZ,
         syndromeX: window.syndromeX,
         syndromeZ: window.syndromeZ
     };
     
-    //add all-zero error and syndrome arrays if none provided
-    //these arrays are nodes.length long which is the number
-    //of qubits + all stabilisers, so longer than the real arrays
-    //would be, but this doesn't really matter.
-    misc.makeEmptyArrays(decodingData, nodes, links);
+    //set up SVG
+    graphBundle.svg
+        .attr('width', graphBundle.width)
+        .attr('height', graphBundle.height);
 
-    graphSVG
-        .attr('width', graphVars.width)
-        .attr('height', graphVars.height);
-
-    graphSVG
+    graphBundle.svg
         .selectAll('g')
         .remove();
 
-    graphSVG
+    graphBundle.svg
         .append('g')
         .attr('class', 'links');
-    graphSVG
+    graphBundle.svg
         .append('g')
         .attr('class', 'nodes');
     
-    graphSVG
+    graphBundle.svg
         .append('g')
         .attr('class', 'buttons');
-    graphSVG
+    graphBundle.svg
         .append('g')
         .attr('class', 'timestep');
 
-    graphSVG
+    graphBundle.svg
         .append('g')
         .attr('class', 'border')
         .append('rect')
         .attr('class', 'border')
-        .attr('width', graphVars.width)
-        .attr('height', graphVars.height)
+        .attr('width', graphBundle.width)
+        .attr('height', graphBundle.height)
         .attr('stroke', 'black')
         .attr('fill', 'none');
 
-    graphVars.stepCounter = d3
+    graphBundle.stepCounter = d3
         .select('.timestep')
         .append('text')
         .attr('x', '15')
         .attr('y', '15')
-   
-    var simulation = d3
+  
+    return graphBundle;
+}
+
+export function interactiveGraph(graphBundle) {
+
+    //set step info
+    graphBundle.timestep = 0;
+    graphBundle.nSteps = window.nSteps;
+
+    //add all-zero error and syndrome arrays if none provided
+    //these arrays are nodes.length long which is the number
+    //of qubits + all stabilisers, so longer than the real arrays
+    //would be, but this doesn't really matter.
+    misc.makeEmptyArrays(graphBundle);
+
+    //start simulation
+    graphBundle.simulation = d3
         .forceSimulation()
         .force('link', d3.forceLink()
-            .links(graphVars.activeLinks)
+            .links(graphBundle.activeLinks)
             .id(function(d) {return d.id;}))
-        .force('charge', d3.forceManyBody().strength(graphVars.charge))
-        .force('center', d3.forceCenter(graphVars.width/2, graphVars.height/2));
+        .force('charge', d3.forceManyBody().strength(graphBundle.charge))
+        .force('center', d3.forceCenter(graphBundle.width/2, graphBundle.height/2));
 
-    buttons.makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingData)
+    //make buttons for svg (needs to come after simulation is initialised
+    //because buttons interact with simulation)
+    buttons.makeButtons(graphBundle);
 
+    //bind clicks and button presses to relevant actions
     d3.select('svg')
         .on('click', function(event) {
             if (!misc.keepSelected(event)) {
-                while (graphVars.selectedNodes.length > 0) {
-                    updates.removeFromSelected(graphVars.selectedNodes[0],
-                        graphSVG,graphVars,simulation,decodingData);
+                while (graphBundle.selectedNodes.length > 0) {
+                    updates.removeFromSelected(graphBundle.selectedNodes[0],graphBundle);
                 }
             }
             d3.selectAll('.contextMenu').remove();
         })
         .on('contextmenu', function(event) {
-            var menuChoice = menuOptions.whichMenu(graphVars);
+            var menuChoice = menuOptions.whichMenu(graphBundle);
             if (menuChoice === 'q') {
-                createContextMenu(event, menuOptions.qubitMenu, graphSVG, graphVars, simulation, decodingData);
+                createContextMenu(event, menuOptions.qubitMenu, graphBundle);
             }
             else if (menuChoice === 's') {
-                createContextMenu(event, menuOptions.stabMenu, graphSVG, graphVars, simulation, decodingData);
+                createContextMenu(event, menuOptions.stabMenu, graphBundle);
             }
             else if (menuChoice === 'g') {
-                createContextMenu(event, menuOptions.genericMenu, graphSVG, graphVars, simulation, decodingData);
+                createContextMenu(event, menuOptions.genericMenu, graphBundle);
             }
             else {
-                createContextMenu(event, menuOptions.emptyMenu, graphSVG, graphVars, simulation, decodingData);
+                createContextMenu(event, menuOptions.emptyMenu, graphBundle);
             };
         });
 
     d3.select('body')
         .on('keypress', function(event) {
             if (event.keyCode == 106) {
-                buttons.stepBack(graphSVG,graphVars,simulation,decodingData);
+                buttons.stepBack(graphBundle);
             }
             else if (event.keyCode == 107) {
-                buttons.stepForward(graphSVG,graphVars,simulation,decodingData);
+                buttons.stepForward(graphBundle);
             };
         });
-    
-    graphSVG.append('text')
+
+    //build and draw graph 
+    graphBundle.svg.append('text')
         .text('Loading...')
         .attr('class', 'loadingMessage')
         .attr('font-size', '48px')
-        .attr('x', graphVars.width/2-graphVars.width*0.1)
-        .attr('y', graphVars.height/2);
+        .attr('x', graphBundle.width/2-graphBundle.width*0.1)
+        .attr('y', graphBundle.height/2);
     setTimeout(function() {
-        updates.buildNeighbours(nodes,links,graphVars);
-        updates.buildGraph(nodes,links,graphSVG,graphVars,simulation,decodingData);
-        graphSVG.select('.loadingMessage').remove();
-        updates.update(graphSVG,graphVars,simulation,decodingData);
+        updates.buildNeighbours(graphBundle);
+        updates.buildGraph(graphBundle);
+        graphBundle.svg.select('.loadingMessage').remove();
+        updates.update(graphBundle);
     }, 0);
 }

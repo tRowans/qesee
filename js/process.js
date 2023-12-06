@@ -1,4 +1,4 @@
-export function processData(nodes,links,HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
+export function processData(graphBundle,HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
     if (HX === undefined || HZ === undefined) {
         alert("Error: Please provide both an X and Z parity check matrix");
         return false;
@@ -10,25 +10,25 @@ export function processData(nodes,links,HX,HZ,errorX,errorZ,syndromeX,syndromeZ)
     
     for (var i=0; i<HX.length; i++) {
         var stab = {'id': 'x'+i};
-        nodes.push(stab);
+        graphBundle.nodes.push(stab);
         for (var j=0; j<HX[i].length; j++) {
             if (i === 0) {
                 var qubit = {'id': 'q'+j};
-                nodes.push(qubit);
+                graphBundle.nodes.push(qubit);
             }
             if (HX[i][j] === '1') {
                 var link = {'source': 'x'+i, 'target': 'q'+j};
-                links.push(link);
+                graphBundle.links.push(link);
             }
         }
     }
     for (var i=0; i<HZ.length; i++) {
         var stab = {'id': 'z'+i};
-        nodes.push(stab);
+        graphBundle.nodes.push(stab);
         for (var j=0; j<HZ[i].length; j++) {
             if (HZ[i][j] === '1') {
                 var link = {'source': 'z'+i, 'target': 'q'+j};
-                links.push(link);
+                graphBundle.links.push(link);
             }
         }
     }

@@ -3,73 +3,77 @@ import * as misc from './misc.js';
 
 //----------ADDING AND REMOVING----------
 
-export function addNode(id,graphSVG,graphVars,simulation,decodingData) {
-    graphVars.activeNodes.push({'id': id});
-    update(graphSVG,graphVars,simulation,decodingData);
+export function addNode(id,graphBundle) {
+    graphBundle.activeNodes.push({'id': id});
+    update(graphBundle);
 }
 
-export function removeNode(id,graphSVG,graphVars,simulation,decodingData) {
+export function removeNode(id,graphBundle) {
     var i = 0;
-    var n = tools.findNode(id,graphVars);
-    while (i < graphVars.activeLinks.length) {
-        if ((graphVars.activeLinks[i]['source'] === n)
-            ||(graphVars.activeLinks[i]['target'] === n)) graphVars.activeLinks.splice(i,1);
+    var n = tools.findNode(id,graphBundle);
+    while (i < graphBundle.activeLinks.length) {
+        if ((graphBundle.activeLinks[i]['source'] === n)
+            ||(graphBundle.activeLinks[i]['target'] === n)) graphBundle.activeLinks.splice(i,1);
         else i++;
     }
-    var index = tools.findNodeIndex(id, graphVars);
+    var index = tools.findNodeIndex(id,graphBundle);
     if (index !== undefined) {
-        graphVars.activeNodes.splice(index,1);
-        update(graphSVG,graphVars,simulation,decodingData);
+        graphBundle.activeNodes.splice(index,1);
+        update(graphBundle);
     }
 }
 
-export function addLink(sourceId,targetId,graphSVG,graphVars,simulation,decodingData) {
-    var sourceNode = tools.findNode(sourceId,graphVars);
-    var targetNode = tools.findNode(targetId,graphVars);
+export function addLink(sourceId,targetId,graphBundle) {
+    var sourceNode = tools.findNode(sourceId,graphBundle);
+    var targetNode = tools.findNode(targetId,graphBundle);
     if ((sourceNode !== undefined) 
         && (targetNode !== undefined)) {
-        graphVars.activeLinks.push({'source': sourceNode, 'target': targetNode});
-        update(graphSVG,graphVars,simulation,decodingData);
+        graphBundle.activeLinks.push({'source': sourceNode, 'target': targetNode});
+        update(graphBundle);
     }
 }
 
-export function addToSelected(id,graphSVG,graphVars,simulation,decodingData) {
-    graphVars.selectedNodes.push(id);
-    update(graphSVG,graphVars,simulation,decodingData);
+export function addToSelected(id,graphBundle) {
+    graphBundle.selectedNodes.push(id);
+    update(graphBundle);
 }
 
-export function removeFromSelected(id,graphSVG,graphVars,simulation,decodingData) {
-    for (var i=0; i<graphVars.selectedNodes.length; i++) {
-        if (graphVars.selectedNodes[i] == id) {
-            graphVars.selectedNodes.splice(i,1);
+export function removeFromSelected(id,graphBundle) {
+    for (var i=0; i<graphBundle.selectedNodes.length; i++) {
+        if (graphBundle.selectedNodes[i] == id) {
+            graphBundle.selectedNodes.splice(i,1);
             break;
         }
     }
-    update(graphSVG,graphVars,simulation,decodingData);
+    update(graphBundle);
 }
 
 //----------BUILDING----------
 
-export function buildNeighbours(nodes,links,graphVars) {
-    for (var i=0; i<nodes.length; i++) {
-        graphVars.nodeNeighbours[nodes[i].id]= [];
-        for (var j=0; j<links.length; j++) {
-            if (links[j]['source'] === nodes[i].id) {
-                graphVars.nodeNeighbours[nodes[i].id].push(links[j]['target']);
+export function buildNeighbours(graphBundle) {
+    for (var i=0; i<graphBundle.nodes.length; i++) {
+        graphBundle.nodeNeighbours[graphBundle.nodes[i].id]= [];
+        for (var j=0; j<graphBundle.links.length; j++) {
+            if (graphBundle.links[j]['source'] === graphBundle.nodes[i].id) {
+                graphBundle
+                    .nodeNeighbours[graphBundle.nodes[i].id]
+                    .push(graphBundle.links[j]['target']);
             }
-            else if (links[j]['target'] === nodes[i].id) {
-                graphVars.nodeNeighbours[nodes[i].id].push(links[j]['source']);
+            else if (graphBundle.links[j]['target'] === graphBundle.nodes[i].id) {
+                graphBundle
+                    .nodeNeighbours[graphBundle.nodes[i].id]
+                    .push(graphBundle.links[j]['source']);
             }
         }
     }
 }
 
-export function buildGraph(nodes,links,graphSVG,graphVars,simulation,decodingData) {
-    for (var i=0; i<nodes.length; i++) {
-        addNode(nodes[i].id,graphSVG,graphVars,simulation,decodingData);
+export function buildGraph(graphBundle) {
+    for (var i=0; i<graphBundle.nodes.length; i++) {
+        addNode(graphBundle.nodes[i].id,graphBundle);
     }
-    for (var i=0; i<links.length; i++) {
-        addLink(links[i].source,links[i].target,graphSVG,graphVars,simulation,decodingData);
+    for (var i=0; i<graphBundle.links.length; i++) {
+        addLink(graphBundle.links[i].source,graphBundle.links[i].target,graphBundle);
     }
 }
 
@@ -81,8 +85,8 @@ function keepInBounds(pos, bound) {
     else return pos;
 }
 
-function dragstarted(event, d, simulation) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
+function dragstarted(event, d, graphBundle) {
+    if (!event.active) graphBundle.simulation.alphaTarget(0.3).restart();
     d.fx = d.x;
     d.fy = d.y;
 }
@@ -92,9 +96,9 @@ function dragged(event, d) {
     d.fy = event.y;
 }
 
-function dragended(event, d, simulation, locked) {
-    if (!event.active) simulation.alphaTarget(0);
-    if (locked) {
+function dragended(event, d, graphBundle) {
+    if (!event.active) graphBundle.simulation.alphaTarget(0);
+    if (graphBundle.locked) {
         d.fx = event.x;
         d.fy = event.y;
     }
@@ -106,47 +110,47 @@ function dragended(event, d, simulation, locked) {
 
 //----------UPDATE----------
 
-export function update(graphSVG, graphVars, simulation, decodingData) {
+export function update(graphBundle) {
 
-    var link = graphSVG
+    var link = graphBundle.svg
         .select('.links')
         .selectAll('line')
-        .data(graphVars.activeLinks);
+        .data(graphBundle.activeLinks);
 
     link.enter()
         .append('line');
 
     link.exit().remove();
 
-    var node = graphSVG
+    var node = graphBundle.svg
         .select('.nodes')
         .selectAll('rect')
-        .data(graphVars.activeNodes);
+        .data(graphBundle.activeNodes);
 
     node.enter()
         .append('rect')
         .call(d3.drag()
-            .on('start', function(event, d) { dragstarted(event, d, simulation) })
+            .on('start', function(event, d) { dragstarted(event, d, graphBundle) })
             .on('drag', function(event, d) { dragged(event, d) })
-            .on('end', function(event, d) { dragended(event, d, simulation, graphVars.locked)}))
+            .on('end', function(event, d) { dragended(event, d, graphBundle)}))
         .on('click', function(event) {
             if (event.shiftKey) {
-                if (graphVars.selectedNodes.indexOf(this.id) >= 0) {
-                    removeFromSelected(this.id,graphSVG,graphVars,simulation,decodingData);
+                if (graphBundle.selectedNodes.indexOf(this.id) >= 0) {
+                    removeFromSelected(this.id,graphBundle);
                 }
                 else {
-                    addToSelected(this.id,graphSVG,graphVars,simulation,decodingData);
+                    addToSelected(this.id,graphBundle);
                 };
             }
             else {
-                while (graphVars.selectedNodes.length > 0) {
-                    removeFromSelected(graphVars.selectedNodes[0],graphSVG,graphVars,simulation,decodingData);
+                while (graphBundle.selectedNodes.length > 0) {
+                    removeFromSelected(graphBundle.selectedNodes[0],graphBundle);
                 }
-                addToSelected(this.id,graphSVG,graphVars,simulation,decodingData);
+                addToSelected(this.id,graphBundle);
             }
         })
         .on('mouseover', function(event, d) {
-            misc.displayNodeInfo(event, d, graphVars);
+            misc.displayNodeInfo(event, d, graphBundle);
         })
         .on('mouseout', function() {
             d3.select('svg').selectAll('.infoPopup').remove()
@@ -158,7 +162,7 @@ export function update(graphSVG, graphVars, simulation, decodingData) {
     d3.select('.nodes')
         .selectAll('rect')
         .attr('id', function(d) {return d.id;})
-        .attr('class', function(d) {return tools.assignNodeClass(d.id,graphVars,decodingData)})
+        .attr('class', function(d) {return tools.assignNodeClass(d.id,graphBundle)})
         .attr('width', 10)                                      //width and height need to be set as actual attributes
         .attr('height', 10)                                     //and cannot be CSS styled for some reason
         .attr('rx', function(d) {return tools.assignRX(d.id)}); //rx cannot be CSS styled on safari
@@ -169,35 +173,35 @@ export function update(graphSVG, graphVars, simulation, decodingData) {
 
     //These are necessary or it won't draw the most recently added element
     //for some special js reason
-    link = graphSVG
+    link = graphBundle.svg
         .select('.links')
         .selectAll('line');
 
-    node = graphSVG
+    node = graphBundle.svg
         .select('.nodes')
         .selectAll('rect');
 
-    simulation
-        .nodes(graphVars.activeNodes)
+    graphBundle.simulation
+        .nodes(graphBundle.activeNodes)
         .on('tick', function() {
             link
-                .attr("x1", function(d) {return keepInBounds(d.source.x, graphVars.width);})
-                .attr("y1", function(d) {return keepInBounds(d.source.y, graphVars.height);})
-                .attr("x2", function(d) {return keepInBounds(d.target.x, graphVars.width);})
-                .attr("y2", function(d) {return keepInBounds(d.target.y, graphVars.height);});
+                .attr("x1", function(d) {return keepInBounds(d.source.x, graphBundle.width);})
+                .attr("y1", function(d) {return keepInBounds(d.source.y, graphBundle.height);})
+                .attr("x2", function(d) {return keepInBounds(d.target.x, graphBundle.width);})
+                .attr("y2", function(d) {return keepInBounds(d.target.y, graphBundle.height);});
             node        
-                .attr("x", function(d) {return keepInBounds(d.x, graphVars.width) - 5;})  //need these -5s because rect position     
-                .attr("y", function(d) {return keepInBounds(d.y, graphVars.height) - 5;});    //is measured from the corner not centre   
+                .attr("x", function(d) {return keepInBounds(d.x, graphBundle.width) - 5;})  //need these -5s because rect position     
+                .attr("y", function(d) {return keepInBounds(d.y, graphBundle.height) - 5;});    //is measured from the corner not centre   
         });
 
-    if (graphVars.nSteps) {
-        graphVars.stepCounter
-            .text(`${graphVars.timestep+1}/${graphVars.nSteps}`);
+    if (graphBundle.nSteps) {
+        graphBundle.stepCounter
+            .text(`${graphBundle.timestep+1}/${graphBundle.nSteps}`);
     }
     else {
-        graphVars.stepCounter
+        graphBundle.stepCounter
             .text('');
     }
     
-    simulation.alpha(1).restart();
+    graphBundle.simulation.alpha(1).restart();
 }

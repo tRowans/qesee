@@ -2,7 +2,7 @@ import * as misc from './misc.js';
 import * as updates from './build_and_update.js';
 import {checkValidity} from '../process.js';
 
-export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingData) {    
+export function makeButtons(graphBundle) {
     var forwardButton = d3
         .select('.buttons')
         .append('g')
@@ -10,8 +10,8 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     forwardButton
         .append('rect')
         .attr('class', 'button')
-        .attr('x', graphVars.width-70)
-        .attr('y', graphVars.height-70)
+        .attr('x', graphBundle.width-70)
+        .attr('y', graphBundle.height-70)
         .attr('width', '50')
         .attr('height', '50')
         .attr('stroke', 'black')
@@ -27,12 +27,12 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     forwardButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-50)
-        .attr('y', graphVars.height-40)
+        .attr('x', graphBundle.width-50)
+        .attr('y', graphBundle.height-40)
         .attr('pointer-events', 'none')
         .text('>');
     forwardButton.on('click', function() {
-        stepForward(graphSVG,graphVars,simulation,decodingData)
+        stepForward(graphBundle);
     });
 
     var backButton = d3
@@ -41,8 +41,8 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
         .attr('class', 'button');
     backButton
         .append('rect')
-        .attr('x', graphVars.width-125)
-        .attr('y', graphVars.height-70)
+        .attr('x', graphBundle.width-125)
+        .attr('y', graphBundle.height-70)
         .attr('width', '50')
         .attr('height', '50')
         .attr('stroke', 'black')
@@ -58,12 +58,12 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     backButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-105)
-        .attr('y', graphVars.height-40)
+        .attr('x', graphBundle.width-105)
+        .attr('y', graphBundle.height-40)
         .attr('pointer-events', 'none')
         .text('<');
     backButton.on('click', function() {
-        stepBack(graphSVG,graphVars,simulation,decodingData)
+        stepBack(graphBundle);
     });
 
     var resetButton = d3
@@ -72,7 +72,7 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
         .attr('class', 'button');
     resetButton
         .append('rect')
-        .attr('x', graphVars.width-120)
+        .attr('x', graphBundle.width-120)
         .attr('y', 10)
         .attr('width', '100')
         .attr('height', '25')
@@ -89,12 +89,12 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     resetButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-88)
+        .attr('x', graphBundle.width-88)
         .attr('y', 28)
         .attr('pointer-events', 'none')
         .text('Reset');
     resetButton.on('click', function() {
-        resetGraph(nodes,links,graphSVG,graphVars,simulation,decodingData)
+        resetGraph(graphBundle);
     });
 
     var chargeButton = d3
@@ -103,7 +103,7 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
         .attr('class', 'button');
     chargeButton
         .append('rect')
-        .attr('x', graphVars.width-120)
+        .attr('x', graphBundle.width-120)
         .attr('y', 40)
         .attr('width', '100')
         .attr('height', '25')
@@ -120,12 +120,12 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     chargeButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-93)
+        .attr('x', graphBundle.width-93)
         .attr('y', 58)
         .attr('pointer-events', 'none')
         .text('Charge');
     chargeButton.on('click', function() {
-        adjustCharge(graphSVG,graphVars,simulation,decodingData)
+        adjustCharge(graphBundle);
     });
 
     var toggleButton = d3
@@ -134,13 +134,13 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
         .attr('class', 'button');
     toggleButton
         .append('rect')
-        .attr('x', graphVars.width-120)
+        .attr('x', graphBundle.width-120)
         .attr('y', 70)
         .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
         .attr('fill', function() {
-            if (!graphVars.displayIDs) {
+            if (!graphBundle.displayIDs) {
                 return 'white';
             }
             else return '#ADD8E6';
@@ -150,7 +150,7 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
                 .attr('fill', '#F8F0E3');
         })
         .on('mouseout', function() {
-            if (!graphVars.displayIDs) {
+            if (!graphBundle.displayIDs) {
                 d3.select(this)
                     .attr('fill', 'white');
             }
@@ -162,12 +162,12 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     toggleButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-105)
+        .attr('x', graphBundle.width-105)
         .attr('y', 88)
         .attr('pointer-events', 'none')
         .text('Toggle IDs');
     toggleButton.on('click', function() {
-        graphVars.displayIDs = !graphVars.displayIDs
+        graphBundle.displayIDs = !graphBundle.displayIDs
     });
 
     var swapButton = d3
@@ -176,7 +176,7 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
         .attr('class', 'button');
     swapButton
         .append('rect')
-        .attr('x', graphVars.width-120)
+        .attr('x', graphBundle.width-120)
         .attr('y', 100)
         .attr('width', '100')
         .attr('height', '25')
@@ -193,12 +193,12 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     swapButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-112)
+        .attr('x', graphBundle.width-112)
         .attr('y', 118)
         .attr('pointer-events', 'none')
         .text('Swap colours');
     swapButton.on('click', function() {
-        swapXZcolours(graphVars);
+        swapXZcolours(graphBundle);
     });
 
     var lockButton = d3
@@ -207,13 +207,13 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
         .attr('class', 'button');
     lockButton
         .append('rect')
-        .attr('x', graphVars.width-120)
+        .attr('x', graphBundle.width-120)
         .attr('y', 130)
         .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
         .attr('fill', function() {
-            if (!graphVars.locked) {
+            if (!graphBundle.locked) {
                 return 'white';
             }
             else return '#ADD8E6';
@@ -223,7 +223,7 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
                 .attr('fill', '#F8F0E3');
         })
         .on('mouseout', function() {
-            if (!graphVars.locked) {
+            if (!graphBundle.locked) {
                 d3.select(this)
                     .attr('fill', 'white');
             }
@@ -235,12 +235,12 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     lockButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-105)
+        .attr('x', graphBundle.width-105)
         .attr('y', 148)
         .attr('pointer-events', 'none')
         .text('Lock nodes');
     lockButton.on('click', function() {
-        lockNodes(graphVars);
+        lockNodes(graphBundle);
     });
 
     var loadButton = d3
@@ -249,7 +249,7 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
         .attr('class', 'button');
     loadButton
         .append('rect')
-        .attr('x', graphVars.width-120)
+        .attr('x', graphBundle.width-120)
         .attr('y', 160)
         .attr('width', '100')
         .attr('height', '25')
@@ -266,76 +266,76 @@ export function makeButtons(nodes,links,graphSVG,graphVars,simulation,decodingDa
     loadButton
         .append('text')
         .attr('class', 'button')
-        .attr('x', graphVars.width-100)
+        .attr('x', graphBundle.width-100)
         .attr('y', 178)
         .attr('pointer-events', 'none')
         .text('Load data');
     loadButton.on('click', function() {
-        decodingData.errorX = window.errorX;
-        decodingData.errorZ = window.errorZ;
-        decodingData.syndromeX = window.syndromeX;
-        decodingData.syndromeZ = window.syndromeZ;
-        nSteps = checkValidity(window.HX,window.HZ,
-            decodingData.errorX,decodingData.errorZ,
-            decodingData.syndromeX,decodingData.syndromeZ);
-        graphVars.timestep = 0;
-        misc.makeEmptyArrays(decodingData,nodes,links);
-        updates.update(graphSVG,graphVars,simulation,decodingData);
+        graphBundle.errorX = window.errorX;
+        graphBundle.errorZ = window.errorZ;
+        graphBundle.syndromeX = window.syndromeX;
+        graphBundle.syndromeZ = window.syndromeZ;
+        graphBundle.nSteps = checkValidity(window.HX,window.HZ,
+            graphBundle.errorX,graphBundle.errorZ,
+            graphBundle.syndromeX,graphBundle.syndromeZ);
+        graphBundle.timestep = 0;
+        misc.makeEmptyArrays(graphBundle);
+        updates.update(graphBundle);
         });
 }
 
-export function stepForward(graphSVG,graphVars,simulation,decodingData) {
-    if (graphVars.timestep < (graphVars.nSteps-1)) {
-        graphVars.timestep++;
-        updates.update(graphSVG,graphVars,simulation,decodingData);
+export function stepForward(graphBundle) {
+    if (graphBundle.timestep < (graphBundle.nSteps-1)) {
+        graphBundle.timestep++;
+        updates.update(graphBundle);
     }
 }
 
-export function stepBack(graphSVG,graphVars,simulation,decodingData) {
-    if (graphVars.timestep > 0) {
-        graphVars.timestep--;
-        updates.update(graphSVG,graphVars,simulation,decodingData);
+export function stepBack(graphBundle) {
+    if (graphBundle.timestep > 0) {
+        graphBundle.timestep--;
+        updates.update(graphBundle);
     }
 }
 
-export function resetGraph(nodes,links,graphSVG,graphVars,simulation,decodingData) {
-    while (graphVars.activeNodes.length > 0) {
-        updates.removeNode(graphVars.activeNodes[0].id,graphSVG,graphVars,simulation,decodingData);
+export function resetGraph(graphBundle) {
+    while (graphBundle.activeNodes.length > 0) {
+        updates.removeNode(graphBundle.activeNodes[0].id,graphBundle);
     }
-    updates.buildGraph(nodes,links,graphSVG,graphVars,simulation,decodingData);
+    updates.buildGraph(graphBundle);
 }
 
-export function adjustCharge(graphSVG,graphVars,simulation,decodingData) {
+export function adjustCharge(graphBundle) {
     let newCharge = window.prompt('Enter new charge value (default is -20)');
     if (!(newCharge === null) && !(newCharge === '')) {
-        graphVars.charge = newCharge;
-        simulation.force('charge').strength(graphVars.charge);
-        updates.update(graphSVG,graphVars,simulation,decodingData);
+        graphBundle.charge = newCharge;
+        graphBundle.simulation.force('charge').strength(graphBundle.charge);
+        updates.update(graphBundle);
     }
 }
 
-export function swapXZcolours(graphVars) {
+export function swapXZcolours(graphBundle) {
     var csslink = document.getElementsByTagName('link')[0];
-    if (!graphVars.swappedXZ) {
+    if (!graphBundle.swappedXZ) {
         csslink.href = 'css/style_swapped.css';
-        graphVars.swappedXZ = true;
+        graphBundle.swappedXZ = true;
     }
     else {
         csslink.href = 'css/style.css';
-        graphVars.swappedXZ = false;
+        graphBundle.swappedXZ = false;
     }
 }
 
-export function lockNodes(graphVars) {
-    graphVars.locked = !graphVars.locked;
-    for (var i=0; i<graphVars.activeNodes.length; i++) {
-        if (graphVars.locked) {
-            graphVars.activeNodes[i].fx = graphVars.activeNodes[i].x;
-            graphVars.activeNodes[i].fy = graphVars.activeNodes[i].y;
+export function lockNodes(graphBundle) {
+    graphBundle.locked = !graphBundle.locked;
+    for (var i=0; i<graphBundle.activeNodes.length; i++) {
+        if (graphBundle.locked) {
+            graphBundle.activeNodes[i].fx = graphBundle.activeNodes[i].x;
+            graphBundle.activeNodes[i].fy = graphBundle.activeNodes[i].y;
         }
         else {
-            graphVars.activeNodes[i].fx = null;
-            graphVars.activeNodes[i].fy = null;
+            graphBundle.activeNodes[i].fx = null;
+            graphBundle.activeNodes[i].fy = null;
         }
     }
 }

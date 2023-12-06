@@ -1,5 +1,5 @@
-export function displayNodeInfo(event, d, graphVars) {
-    if (graphVars.displayIDs) {
+export function displayNodeInfo(event, d, graphBundle) {
+    if (graphBundle.displayIDs) {
         const id = d.id;
         var infoPopup = d3
             .select('svg')
@@ -42,43 +42,43 @@ export function keepSelected(event) {
     }
 }
 
-export function makeEmptyArrays(decodingData, nodes, links) {
-    if (decodingData.errorX === undefined) {
-        decodingData.errorX = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            decodingData.errorX.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                decodingData.errorX[i].push('0');
+export function makeEmptyArrays(graphBundle) {
+    if (graphBundle.errorX === undefined) {
+        graphBundle.errorX = [];
+        for (var i=0; i<(graphBundle.nSteps+1); i++) {
+            graphBundle.errorX.push([]);
+            for (var j=0; j<graphBundle.nodes.length; j++) {
+                graphBundle.errorX[i].push('0');
             }
         }
     }
 
-    if (decodingData.errorZ === undefined) {
-        decodingData.errorZ = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            decodingData.errorZ.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                decodingData.errorZ[i].push('0');
+    if (graphBundle.errorZ === undefined) {
+        graphBundle.errorZ = [];
+        for (var i=0; i<(graphBundle.nSteps+1); i++) {
+            graphBundle.errorZ.push([]);
+            for (var j=0; j<graphBundle.nodes.length; j++) {
+                graphBundle.errorZ[i].push('0');
             }
         }
     }
         
-    if (decodingData.syndromeX === undefined) {
-        decodingData.syndromeX = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            decodingData.syndromeX.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                decodingData.syndromeX[i].push('0');
+    if (graphBundle.syndromeX === undefined) {
+        graphBundle.syndromeX = [];
+        for (var i=0; i<(graphBundle.nSteps+1); i++) {
+            graphBundle.syndromeX.push([]);
+            for (var j=0; j<graphBundle.nodes.length; j++) {
+                graphBundle.syndromeX[i].push('0');
             }
         }
     }
        
-    if (decodingData.syndromeZ === undefined) {
-        decodingData.syndromeZ = [];
-        for (var i=0; i<(nSteps+1); i++) {
-            decodingData.syndromeZ.push([]);
-            for (var j=0; j<nodes.length; j++) {
-                decodingData.syndromeZ[i].push('0');
+    if (graphBundle.syndromeZ === undefined) {
+        graphBundle.syndromeZ = [];
+        for (var i=0; i<(graphBundle.nSteps+1); i++) {
+            graphBundle.syndromeZ.push([]);
+            for (var j=0; j<graphBundle.nodes.length; j++) {
+                graphBundle.syndromeZ[i].push('0');
             }
         }
     }

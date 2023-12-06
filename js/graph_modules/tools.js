@@ -1,49 +1,46 @@
-export function findNode(id, graphVars) {
-    for (var i=0; i<graphVars.activeNodes.length; i++) {
-        if (graphVars.activeNodes[i].id === id) return graphVars.activeNodes[i];
+export function findNode(id, graphBundle) {
+    for (var i=0; i<graphBundle.activeNodes.length; i++) {
+        if (graphBundle.activeNodes[i].id === id) return graphBundle.activeNodes[i];
     }
 }
 
-export function findNodeIndex(id, graphVars) {
-    for (var i=0; i<graphVars.activeNodes.length; i++) {
-        if (graphVars.activeNodes[i].id === id) return i;
+export function findNodeIndex(id, graphBundle) {
+    for (var i=0; i<graphBundle.activeNodes.length; i++) {
+        if (graphBundle.activeNodes[i].id === id) return i;
     }
 }
 
-export function areConnected(id1, id2, graphVars) {
-    if (graphVars.nodeNeighbours[id1].indexOf(id2) >= 0) {
+export function areConnected(id1, id2, graphBundle) {
+    if (graphBundle.nodeNeighbours[id1].indexOf(id2) >= 0) {
         return true;
     }
     else return false;
 }
 
-export function assignNodeClass(id, graphVars, decodingData) {
+export function assignNodeClass(id, graphBundle) {
     //type
     var cl = id[0];
     //status
     if (cl === 'q') {
-        if (decodingData.
-                errorX[graphVars.timestep][id.slice(1)] === '1') {
-            if (decodingData.
-                errorZ[graphVars.timestep][id.slice(1)] === '1') {
+        if (graphBundle.errorX[graphBundle.timestep][id.slice(1)] === '1') {
+            if (graphBundle.errorZ[graphBundle.timestep][id.slice(1)] === '1') {
                 cl = cl + 'y';
             }
             else cl = cl + 'x';
         }
-        else if (decodingData.
-            errorZ[graphVars.timestep][id.slice(1)] === '1') {
+        else if (graphBundle.errorZ[graphBundle.timestep][id.slice(1)] === '1') {
             cl = cl + 'z';
         }
         else cl = cl + 'i';
     }
     else if (cl === 'x') {
-        cl = cl + decodingData.
-            syndromeX[graphVars.timestep][id.slice(1)];
+        cl = cl + graphBundle.
+            syndromeX[graphBundle.timestep][id.slice(1)];
     }
-    else cl = cl + decodingData.
-        syndromeZ[graphVars.timestep][id.slice(1)];
+    else cl = cl + graphBundle.
+        syndromeZ[graphBundle.timestep][id.slice(1)];
     //selected y/n
-    if (graphVars.selectedNodes.indexOf(id) >= 0) {
+    if (graphBundle.selectedNodes.indexOf(id) >= 0) {
         cl = cl + 'y';
     }
     else cl = cl + 'n';

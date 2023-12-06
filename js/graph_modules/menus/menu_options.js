@@ -1,10 +1,10 @@
 import * as menuFunctions from './menu_functions.js';
 
-export function whichMenu(graphVars) {
+export function whichMenu(graphBundle) {
     var qubitSelected = false;
     var stabSelected = false;
-    for (var i=0; i<graphVars.selectedNodes.length; i++) {
-        if (graphVars.selectedNodes[i][0] === 'q') {
+    for (var i=0; i<graphBundle.selectedNodes.length; i++) {
+        if (graphBundle.selectedNodes[i][0] === 'q') {
             qubitSelected = true;
         }
         else {stabSelected = true;}
@@ -24,191 +24,191 @@ export function whichMenu(graphVars) {
 export var qubitMenu = [
     {
         label: 'Hide selection',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.hideSelection(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.hideSelection(graphBundle);}
     },
     {
         label: 'Restrict to selection',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToSelection(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.restrictToSelection(graphBundle);}
     },
     {
         label: 'Restrict to X neighbourhood',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToNeighbourhood(graphSVG, graphVars, simulation, decodingData, 'x');}
+        action: function(graphBundle) {
+            menuFunctions.restrictToNeighbourhood(graphBundle,'x');}
     },
     {
         label: 'Restrict to Z neighbourhood',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToNeighbourhood(graphSVG, graphVars, simulation, decodingData, 'z');}
+        action: function(graphBundle) {
+            menuFunctions.restrictToNeighbourhood(graphBundle,'z');}
     },
     {
         label: 'Restrict to neighbourhood',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.restrictToNeighbourhood(graphBundle);}
     },
     {
         label: 'Select all X neighbours',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectNeighbourhood(graphSVG, graphVars, simulation, decodingData, 'x');}
+        action: function(graphBundle) {
+            menuFunctions.selectNeighbourhood(graphBundle,'x');}
     },
     {
         label: 'Select all Z neighbours',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectNeighbourhood(graphSVG, graphVars, simulation, decodingData, 'z');}
+        action: function(graphBundle) {
+            menuFunctions.selectNeighbourhood(graphBundle,'z');}
     },
     {
         label: 'Select all neighbours',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.selectNeighbourhood(graphBundle);}
     },
     {
         label: 'Select connected component',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectComponent(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.selectComponent(graphBundle);}
     },
     {
         label: 'Display all X neighbours',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.displayNeighbourhood(graphSVG, graphVars, simulation, decodingData, 'x');}
+        action: function(graphBundle) {
+            menuFunctions.displayNeighbourhood(graphBundle,'x');}
     },
     {
         label: 'Display all Z neighbours',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.displayNeighbourhood(graphSVG, graphVars, simulation, decodingData, 'z');}
+        action: function(graphBundle) {
+            menuFunctions.displayNeighbourhood(graphBundle,'z');}
     },
     {
         label: 'Display all neighbours',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.displayNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.displayNeighbourhood(graphBundle);}
     }
 ];
 
 export var stabMenu = [
     {
         label: 'Hide selection',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.hideSelection(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.hideSelection(graphBundle);}
     },
     {
         label: 'Restrict to selection',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToSelection(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.restrictToSelection(graphBundle);}
     },
     {
         label: 'Restrict to support',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.restrictToNeighbourhood(graphBundle);}
     },
     {
         label: 'Display full support',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.displayNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.displayNeighbourhood(graphBundle);}
     },
     {
         label: 'Select neighbourhood',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.selectNeighbourhood(graphBundle);}
     },
     {
         label: 'Select connected component',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectComponent(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.selectComponent(graphBundle);}
     }
 ];
 
 export var genericMenu = [
     {
         label: 'Hide qubits',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.hideSelection(graphSVG, graphVars, simulation, decodingData,'q');}
+        action: function(graphBundle) {
+            menuFunctions.hideSelection(graphBundle,'q');}
     },
     {
         label: 'Hide X stabilisers',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.hideSelection(graphSVG, graphVars, simulation, decodingData,'x');}
+        action: function(graphBundle) {
+            menuFunctions.hideSelection(graphBundle,'x');}
     },
     {
         label: 'Hide Z stabilisers',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.hideSelection(graphSVG, graphVars, simulation, decodingData,'z');}
+        action: function(graphBundle) {
+            menuFunctions.hideSelection(graphBundle,'z');}
     },
     {
         label: 'Hide selection',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.hideSelection(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.hideSelection(graphBundle);}
     },
     {
         label: 'Restrict to selection',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToSelection(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.restrictToSelection(graphBundle);}
     },
     {
         label: 'Restrict to neighbourhood',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.restrictToNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.restrictToNeighbourhood(graphBundle);}
     },
     {
         label: 'Display all neighbours',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.displayNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.displayNeighbourhood(graphBundle);}
     },
     {
         label: 'Select neighbourhood',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectNeighbourhood(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.selectNeighbourhood(graphBundle);}
     },
     {
         label: 'Select connected component',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectComponent(graphSVG, graphVars, simulation, decodingData);}
+        action: function(graphBundle) {
+            menuFunctions.selectComponent(graphBundle);}
     }
 ];
 
 export var emptyMenu = [
     {
         label: 'Select all qubits',
-        action: function(graphSVG,graphVars,simulation,decodingData) {
-            menuFunctions.selectEvery(graphSVG,graphVars,simulation,decodingData,'q');}
+        action: function(graphBundle) {
+            menuFunctions.selectEvery(graphBundle,'q');}
     },
     {
         label: 'Select all X error qubits',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectEvery(graphSVG, graphVars, simulation, decodingData,'qx');}
+        action: function(graphBundle) {
+            menuFunctions.selectEvery(graphBundle,'qx');}
     },
     {
         label: 'Select all Z error qubits',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectEvery(graphSVG, graphVars, simulation, decodingData,'qz');}
+        action: function(graphBundle) {
+            menuFunctions.selectEvery(graphBundle,'qz');}
     },
     {
         label: 'Select all Y error qubits',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectEvery(graphSVG, graphVars, simulation, decodingData,'qy');}
+        action: function(graphBundle) {
+            menuFunctions.selectEvery(graphBundle,'qy');}
     },
     {
         label: 'Select all X stabilisers',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectEvery(graphSVG, graphVars, simulation, decodingData,'x');}
+        action: function(graphBundle) {
+            menuFunctions.selectEvery(graphBundle,'x');}
     },
     {
         label: 'Select all Z stabilisers',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectEvery(graphSVG, graphVars, simulation, decodingData,'z');}
+        action: function(graphBundle) {
+            menuFunctions.selectEvery(graphBundle,'z');}
     },
     {
         label: 'Select everything',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectEvery(graphSVG, graphVars, simulation, decodingData,'');}
+        action: function(graphBundle) {
+            menuFunctions.selectEvery(graphBundle,'');}
     },
     {
         label: 'Select all pendant nodes',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectByDegree(graphSVG, graphVars, simulation, decodingData,1);}
+        action: function(graphBundle) {
+            menuFunctions.selectByDegree(graphBundle,1);}
     },
     {
         label: 'Select all isolated nodes',
-        action: function(graphSVG, graphVars, simulation, decodingData) {
-            menuFunctions.selectByDegree(graphSVG, graphVars, simulation, decodingData,0);}
+        action: function(graphBundle) {
+            menuFunctions.selectByDegree(graphBundle,0);}
     }
 ]

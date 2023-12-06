@@ -1,4 +1,4 @@
-function menuFactory(openMenu, menuItems, graphSVG, graphVars, simulation, decodingData) {
+function menuFactory(openMenu, menuItems, graphBundle) {
     d3.select('svg').selectAll('.contextMenu').remove();
 
     var menu = d3
@@ -46,11 +46,11 @@ function menuFactory(openMenu, menuItems, graphSVG, graphVars, simulation, decod
         .text(function(d) {return d.label;});
 
     menuItem.on('click', function() {
-        d3.select(this).data()[0].action(graphSVG,graphVars,simulation,decodingData);
+        d3.select(this).data()[0].action(graphBundle);
     });
 }
 
-export function createContextMenu(openMenu, menuItems, graphSVG, graphVars, simulation, decodingData) {
-    menuFactory(openMenu, menuItems, graphSVG, graphVars, simulation, decodingData);
+export function createContextMenu(openMenu, menuItems, graphBundle) {
+    menuFactory(openMenu, menuItems, graphBundle);
     openMenu.preventDefault();
 }

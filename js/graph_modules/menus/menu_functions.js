@@ -1,37 +1,37 @@
 import * as tools from '../tools.js';
 import * as updates from '../build_and_update.js';
 
-export function hideSelection(graphSVG,graphVars,simulation,decodingData,which) {
+export function hideSelection(graphBundle,which) {
     var i = 0;
-    while (i < graphVars.selectedNodes.length) {
-        var n = graphVars.selectedNodes[i];
+    while (i < graphBundle.selectedNodes.length) {
+        var n = graphBundle.selectedNodes[i];
         var nodeType = n[0];
         if (which === nodeType || which === undefined) {
-            updates.removeFromSelected(n,graphSVG,graphVars,simulation,decodingData);
-            updates.removeNode(n,graphSVG,graphVars,simulation,decodingData);
+            updates.removeFromSelected(n,graphBundle);
+            updates.removeNode(n,graphBundle);
         }
         else i++;
     }
 }
 
-export function restrictToSelection(graphSVG,graphVars,simulation,decodingData) {
+export function restrictToSelection(graphBundle) {
     var i = 0;
-    while (graphVars.activeNodes.length > graphVars.selectedNodes.length) {
-        if (graphVars.selectedNodes.indexOf(graphVars.activeNodes[i].id) >= 0) i++;
-        else updates.removeNode(graphVars.activeNodes[i].id,graphSVG,graphVars,simulation,decodingData);
+    while (graphBundle.activeNodes.length > graphBundle.selectedNodes.length) {
+        if (graphBundle.selectedNodes.indexOf(graphBundle.activeNodes[i].id) >= 0) i++;
+        else updates.removeNode(graphBundle.activeNodes[i].id,graphBundle);
     }
 }
 
-export function getNeighbourhood(graphVars, sType) {
+export function getNeighbourhood(graphBundle, sType) {
     var neighbourhood = new Set();
-    for (var i=0; i<graphVars.selectedNodes.length; i++) {
-        neighbourhood.add(graphVars.selectedNodes[i]);
-        var neighbours = graphVars.nodeNeighbours[graphVars.selectedNodes[i]];
+    for (var i=0; i<graphBundle.selectedNodes.length; i++) {
+        neighbourhood.add(graphBundle.selectedNodes[i]);
+        var neighbours = graphBundle.nodeNeighbours[graphBundle.selectedNodes[i]];
         for (var j=0; j<neighbours.length; j++) {
             if (sType === 'x' || sType === 'z') {
                 if (neighbours[j][0] !== sType) continue;
             }
-            if (tools.findNodeIndex(neighbours[j],graphVars) !== undefined) {
+            if (tools.findNodeIndex(neighbours[j],graphBundle) !== undefined) {
                 neighbourhood.add(neighbours[j]);
             }
         }
@@ -39,80 +39,79 @@ export function getNeighbourhood(graphVars, sType) {
     return neighbourhood;
 }
 
-export function selectNeighbourhood(graphSVG,graphVars,simulation,decodingData,sType) {
-    var neighbourhood = getNeighbourhood(graphVars,sType);
+export function selectNeighbourhood(graphBundle,sType) {
+    var neighbourhood = getNeighbourhood(graphBundle,sType);
     for (const neighbour of neighbourhood) {
-        if (graphVars.selectedNodes.indexOf(neighbour) === -1) {
-            updates.addToSelected(neighbour,graphSVG,graphVars,simulation,decodingData);
+        if (graphBundle.selectedNodes.indexOf(neighbour) === -1) {
+            updates.addToSelected(neighbour,graphBundle);
         }
     }
 }
 
-export function restrictToNeighbourhood(graphSVG,graphVars,simulation,decodingData,sType) {
-    var neighbourhood = getNeighbourhood(graphVars,sType);
+export function restrictToNeighbourhood(graphBundle,sType) {
+    var neighbourhood = getNeighbourhood(graphBundle,sType);
     var i = 0;
-    while (graphVars.activeNodes.length > neighbourhood.size) {
-        if (!neighbourhood.has(graphVars.activeNodes[i].id)) {
-            updates.removeNode(graphVars.activeNodes[i].id,graphSVG,graphVars,simulation,decodingData);
+    while (graphBundle.activeNodes.length > neighbourhood.size) {
+        if (!neighbourhood.has(graphBundle.activeNodes[i].id)) {
+            updates.removeNode(graphBundle.activeNodes[i].id,graphBundle);
         }
         else i++;
     }
 }
 
-export function displayNeighbourhood(graphSVG,graphVars,simulation,decodingData,sType) {
-    for (var i=0; i<graphVars.selectedNodes.length; i++) {
-        var neighbours = graphVars.nodeNeighbours[graphVars.selectedNodes[i]];
+export function displayNeighbourhood(graphBundle,sType) {
+    for (var i=0; i<graphBundle.selectedNodes.length; i++) {
+        var neighbours = graphBundle.nodeNeighbours[graphBundle.selectedNodes[i]];
         for (var j=0; j<neighbours.length; j++) {
             if (sType === 'x' || sType === 'z') {
                 if (neighbours[j][0] !== sType) continue;
             }
-            if (tools.findNodeIndex(neighbours[j],graphVars) === undefined) {
-                updates.addNode(neighbours[j],graphSVG,graphVars,simulation,decodingData);
-                var nextNeighbours = graphVars.nodeNeighbours[neighbours[j]];
+            if (tools.findNodeIndex(neighbours[j],graphBundle) === undefined) {
+                updates.addNode(neighbours[j],graphBundle);
+                var nextNeighbours = graphBundle.nodeNeighbours[neighbours[j]];
                 for (var k=0; k<nextNeighbours.length; k++) {
                     if (neighbours[j][0] === 'q') {
-                        updates.addLink(nextNeighbours[k],neighbours[j],graphSVG,graphVars,simulation,decodingData);
+                        updates.addLink(nextNeighbours[k],neighbours[j],graphBundle);
                     }
-                    else updates.addLink(neighbours[j],nextNeighbours[k],graphSVG,graphVars,simulation,decodingData);
+                    else updates.addLink(neighbours[j],nextNeighbours[k],graphBundle);
                 }
             }
         }
     }
 }
 
-export function selectEvery(graphSVG,graphVars,simulation,decodingData,which) {
-    for (var i=0; i<graphVars.activeNodes.length; i++) {
-        var nodeClass = d3.select('#'+graphVars.activeNodes[i].id).attr('class');
+export function selectEvery(graphBundle,which) {
+    for (var i=0; i<graphBundle.activeNodes.length; i++) {
+        var nodeClass = d3.select('#'+graphBundle.activeNodes[i].id).attr('class');
         var nodeType = nodeClass[0];
         var nodeStatus = nodeClass[1];
         if (which[0] === nodeType || which[0] === undefined) {
             if (which[1] === nodeStatus || which[1] === undefined) {
-                updates.addToSelected(graphVars.activeNodes[i].id,
-                graphSVG,graphVars,simulation,decodingData);
+                updates.addToSelected(graphBundle.activeNodes[i].id,graphBundle);
             }
         }
     }
 }
 
-export function selectByDegree(graphSVG,graphVars,simulation,decodingData,targetDegree) {
-    for (var i=0; i<graphVars.activeNodes.length; i++) {
-        var neighbours = graphVars.nodeNeighbours[graphVars.activeNodes[i].id];
+export function selectByDegree(graphBundle,targetDegree) {
+    for (var i=0; i<graphBundle.activeNodes.length; i++) {
+        var neighbours = graphBundle.nodeNeighbours[graphBundle.activeNodes[i].id];
         var degree = 0;
         for (var j=0; j<neighbours.length; j++) {
-            if (tools.findNodeIndex(neighbours[j],graphVars) !== undefined) degree++;
+            if (tools.findNodeIndex(neighbours[j],graphBundle) !== undefined) degree++;
         }
         if (degree === targetDegree) {
-            updates.addToSelected(graphVars.activeNodes[i].id,graphSVG,graphVars,simulation,decodingData);
+            updates.addToSelected(graphBundle.activeNodes[i].id,graphBundle);
         }
     }
 }
 
-export function selectComponent(graphSVG,graphVars,simulation,decodingData) {
+export function selectComponent(graphBundle) {
     var componentSizeOld = 0;
     var componentSizeNew = 1;
     while (componentSizeOld !== componentSizeNew) {
-        componentSizeOld = graphVars.selectedNodes.length;
-        selectNeighbourhood(graphSVG,graphVars,simulation,decodingData);
-        componentSizeNew = graphVars.selectedNodes.length;
+        componentSizeOld = graphBundle.selectedNodes.length;
+        selectNeighbourhood(graphBundle);
+        componentSizeNew = graphBundle.selectedNodes.length;
     }
 }
