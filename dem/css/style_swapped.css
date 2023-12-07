@@ -5,6 +5,10 @@ body {
     font-size: 14px;
 }
 
+#Welcome{
+    float: left;
+}
+
 #PCMstuff{ 
     float: left;
 }

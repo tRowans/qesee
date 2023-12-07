@@ -1,0 +1,33 @@
+stim.DetectorErrorModel('''
+    error(0.0266667) D0
+    error(0.0266667) D0 D1
+    error(0.01) D0 D2
+    error(0.01) D1 D3
+    error(0.0266667) D1 L0
+    detector(1, 0) D0
+    detector(3, 0) D1
+    repeat 8 {
+        error(0.0266667) D2
+        error(0.0266667) D2 D3
+        error(0.01) D2 D4
+        error(0.01) D3 D5
+        error(0.0266667) D3 L0
+        shift_detectors(0, 1) 0
+        detector(1, 0) D2
+        detector(3, 0) D3
+        shift_detectors 2
+    }
+    error(0.0266667) D2
+    error(0.0266667) D2 D3
+    error(0.01) D2 D4
+    error(0.01) D3 D5
+    error(0.0266667) D3 L0
+    error(0.01) D4
+    error(0.01) D4 D5
+    error(0.01) D5 L0
+    shift_detectors(0, 1) 0
+    detector(1, 0) D2
+    detector(3, 0) D3
+    detector(1, 1) D4
+    detector(3, 1) D5
+''')

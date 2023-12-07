@@ -1,4 +1,3 @@
-import {checkValidity} from './process.js';
 import * as buttons from './graph_modules/buttons.js';
 import * as updates from './graph_modules/build_and_update.js';
 import * as misc from './graph_modules/misc.js';
@@ -40,7 +39,7 @@ export function makeGraphBundle(svg) {
     graphBundle.svg
         .selectAll('g')
         .remove();
-
+    
     graphBundle.svg
         .append('g')
         .attr('class', 'links');
@@ -54,7 +53,7 @@ export function makeGraphBundle(svg) {
     graphBundle.svg
         .append('g')
         .attr('class', 'timestep');
-
+    
     graphBundle.svg
         .append('g')
         .attr('class', 'border')
@@ -70,6 +69,7 @@ export function makeGraphBundle(svg) {
         .append('text')
         .attr('x', '15')
         .attr('y', '15')
+        .attr('fill', 'white');
   
     return graphBundle;
 }
