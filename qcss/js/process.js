@@ -1,4 +1,4 @@
-export function processData(graphBundle,HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
+export function processData(graphBundle,HX,HZ) {
     if (HX === undefined || HZ === undefined) {
         alert("Error: Please provide both an X and Z parity check matrix");
         return false;

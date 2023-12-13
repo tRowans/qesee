@@ -1,85 +1,96 @@
-export function processDEM(dem) {
-    if (dem === undefined) {
-        alert("Error: No detector error model provided");
-    }
-    
-
-export function processData(graphBundle,HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
-    if (HX === undefined || HZ === undefined) {
-        alert("Error: Please provide both an X and Z parity check matrix");
-        return false;
-    }
-    if (HX[0].length !== HZ[0].length) {
-        alert("Error: X and Z parity check matrices must have the same number of columnns");
-        return false;
-    }
-    
-    for (var i=0; i<HX.length; i++) {
-        var stab = {'id': 'x'+i};
-        graphBundle.nodes.push(stab);
-        for (var j=0; j<HX[i].length; j++) {
-            if (i === 0) {
-                var qubit = {'id': 'q'+j};
-                graphBundle.nodes.push(qubit);
+export function processDEM(dem,demMap,detectorShift) {
+    if (dem !== undefined) {
+        for (var i=0; i<dem.length; i++) {
+            if (/error/.test(dem[i])) {
+                var match;
+                var matches = [];
+                var re = /D\S+/g;
+                while ((match = re.exec(dem[i])) != null) {
+                    matches.push(parseInt(match[0].slice(1)));
+                }
+                demMap.push(matches.map(n=> n+detectorShift));
             }
-            if (HX[i][j] === '1') {
-                var link = {'source': 'x'+i, 'target': 'q'+j};
-                graphBundle.links.push(link);
+            if (/shift_detectors/.test(dem[i])) {
+                var match = /\s\d+$/.exec(dem[i]);
+                detectorShift += parseInt(match[0]);
+            }
+            if (/repeat/.test(dem[i])) {
+                var nRepeats = parseInt(/\d+/.exec(dem[i])[0]);
+                var matchingBracketLine = findMatchingBracket(dem,i);
+                for (var r=0; r<nRepeats; r++) {
+                    ({ demMap, detectorShift } = processDEM(dem.slice(i+1,matchingBracketLine),
+                                                              demMap,
+                                                              detectorShift));
+                }
+                i = matchingBracketLine;
             }
         }
     }
-    for (var i=0; i<HZ.length; i++) {
-        var stab = {'id': 'z'+i};
-        graphBundle.nodes.push(stab);
-        for (var j=0; j<HZ[i].length; j++) {
-            if (HZ[i][j] === '1') {
-                var link = {'source': 'z'+i, 'target': 'q'+j};
-                graphBundle.links.push(link);
-            }
+    return { demMap, detectorShift };
+}
+
+function findMatchingBracket(dem, i) {
+    var nest = 1;
+    var matchingBracketLine; 
+    for (var j=i+1; j<dem.length; j++) {
+        if (/\{/.test(dem[j])) { nest += 1; }
+        else if (/\}/.test(dem[j])) { nest -= 1; }
+        if (nest === 0) {
+            matchingBracketLine = j;
+            break;
+        }
+    }
+    return matchingBracketLine;
+}
+
+export function processData(graphBundle,demMap) {
+    if (demMap.length === 0) {
+        alert("Error: No detector error model provided");
+        return false;
+    }
+   
+    var nErrors = demMap.length;
+    var nDetectors = Math.max(...demMap.flat());
+    for (var i=0; i<nDetectors+1; i++) {
+        var detector = {'id': 'd'+i};
+        graphBundle.nodes.push(detector);
+    }
+    for (var i=0; i<nErrors; i++) {
+        var error = {'id': 'e'+i};
+        graphBundle.nodes.push(error);
+        for (var j=0; j<demMap[i].length; j++) {
+            var link = {'source': 'e'+i, 'target': 'd'+demMap[i][j]};
+            graphBundle.links.push(link);
         }
     }
     return true;
 }
 
-export function checkValidity(HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
-    const validity = checkNodeCounts(HX,HZ,errorX,errorZ,syndromeX,syndromeZ);
-    const nSteps = checkSteps(errorX,errorZ,syndromeX,syndromeZ);
+export function checkValidity(demMap,syndrome,correction) {
+    const validity = checkNodeCounts(demMap,syndrome,correction);
+    const nSteps = checkSteps(syndrome,correction);
     if (!validity || nSteps === -1) return -1;
     return nSteps;
 }
 
-function checkNodeCounts(HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
+function checkNodeCounts(demMap,syndrome,correction) {
     var errorMsg = "";
-    if (errorX !== undefined) {
-        if (errorX.length === 0) {
-            errorMsg = errorMsg + "Error: X error data cannot have length zero\n";
+    var nErrors = demMap.length;
+    var nDetectors = Math.max(...demMap.flat());
+    if (correction !== undefined) {
+        if (correction.length === 0) {
+            errorMsg = errorMsg + "Error: correction data cannot have length zero\n";
         }
-        else if (errorX[0].length !== HX[0].length) {
-            errorMsg = errorMsg + "Error: X error data does not match number of qubits in PCMs\n";
-        }
-    }
-    if (errorZ !== undefined) {
-        if (errorZ.length === 0) {
-            errorMsg = errorMsg + "Error: Z error data cannot have length zero\n";
-        }
-        else if (errorZ[0].length !== HX[0].length) {
-            errorMsg = errorMsg + "Error: Z error data does not match number of qubits in PCMs\n";
+        else if (correction[0].length !== nErrors) {
+            errorMsg = errorMsg + "Error: correction data does not match number of error mechanisms\n";
         }
     }
-    if (syndromeX !== undefined) {
-        if (syndromeX.length === 0) {
-            errorMsg = errorMsg + "Error: X syndrome data cannot have length zero\n";
+    if (syndrome !== undefined) {
+        if (syndrome.length === 0) {
+            errorMsg = errorMsg + "Error: syndrome data cannot have length zero\n";
         }
-        else if (syndromeX[0].length !== HX.length) {
-            errorMsg = errorMsg + "Error: X syndrome data does not match number of checks in X PCM\n";
-        }
-    }
-    if (syndromeZ !== undefined) {
-        if (syndromeZ.length == 0) {
-            errorMsg = errorMsg + "Error: Z syndrome data cannot have length zero\n";
-        }
-        else if (syndromeZ[0].length !== HZ.length) {
-            errorMsg = errorMsg + "Error: Z syndrome data does not match number of checks in Z PCM\n";
+        else if (syndrome[0].length !== nDetectors) {
+            errorMsg = errorMsg + "Error: syndrome data does not match number of detectors\n";
         }
     }
     if (errorMsg !== "") {
@@ -89,38 +100,17 @@ function checkNodeCounts(HX,HZ,errorX,errorZ,syndromeX,syndromeZ) {
     return true;
 }
 
-function checkSteps(errorX,errorZ,syndromeX,syndromeZ) {
+function checkSteps(syndrome,correction) {
     var nSteps = 0;
     var errorMsg = "";
-    if (errorX !== undefined) {
-        nSteps = errorX.length;
-        if (errorZ !== undefined && errorZ.length !== nSteps) {
-            errorMsg = errorMsg + "Error: X and Z error data do not have the same number of timesteps\n";
-        }
-        if (syndromeX !== undefined && syndromeX.length !== nSteps) {
-            errorMsg = errorMsg + "Error: X error and X syndrome data do not have the same number of timesteps\n";
-        }
-        if (syndromeZ !== undefined && syndromeZ.length !== nSteps) {
-            errorMsg = errorMsg + "Error: X error and Z syndrome data do not have the same number of timesteps\n";
+    if (correction !== undefined) {
+        nSteps = correction.length;
+        if (syndrome !== undefined && syndrome.length !== nSteps) {
+            errorMsg = errorMsg + "Error: syndrome and correction data do not have the same number of timesteps\n";
         }
     }
-    if (errorZ !== undefined) {
-        nSteps = errorZ.length;
-        if (syndromeX !== undefined && syndromeX.length !== nSteps) {
-            errorMsg = errorMsg + "Error: Z error and X syndrome data do not have the same number of timesteps\n";
-        }
-        if (syndromeZ !== undefined && syndromeZ.length !== nSteps) {
-            errorMsg = errorMsg + "Error: Z error and Z syndrome data do not have the same number of timesteps\n";
-        }
-    }
-    if (syndromeX !== undefined) {
-        nSteps = syndromeX.length;
-        if (syndromeZ !== undefined && syndromeZ.length !== nSteps) {
-            errorMsg = errorMsg + "Error: X and Z syndrome data do not have the same number of timesteps\n";
-        }
-    }
-    if (syndromeZ !== undefined) {
-        nSteps = syndromeZ.length;
+    if (syndrome !== undefined) {
+        nSteps = syndrome.length;
     }
     if (errorMsg !== "") {
         alert(errorMsg);

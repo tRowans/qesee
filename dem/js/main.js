@@ -1,5 +1,5 @@
 import {makeGraphBundle,interactiveGraph} from './graph.js';
-import {processData,checkValidity} from './process.js';
+import {processDEM,processData,checkValidity} from './process.js';
 import {parse} from './lib/index.js';
         
 document.getElementById('inputDEM')
@@ -32,9 +32,11 @@ document.getElementById('inputCorrection')
 document.getElementById('draw')
     .addEventListener('click', async function() {
         var graphBundle = makeGraphBundle(d3.select('svg'));
-        var valid = processData(graphBundle,window.DEM);
-        window.nSteps = checkValidity(window.HX,window.HZ,
-            window.errorX,window.errorZ, window.syndromeX,window.syndromeZ);
+        var demMap = [];
+        var detectorShift = 0;
+        ({demMap, detectorShift} = processDEM(window.DEM.split('\n'),demMap,detectorShift));
+        var valid = processData(graphBundle,demMap);
+        window.nSteps = checkValidity(demMap,window.syndrome,window.correction);
         if (valid && nSteps !== -1) {
             var code = new interactiveGraph(graphBundle);
         }

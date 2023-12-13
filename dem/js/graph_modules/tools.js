@@ -21,24 +21,14 @@ export function assignNodeClass(id, graphBundle) {
     //type
     var cl = id[0];
     //status
-    if (cl === 'q') {
-        if (graphBundle.errorX[graphBundle.timestep][id.slice(1)] === '1') {
-            if (graphBundle.errorZ[graphBundle.timestep][id.slice(1)] === '1') {
-                cl = cl + 'y';
-            }
-            else cl = cl + 'x';
-        }
-        else if (graphBundle.errorZ[graphBundle.timestep][id.slice(1)] === '1') {
-            cl = cl + 'z';
-        }
-        else cl = cl + 'i';
-    }
-    else if (cl === 'x') {
+    if (cl === 'e') {
         cl = cl + graphBundle.
-            syndromeX[graphBundle.timestep][id.slice(1)];
+            correction[graphBundle.timestep][id.slice(1)];
     }
-    else cl = cl + graphBundle.
-        syndromeZ[graphBundle.timestep][id.slice(1)];
+    else if (cl === 'd') {
+        cl = cl + graphBundle.
+            syndrome[graphBundle.timestep][id.slice(1)];
+    }
     //selected y/n
     if (graphBundle.selectedNodes.indexOf(id) >= 0) {
         cl = cl + 'y';
@@ -51,16 +41,12 @@ export function assignNodeClass(id, graphBundle) {
 export function assignLinkClass(sourceId,targetId) {
     var sourceState = d3.select('#'+sourceId).attr('class')[1];
     var targetState = d3.select('#'+targetId).attr('class')[1];
-    if (sourceState === '1') {
-        if (targetState === 'x' && sourceId[0] !== 'x') return 'xErr';
-        else if (targetState === 'z' && sourceId[0] !== 'z') return 'zErr';
-        else if (targetState === 'y') return 'yErr';
-    }
+    if (sourceState === '1' && targetState ==='1') { return 'err'; }
     return 'noErr';
 }
 
 export function assignRX(id) {
     var cl = id[0];
-    if (cl === 'q') return 5;
+    if (cl === 'e') return 5;
     else return 1;
 }

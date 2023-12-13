@@ -25,10 +25,8 @@ export function makeGraphBundle(svg) {
         selectedNodes: [],
         nodeNeighbours: {},
 
-        errorX: window.errorX,
-        errorZ: window.errorZ,
-        syndromeX: window.syndromeX,
-        syndromeZ: window.syndromeZ
+        syndrome: window.syndrome,
+        correction: window.correction
     };
     
     //set up SVG
