@@ -170,37 +170,6 @@ export function makeButtons(graphBundle) {
         graphBundle.displayIDs = !graphBundle.displayIDs
     });
 
-    var swapButton = d3
-        .select('.buttons')
-        .append('g')
-        .attr('class', 'button');
-    swapButton
-        .append('rect')
-        .attr('x', graphBundle.width-120)
-        .attr('y', 100)
-        .attr('width', '100')
-        .attr('height', '25')
-        .attr('stroke', 'black')
-        .attr('fill', 'white')
-        .on('mouseover', function() {
-            d3.select(this)
-                .attr('fill', '#F8F0E3');
-        })
-        .on('mouseout', function() {
-            d3.select(this)
-                .attr('fill', 'white');
-        });
-    swapButton
-        .append('text')
-        .attr('class', 'button')
-        .attr('x', graphBundle.width-112)
-        .attr('y', 118)
-        .attr('pointer-events', 'none')
-        .text('Swap colours');
-    swapButton.on('click', function() {
-        swapXZcolours(graphBundle);
-    });
-
     var lockButton = d3
         .select('.buttons')
         .append('g')
@@ -208,7 +177,7 @@ export function makeButtons(graphBundle) {
     lockButton
         .append('rect')
         .attr('x', graphBundle.width-120)
-        .attr('y', 130)
+        .attr('y', 100)
         .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
@@ -236,7 +205,7 @@ export function makeButtons(graphBundle) {
         .append('text')
         .attr('class', 'button')
         .attr('x', graphBundle.width-105)
-        .attr('y', 148)
+        .attr('y', 118)
         .attr('pointer-events', 'none')
         .text('Lock nodes');
     lockButton.on('click', function() {
@@ -250,7 +219,7 @@ export function makeButtons(graphBundle) {
     loadButton
         .append('rect')
         .attr('x', graphBundle.width-120)
-        .attr('y', 160)
+        .attr('y', 130)
         .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
@@ -267,17 +236,11 @@ export function makeButtons(graphBundle) {
         .append('text')
         .attr('class', 'button')
         .attr('x', graphBundle.width-100)
-        .attr('y', 178)
+        .attr('y', 148)
         .attr('pointer-events', 'none')
         .text('Load data');
     loadButton.on('click', function() {
-        graphBundle.errorX = window.errorX;
-        graphBundle.errorZ = window.errorZ;
-        graphBundle.syndromeX = window.syndromeX;
-        graphBundle.syndromeZ = window.syndromeZ;
-        graphBundle.nSteps = checkValidity(window.HX,window.HZ,
-            graphBundle.errorX,graphBundle.errorZ,
-            graphBundle.syndromeX,graphBundle.syndromeZ);
+        graphBundle.nSteps = checkValidity(graphBundle);
         graphBundle.timestep = 0;
         misc.makeEmptyArrays(graphBundle);
         updates.update(graphBundle);

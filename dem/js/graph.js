@@ -26,7 +26,9 @@ export function makeGraphBundle(svg) {
         nodeNeighbours: {},
 
         syndrome: window.syndrome,
-        correction: window.correction
+        correction: window.correction,
+
+        demMap: []
     };
     
     //set up SVG

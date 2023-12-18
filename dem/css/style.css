@@ -68,23 +68,23 @@ button {
 .d0n {
     stroke: #fff;
     stroke-width: 1.5px;
-    fill: blue;
+    fill: red;
 }
 .d1n {
     stroke: black;
     stroke-width: 4px;
-    fill: blue;
+    fill: red;
 }
 /* Need to include 0/1 info for selected nodes even if does not affect style, as above*/
 .d0y {
     stroke: yellow;
     stroke-width: 4px;
-    fill: blue;
+    fill: red;
 }
 .d1y {
     stroke: yellow;
     stroke-width: 4px;
-    fill: blue;
+    fill: red;
 }
 
 /*Links connecting qubit errors to stabilisers which detect them are coloured appropriately*/

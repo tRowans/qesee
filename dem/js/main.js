@@ -32,11 +32,12 @@ document.getElementById('inputCorrection')
 document.getElementById('draw')
     .addEventListener('click', async function() {
         var graphBundle = makeGraphBundle(d3.select('svg'));
-        var demMap = [];
-        var detectorShift = 0;
+        var demMap = [];    //Need a copy of this not in graphBundle for function unpacking
+        var detectorShift = 0;  //not actually needed here but comes as output from function
         ({demMap, detectorShift} = processDEM(window.DEM.split('\n'),demMap,detectorShift));
-        var valid = processData(graphBundle,demMap);
-        window.nSteps = checkValidity(demMap,window.syndrome,window.correction);
+        graphBundle.demMap = demMap;
+        var valid = processData(graphBundle);
+        window.nSteps = checkValidity(graphBundle);
         if (valid && nSteps !== -1) {
             var code = new interactiveGraph(graphBundle);
         }
