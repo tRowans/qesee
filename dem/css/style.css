@@ -36,8 +36,8 @@ button {
 
 /*
  * Node style codes are "abc" where:
- *   a = node type (q,x,z = qubit, x stabiliser, z stabiliser)
- *   b = node status (i,x,y,z = error types for qubits, 0,1 = +1,-1 measurement outcomes for stabilisers)
+ *   a = node type (e,d = error mechanism, detector)
+ *   b = node status (0,1 = correction not applied/applied to error mechanism or inactive/active detector)
  *   c = selected y/n
 */
 
@@ -52,7 +52,7 @@ button {
     fill: black;
 }
 /* These four are all the same style but link class is found using node class 
- * and it needs error information (i,x,y,z) even if this does not affect node colour
+ * and it needs error information (0/1) even if this does not affect node colour
 */
 .e0y {
     stroke: yellow;
@@ -87,7 +87,7 @@ button {
     fill: red;
 }
 
-/*Links connecting qubit errors to stabilisers which detect them are coloured appropriately*/
+/*Links connecting corrections to active detectors which they flip are coloured appropriately*/
 
 .noErr {
     stroke: white;

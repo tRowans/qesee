@@ -1,27 +1,24 @@
 import * as menuFunctions from './menu_functions.js';
 
 export function whichMenu(graphBundle) {
-    var qubitSelected = false;
-    var stabSelected = false;
+    var errorSelected = false;
+    var detectorSelected = false;
     for (var i=0; i<graphBundle.selectedNodes.length; i++) {
-        if (graphBundle.selectedNodes[i][0] === 'q') {
-            qubitSelected = true;
+        if (graphBundle.selectedNodes[i][0] === 'e') {
+            errorSelected = true;
         }
-        else {stabSelected = true;}
+        else {detectorSelected = true;}
     }
-    if (qubitSelected && !stabSelected) {
-        return 'q';
+    if (errorSelected ^ detectorSelected) {
+        return 'o'; // = one node type
     }
-    else if (!qubitSelected && stabSelected) {
-        return 's';
+    else if (errorSelected && detectorSelected) {
+        return 't'; // = two node types
     }
-    else if (qubitSelected && stabSelected) {
-        return 'g';
-    }
-    else return 'e';
+    else return 'e'; // = empty
 }
 
-export var qubitMenu = [
+export var oneTypeMenu = [
     {
         label: 'Hide selection',
         action: function(graphBundle) {
@@ -31,16 +28,6 @@ export var qubitMenu = [
         label: 'Restrict to selection',
         action: function(graphBundle) {
             menuFunctions.restrictToSelection(graphBundle);}
-    },
-    {
-        label: 'Restrict to X neighbourhood',
-        action: function(graphBundle) {
-            menuFunctions.restrictToNeighbourhood(graphBundle,'x');}
-    },
-    {
-        label: 'Restrict to Z neighbourhood',
-        action: function(graphBundle) {
-            menuFunctions.restrictToNeighbourhood(graphBundle,'z');}
     },
     {
         label: 'Restrict to neighbourhood',
@@ -48,60 +35,7 @@ export var qubitMenu = [
             menuFunctions.restrictToNeighbourhood(graphBundle);}
     },
     {
-        label: 'Select all X neighbours',
-        action: function(graphBundle) {
-            menuFunctions.selectNeighbourhood(graphBundle,'x');}
-    },
-    {
-        label: 'Select all Z neighbours',
-        action: function(graphBundle) {
-            menuFunctions.selectNeighbourhood(graphBundle,'z');}
-    },
-    {
-        label: 'Select all neighbours',
-        action: function(graphBundle) {
-            menuFunctions.selectNeighbourhood(graphBundle);}
-    },
-    {
-        label: 'Select connected component',
-        action: function(graphBundle) {
-            menuFunctions.selectComponent(graphBundle);}
-    },
-    {
-        label: 'Display all X neighbours',
-        action: function(graphBundle) {
-            menuFunctions.displayNeighbourhood(graphBundle,'x');}
-    },
-    {
-        label: 'Display all Z neighbours',
-        action: function(graphBundle) {
-            menuFunctions.displayNeighbourhood(graphBundle,'z');}
-    },
-    {
-        label: 'Display all neighbours',
-        action: function(graphBundle) {
-            menuFunctions.displayNeighbourhood(graphBundle);}
-    }
-];
-
-export var stabMenu = [
-    {
-        label: 'Hide selection',
-        action: function(graphBundle) {
-            menuFunctions.hideSelection(graphBundle);}
-    },
-    {
-        label: 'Restrict to selection',
-        action: function(graphBundle) {
-            menuFunctions.restrictToSelection(graphBundle);}
-    },
-    {
-        label: 'Restrict to support',
-        action: function(graphBundle) {
-            menuFunctions.restrictToNeighbourhood(graphBundle);}
-    },
-    {
-        label: 'Display full support',
+        label: 'Display full neighbourhood',
         action: function(graphBundle) {
             menuFunctions.displayNeighbourhood(graphBundle);}
     },
@@ -117,21 +51,16 @@ export var stabMenu = [
     }
 ];
 
-export var genericMenu = [
+export var twoTypesMenu = [
     {
-        label: 'Hide qubits',
+        label: 'Hide errors',
         action: function(graphBundle) {
-            menuFunctions.hideSelection(graphBundle,'q');}
+            menuFunctions.hideSelection(graphBundle,'e');}
     },
     {
-        label: 'Hide X stabilisers',
+        label: 'Hide detectors',
         action: function(graphBundle) {
-            menuFunctions.hideSelection(graphBundle,'x');}
-    },
-    {
-        label: 'Hide Z stabilisers',
-        action: function(graphBundle) {
-            menuFunctions.hideSelection(graphBundle,'z');}
+            menuFunctions.hideSelection(graphBundle,'d');}
     },
     {
         label: 'Hide selection',
@@ -167,34 +96,24 @@ export var genericMenu = [
 
 export var emptyMenu = [
     {
-        label: 'Select all qubits',
+        label: 'Select all errors',
         action: function(graphBundle) {
-            menuFunctions.selectEvery(graphBundle,'q');}
+            menuFunctions.selectEvery(graphBundle,'e');}
     },
     {
-        label: 'Select all X error qubits',
+        label: 'Select correction',
         action: function(graphBundle) {
-            menuFunctions.selectEvery(graphBundle,'qx');}
+            menuFunctions.selectEvery(graphBundle,'e1');}
     },
     {
-        label: 'Select all Z error qubits',
+        label: 'Select all detectors',
         action: function(graphBundle) {
-            menuFunctions.selectEvery(graphBundle,'qz');}
+            menuFunctions.selectEvery(graphBundle,'d');}
     },
     {
-        label: 'Select all Y error qubits',
+        label: 'Select all active detectors',
         action: function(graphBundle) {
-            menuFunctions.selectEvery(graphBundle,'qy');}
-    },
-    {
-        label: 'Select all X stabilisers',
-        action: function(graphBundle) {
-            menuFunctions.selectEvery(graphBundle,'x');}
-    },
-    {
-        label: 'Select all Z stabilisers',
-        action: function(graphBundle) {
-            menuFunctions.selectEvery(graphBundle,'z');}
+            menuFunctions.selectEvery(graphBundle,'d1');}
     },
     {
         label: 'Select everything',

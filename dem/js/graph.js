@@ -111,14 +111,11 @@ export function interactiveGraph(graphBundle) {
         })
         .on('contextmenu', function(event) {
             var menuChoice = menuOptions.whichMenu(graphBundle);
-            if (menuChoice === 'q') {
-                createContextMenu(event, menuOptions.qubitMenu, graphBundle);
+            if (menuChoice === 'o') {
+                createContextMenu(event, menuOptions.oneTypeMenu, graphBundle);
             }
-            else if (menuChoice === 's') {
-                createContextMenu(event, menuOptions.stabMenu, graphBundle);
-            }
-            else if (menuChoice === 'g') {
-                createContextMenu(event, menuOptions.genericMenu, graphBundle);
+            else if (menuChoice === 't') {
+                createContextMenu(event, menuOptions.twoTypesMenu, graphBundle);
             }
             else {
                 createContextMenu(event, menuOptions.emptyMenu, graphBundle);
