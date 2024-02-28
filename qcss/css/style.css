@@ -47,17 +47,17 @@ button {
     fill: black;
 }
 .qxn {
-    stroke: blue;
+    stroke: #4D4DFF;
     stroke-width: 3px;
     fill: black;
 }
 .qzn {
-    stroke: red;
+    stroke: #FF2400;
     stroke-width: 3px;
     fill: black;
 }
 .qyn {
-    stroke: green;
+    stroke: #00FF40;
     stroke-width: 3px;
     fill: black;
 }
@@ -65,22 +65,22 @@ button {
  * and it needs error information (i,x,y,z) even if this does not affect node colour
 */
 .qiy {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
     fill: black;
 }
 .qxy {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
     fill: black;
 }
 .qzy {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
     fill: black;
 }
 .qyy {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
     fill: black;
 }
@@ -88,45 +88,45 @@ button {
 .x0n {
     stroke: #fff;
     stroke-width: 1.5px;
-    fill: blue;
+    fill: #4D4DFF;
 }
 .x1n {
     stroke: black;
     stroke-width: 4px;
-    fill: blue;
+    fill: #4D4DFF;
 }
 /* Need to include 0/1 info for selected nodes even if does not affect style, as above*/
 .x0y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
-    fill: blue;
+    fill: #4D4DFF;
 }
 .x1y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
-    fill: blue;
+    fill: #4D4DFF;
 }
 
 .z0n {
     stroke: #fff;
     stroke-width: 1.5px;
-    fill: red;
+    fill: #FF2400;
 }
 .z1n {
     stroke: black;
     stroke-width: 4px;
-    fill: red;
+    fill: #FF2400;
 }
 /* And here as well */
 .z0y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
-    fill: red;
+    fill: #FF2400;
 }
 .z1y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
-    fill: red;
+    fill: #FF2400;
 }
 
 /*Links connecting qubit errors to stabilisers which detect them are coloured appropriately*/
@@ -137,17 +137,17 @@ button {
     stroke-width: 3;
 }
 .xErr {
-    stroke: blue;
+    stroke: #4D4DFF;
     stroke-opacity: 1;
     stroke-width: 4;
 }
 .yErr {
-    stroke: green;
+    stroke: #00FF40;
     stroke-opacity: 1;
     stroke-width: 4;
 }
 .zErr {
-    stroke: red; 
+    stroke: #FF2400; 
     stroke-opacity: 1; 
     stroke-width: 4;
 }

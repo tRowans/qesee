@@ -47,12 +47,12 @@ button {
     fill: black;
 }
 .qxn {
-    stroke: #4D4DFF;
+    stroke: #FF2400;
     stroke-width: 3px;
     fill: black;
 }
 .qzn {
-    stroke: #FF2400;
+    stroke: #4D4DFF;
     stroke-width: 3px;
     fill: black;
 }
@@ -114,12 +114,12 @@ button {
 */
 
 .x0 {
-    stroke: #87CEFA;
+    stroke: #EE204D;
     stroke-opacity: 0.6;
     stroke-width: 3;
 }
 .x1 {
-    stroke: #4D4DFF;
+    stroke: #FF2400;
     stroke-opacity: 1;
     stroke-width: 5;
 }
@@ -134,12 +134,12 @@ button {
     stroke-width: 5;
 }
 .z0 {
-    stroke: #EE204D;
+    stroke: #87CEFA;
     stroke-opacity: 0.6;
     stroke-width: 3;
 }
 .z1 {
-    stroke: #FF2400;
+    stroke: #4D4DFF;
     stroke-opacity: 1;
     stroke-width: 5;
 }

@@ -181,14 +181,25 @@ export function makeButtons(graphBundle) {
         .attr('width', '100')
         .attr('height', '25')
         .attr('stroke', 'black')
-        .attr('fill', 'white')
+        .attr('fill', function() {
+            if (!graphBundle.swappedXZ) {
+                return 'white';
+            }
+            else return '#ADD8E6';
+        })
         .on('mouseover', function() {
             d3.select(this)
                 .attr('fill', '#F8F0E3');
         })
         .on('mouseout', function() {
-            d3.select(this)
-                .attr('fill', 'white');
+            if (!graphBundle.swappedXZ) {
+                d3.select(this)
+                    .attr('fill', 'white');
+            }
+            else {
+                d3.select(this)
+                    .attr('fill', '#ADD8E6');
+            }
         });
     swapButton
         .append('text')

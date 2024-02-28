@@ -47,7 +47,7 @@ button {
     fill: black;
 }
 .e1n {
-    stroke: red;
+    stroke: #FF2400;
     stroke-width: 3px;
     fill: black;
 }
@@ -55,12 +55,12 @@ button {
  * and it needs error information (0/1) even if this does not affect node colour
 */
 .e0y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
     fill: black;
 }
 .e1y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
     fill: black;
 }
@@ -68,23 +68,23 @@ button {
 .d0n {
     stroke: #fff;
     stroke-width: 1.5px;
-    fill: red;
+    fill: #FF2400;
 }
 .d1n {
     stroke: black;
     stroke-width: 4px;
-    fill: red;
+    fill: #FF2400;
 }
 /* Need to include 0/1 info for selected nodes even if does not affect style, as above*/
 .d0y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
-    fill: red;
+    fill: #FF2400;
 }
 .d1y {
-    stroke: yellow;
+    stroke: #FFD700;
     stroke-width: 4px;
-    fill: red;
+    fill: #FF2400;
 }
 
 /*Links connecting corrections to active detectors which they flip are coloured appropriately*/
@@ -95,7 +95,7 @@ button {
     stroke-width: 3;
 }
 .err {
-    stroke: red;
+    stroke: #FF2400;
     stroke-opacity: 1;
     stroke-width: 4;
 }
