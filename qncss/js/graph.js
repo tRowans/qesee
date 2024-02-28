@@ -11,6 +11,7 @@ export function makeGraphBundle(svg) {
         svg: svg,
         nodes: [],
         links: [],
+        link_type_lookup: {},
         
         width: window.innerWidth-20,
         height: 0.8*window.innerHeight,
@@ -25,11 +26,8 @@ export function makeGraphBundle(svg) {
         selectedNodes: [],
         nodeNeighbours: {},
 
-        syndrome: window.syndrome,
-        correction: window.correction,
-
-        demMap: [],
-        errorProbs: []
+        error: window.error,
+        syndrome: window.syndrome
     };
     
     //set up SVG
@@ -112,11 +110,14 @@ export function interactiveGraph(graphBundle) {
         })
         .on('contextmenu', function(event) {
             var menuChoice = menuOptions.whichMenu(graphBundle);
-            if (menuChoice === 'o') {
-                createContextMenu(event, menuOptions.oneTypeMenu, graphBundle);
+            if (menuChoice === 'q') {
+                createContextMenu(event, menuOptions.qubitMenu, graphBundle);
             }
-            else if (menuChoice === 't') {
-                createContextMenu(event, menuOptions.twoTypesMenu, graphBundle);
+            else if (menuChoice === 's') {
+                createContextMenu(event, menuOptions.stabMenu, graphBundle);
+            }
+            else if (menuChoice === 'g') {
+                createContextMenu(event, menuOptions.genericMenu, graphBundle);
             }
             else {
                 createContextMenu(event, menuOptions.emptyMenu, graphBundle);

@@ -1,15 +1,24 @@
 import {makeGraphBundle,interactiveGraph} from './graph.js';
-import {processDEM,processData,checkValidity} from './process.js';
+import {processData,checkValidity} from './process.js';
 import {parse} from './lib/index.js';
         
-document.getElementById('inputDEM')
+document.getElementById('inputH')
     .addEventListener('change', function() {
         if (this.files.length) {
             var fr = new FileReader();
-            fr.onload = function() {window.DEM = fr.result;}
+            fr.onload = function() {window.H = parse(fr.result);}
             fr.readAsText(this.files[0]);
         }
-        else window.DEM = undefined;
+        else window.H = undefined;
+    });
+document.getElementById('inputError')
+    .addEventListener('change', function() {
+        if (this.files.length) {
+            var fr = new FileReader();
+            fr.onload = function() {window.error = parse(fr.result);}
+            fr.readAsText(this.files[0]);
+        }
+        else window.error = undefined;
     });
 document.getElementById('inputSyndrome')
     .addEventListener('change', function() {
@@ -19,28 +28,12 @@ document.getElementById('inputSyndrome')
             fr.readAsText(this.files[0]);
         }
         else window.syndrome = undefined;
-    });
-document.getElementById('inputCorrection')
-    .addEventListener('change', function() {
-        if (this.files.length) {
-            var fr = new FileReader();
-            fr.onload = function() {window.correction = parse(fr.result);}
-            fr.readAsText(this.files[0]);
-        }
-        else window.correction = undefined;
-    });
+    }); 
 document.getElementById('draw')
     .addEventListener('click', async function() {
         var graphBundle = makeGraphBundle(d3.select('svg'));
-        var demMap = [];    //Need a copy of this not in graphBundle for function unpacking
-        var detectorShift = 0;  //not actually needed here but comes as output from function
-        var errorProbs = [];    //same as demMap
-        ({demMap, detectorShift, errorProbs} = processDEM(
-            window.DEM.split('\n'),demMap,detectorShift,errorProbs));
-        graphBundle.demMap = demMap;
-        graphBundle.errorProbs = errorProbs;
-        var valid = processData(graphBundle);
-        window.nSteps = checkValidity(graphBundle);
+        var valid = processData(graphBundle,window.H);
+        window.nSteps = checkValidity(window.H,window.error,window.syndrome);
         if (valid && nSteps !== -1) {
             var code = new interactiveGraph(graphBundle);
         }

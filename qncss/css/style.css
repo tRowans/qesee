@@ -36,7 +36,7 @@ button {
 
 /*
  * Node style codes are "abc" where:
- *   a = node type (q,x,z = qubit, x stabiliser, z stabiliser)
+ *   a = node type (q,s = qubit, stabiliser)
  *   b = node status (i,x,y,z = error types for qubits, 0,1 = +1,-1 measurement outcomes for stabilisers)
  *   c = selected y/n
 */
@@ -47,17 +47,17 @@ button {
     fill: black;
 }
 .qxn {
-    stroke: blue;
+    stroke: #4D4DFF;
     stroke-width: 3px;
     fill: black;
 }
 .qzn {
-    stroke: red;
+    stroke: #FF2400;
     stroke-width: 3px;
     fill: black;
 }
 .qyn {
-    stroke: green;
+    stroke: #00FF40;
     stroke-width: 3px;
     fill: black;
 }
@@ -85,70 +85,61 @@ button {
     fill: black;
 }
 
-.x0n {
-    stroke: #fff;
+.s0n {
+    stroke: black;
     stroke-width: 1.5px;
-    fill: red;
+    fill: #fff;
 }
-.x1n {
+.s1n {
     stroke: black;
     stroke-width: 4px;
-    fill: red;
+    fill: #fff;
 }
 /* Need to include 0/1 info for selected nodes even if does not affect style, as above*/
-.x0y {
+.s0y {
     stroke: yellow;
     stroke-width: 4px;
-    fill: red;
+    fill: #fff;
 }
-.x1y {
+.s1y {
     stroke: yellow;
     stroke-width: 4px;
-    fill: red;
+    fill: #fff;
 }
 
-.z0n {
-    stroke: #fff;
-    stroke-width: 1.5px;
-    fill: blue;
-}
-.z1n {
-    stroke: black;
-    stroke-width: 4px;
-    fill: blue;
-}
-/* And here as well */
-.z0y {
-    stroke: yellow;
-    stroke-width: 4px;
-    fill: blue;
-}
-.z1y {
-    stroke: yellow;
-    stroke-width: 4px;
-    fill: blue;
-}
+/*
+ * Link style codes are "ab" where:
+ *   a = pauli type (x,y,z)
+ *   b = link status (1 for links connecting error qubits to -1 stabilisers, 0 otherwise)
+*/
 
-/*Links connecting qubit errors to stabilisers which detect them are coloured appropriately*/
-
-.noErr {
-    stroke: white;
+.x0 {
+    stroke: #87CEFA;
     stroke-opacity: 0.6;
     stroke-width: 3;
 }
-.xErr {
-    stroke: red;
+.x1 {
+    stroke: #4D4DFF;
     stroke-opacity: 1;
-    stroke-width: 4;
+    stroke-width: 5;
 }
-.yErr {
-    stroke: green;
+.y0 {
+    stroke: #32de84;
+    stroke-opacity: 0.6;
+    stroke-width: 3;
+}
+.y1 {
+    stroke: #00FF40;
     stroke-opacity: 1;
-    stroke-width: 4;
+    stroke-width: 5;
 }
-.zErr {
-    stroke: blue; 
-    stroke-opacity: 1; 
-    stroke-width: 4;
+.z0 {
+    stroke: #EE204D;
+    stroke-opacity: 0.6;
+    stroke-width: 3;
 }
-
+.z1 {
+    stroke: #FF2400;
+    stroke-opacity: 1;
+    stroke-width: 5;
+}

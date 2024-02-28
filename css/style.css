@@ -12,6 +12,11 @@ body {
     color: white;
 }
 
+#heading {
+    font-size: large;
+    font-weight: bold;
+}
+
 #credits {
     float: right;
     text-align: right;

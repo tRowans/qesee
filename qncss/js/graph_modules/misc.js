@@ -1,13 +1,6 @@
 export function displayNodeInfo(event, d, graphBundle) {
     if (graphBundle.displayIDs) {
         const id = d.id;
-        var p = '';
-        if (id[0] === 'e') {
-            var index = parseInt(id.slice(1));
-            p = p + ' ' + graphBundle.errorProbs[index]
-        }
-        const label = id + p;
-
         var infoPopup = d3
             .select('svg')
             .append('g')
@@ -19,7 +12,7 @@ export function displayNodeInfo(event, d, graphBundle) {
             .attr('x', event.pageX)
             .attr('y', event.pageY)
             .attr('width', function() {
-                return 10 + 8*(label.length) + 5;
+                return 10 + 10*(id.length) + 5;
             })
             .attr('height', '30')
             .attr('fill', 'white');
@@ -33,7 +26,7 @@ export function displayNodeInfo(event, d, graphBundle) {
             .attr('y', function() {
                 return event.pageY + 20;
             })
-            .text(label);
+            .text(id);
     }
 }
 
@@ -50,6 +43,15 @@ export function keepSelected(event) {
 }
 
 export function makeEmptyArrays(graphBundle) {
+    if (graphBundle.error === undefined) {
+        graphBundle.error = [];
+        for (var i=0; i<(graphBundle.nSteps+1); i++) {
+            graphBundle.error.push([]);
+            for (var j=0; j<graphBundle.nodes.length; j++) {
+                graphBundle.error[i].push('0');
+            }
+        }
+    }
     if (graphBundle.syndrome === undefined) {
         graphBundle.syndrome = [];
         for (var i=0; i<(graphBundle.nSteps+1); i++) {
@@ -59,15 +61,4 @@ export function makeEmptyArrays(graphBundle) {
             }
         }
     }
-
-    if (graphBundle.correction === undefined) {
-        graphBundle.correction = [];
-        for (var i=0; i<(graphBundle.nSteps+1); i++) {
-            graphBundle.correction.push([]);
-            for (var j=0; j<graphBundle.nodes.length; j++) {
-                graphBundle.correction[i].push('0');
-            }
-        }
-    }
-
 }

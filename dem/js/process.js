@@ -1,4 +1,4 @@
-export function processDEM(dem,demMap,detectorShift) {
+export function processDEM(dem,demMap,detectorShift,errorProbs) {
     if (dem !== undefined) {
         for (var i=0; i<dem.length; i++) {
             if (/error/.test(dem[i])) {
@@ -9,6 +9,7 @@ export function processDEM(dem,demMap,detectorShift) {
                     matches.push(parseInt(match[0].slice(1)));
                 }
                 demMap.push(matches.map(n=> n+detectorShift));
+                errorProbs.push(/\(\S+\)/.exec(dem[i])[0]);
             }
             if (/shift_detectors/.test(dem[i])) {
                 var match = /\s\d+$/.exec(dem[i]);
@@ -18,15 +19,17 @@ export function processDEM(dem,demMap,detectorShift) {
                 var nRepeats = parseInt(/\d+/.exec(dem[i])[0]);
                 var matchingBracketLine = findMatchingBracket(dem,i);
                 for (var r=0; r<nRepeats; r++) {
-                    ({ demMap, detectorShift } = processDEM(dem.slice(i+1,matchingBracketLine),
-                                                              demMap,
-                                                              detectorShift));
+                    ({ demMap, detectorShift, errorProbs } = processDEM(
+                        dem.slice(i+1,matchingBracketLine),
+                        demMap,
+                        detectorShift,
+                        errorProbs));
                 }
                 i = matchingBracketLine;
             }
         }
     }
-    return { demMap, detectorShift };
+    return { demMap, detectorShift, errorProbs};
 }
 
 function findMatchingBracket(dem, i) {
