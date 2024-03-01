@@ -1,70 +1,52 @@
-export function processDEM(dem,demMap,detectorShift,errorProbs) {
+export function processDEM(dem, demData) {
     if (dem !== undefined) {
         for (var i=0; i<dem.length; i++) {
-            if (/error/.test(dem[i])) {
+            var error;
+            if (/ExplainedError/.test(dem[i])) {error = {};}    //new error
+            else if (/dem_error_terms/.test(dem[i])) {          
                 var match;
                 var matches = [];
-                var re = /D\S+/g;
+                var re = /(?<=D)\d+/g;
                 while ((match = re.exec(dem[i])) != null) {
-                    matches.push(parseInt(match[0].slice(1)));
+                    matches.push(parseInt(match[0]));
                 }
-                demMap.push(matches.map(n=> n+detectorShift));
-                errorProbs.push(/\(\S+\)/.exec(dem[i])[0]);
+                error.connectedDetectors = matches;
             }
-            if (/shift_detectors/.test(dem[i])) {
-                var match = /\s\d+$/.exec(dem[i]);
-                detectorShift += parseInt(match[0]);
+            else if (/flipped_pauli_product/.test(dem[i])) {   
+                error.operator = /(?<=:\s)\S+/.exec(dem[i])[0];
             }
-            if (/repeat/.test(dem[i])) {
-                var nRepeats = parseInt(/\d+/.exec(dem[i])[0]);
-                var matchingBracketLine = findMatchingBracket(dem,i);
-                for (var r=0; r<nRepeats; r++) {
-                    ({ demMap, detectorShift, errorProbs } = processDEM(
-                        dem.slice(i+1,matchingBracketLine),
-                        demMap,
-                        detectorShift,
-                        errorProbs));
-                }
-                i = matchingBracketLine;
+            else if (/TICK/.test(dem[i])) {
+                error.time = /\d+/.exec(dem[i]);
+            }
+            else if (/resolving(\s)to/.test(dem[i])) {
+                error.origin = /(?<=to\s).+/.exec(dem[i]);
+                demData.push(error);    //this one always last so push here
             }
         }
     }
-    return { demMap, detectorShift, errorProbs};
-}
-
-function findMatchingBracket(dem, i) {
-    var nest = 1;
-    var matchingBracketLine; 
-    for (var j=i+1; j<dem.length; j++) {
-        if (/\{/.test(dem[j])) { nest += 1; }
-        else if (/\}/.test(dem[j])) { nest -= 1; }
-        if (nest === 0) {
-            matchingBracketLine = j;
-            break;
-        }
-    }
-    return matchingBracketLine;
 }
 
 export function processData(graphBundle) {
-    if (graphBundle.demMap.length === 0) {
+    if (graphBundle.demData.length === 0) {
         alert("Error: No detector error model provided");
         return false;
     }
    
-    var nErrors = graphBundle.demMap.length;
-    var nDetectors = Math.max(...graphBundle.demMap.flat());
-    for (var i=0; i<nDetectors+1; i++) {
-        var detector = {'id': 'd'+i};
-        graphBundle.nodes.push(detector);
-    }
+    var nErrors = graphBundle.demData.length;
+    var nDetectors = 0;
     for (var i=0; i<nErrors; i++) {
         var error = {'id': 'e'+i};
         graphBundle.nodes.push(error);
-        for (var j=0; j<graphBundle.demMap[i].length; j++) {
-            var link = {'source': 'e'+i, 'target': 'd'+graphBundle.demMap[i][j]};
+        var connections = graphBundle.demData[i].connectedDetectors;
+        if (Math.max(connections) > nDetectors) {nDetectors = Math.max(connections);}
+        for (var j=0; j<connections.length; j++) {
+            var link = {'source': 'e'+i, 'target': 'd'+connections[j]};
             graphBundle.links.push(link);
         }
+    }
+    for (var i=0; i<nDetectors+1; i++) {
+        var detector = {'id': 'd'+i};
+        graphBundle.nodes.push(detector);
     }
     return true;
 }
@@ -80,8 +62,13 @@ export function checkValidity(graphBundle) {
 
 function checkNodeCounts(graphBundle) {
     var errorMsg = "";
-    var nErrors = graphBundle.demMap.length;
-    var nDetectors = Math.max(...graphBundle.demMap.flat()) + 1;    //need +1 because indexing starts at 0
+    var nErrors = graphBundle.demData.length;
+    var nDetectors = 0;
+    for (var i=0; i<nErrors; i++) {
+        var maxConnection = Math.max(graphBundle.demData[i].connectedDetectors);
+        if (maxConnection > nDetectors) {nDetectors = maxConnection;}
+    }
+    nDetectors++;   //need +1 because indexing starts at 0
     if (graphBundle.correction !== undefined) {
         if (graphBundle.correction.length === 0) {
             errorMsg = errorMsg + "Error: correction data cannot have length zero\n";

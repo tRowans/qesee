@@ -32,13 +32,7 @@ document.getElementById('inputCorrection')
 document.getElementById('draw')
     .addEventListener('click', async function() {
         var graphBundle = makeGraphBundle(d3.select('svg'));
-        var demMap = [];    //Need a copy of this not in graphBundle for function unpacking
-        var detectorShift = 0;  //not actually needed here but comes as output from function
-        var errorProbs = [];    //same as demMap
-        ({demMap, detectorShift, errorProbs} = processDEM(
-            window.DEM.split('\n'),demMap,detectorShift,errorProbs));
-        graphBundle.demMap = demMap;
-        graphBundle.errorProbs = errorProbs;
+        processDEM(window.DEM.split('\n'),graphBundle.demData);
         var valid = processData(graphBundle);
         window.nSteps = checkValidity(graphBundle);
         if (valid && nSteps !== -1) {

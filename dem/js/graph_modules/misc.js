@@ -1,12 +1,16 @@
 export function displayNodeInfo(event, d, graphBundle) {
     if (graphBundle.displayIDs) {
         const id = d.id;
-        var p = '';
+        var extra_info = '';
         if (id[0] === 'e') {
-            var index = parseInt(id.slice(1));
-            p = p + ' ' + graphBundle.errorProbs[index]
+            const index = parseInt(id.slice(1));
+            const operator = graphBundle.demData[index].operator;
+            const time = graphBundle.demData[index].time;
+            const origin = graphBundle.demData[index].origin;
+            extra_info = (' = ' + operator + ' from ' + 
+                '[' + origin + ']' + ' at t = ' + time);
         }
-        const label = id + p;
+        const label = id + extra_info;
 
         var infoPopup = d3
             .select('svg')
@@ -19,7 +23,7 @@ export function displayNodeInfo(event, d, graphBundle) {
             .attr('x', event.pageX)
             .attr('y', event.pageY)
             .attr('width', function() {
-                return 10 + 8*(label.length) + 5;
+                return 10 + 7*(label.length) + 5;
             })
             .attr('height', '30')
             .attr('fill', 'white');

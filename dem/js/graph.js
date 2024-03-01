@@ -28,8 +28,7 @@ export function makeGraphBundle(svg) {
         syndrome: window.syndrome,
         correction: window.correction,
 
-        demMap: [],
-        errorProbs: []
+        demData: [] //ExplainedError info for each error
     };
     
     //set up SVG
