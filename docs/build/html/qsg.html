@@ -33,23 +33,29 @@
             
   <section id="quickstart-guide">
 <h1>Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Permalink to this heading">¶</a></h1>
-<p>To quickly and easily view your code’s Tanner graph, follow these steps:</p>
 <p><strong>Step 1: Go to</strong> <a class="reference external" href="https://trowans.github.io/qesee">https://trowans.github.io/qesee</a></p>
-<p><strong>Step 2: Upload your X and Z parity check matrices</strong></p>
-<p>PCMs must be formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>) or the graph will not be drawn.</p>
-<p>You must upload both an X and Z PCM to view the graph. If you only want to view the X/Z stabiliser subgraph then you can easily hide the unwanted check nodes later. You do not need to provide error/syndrome data in order to view the graph.</p>
+<p>You will be asked what kind of graph you would like to draw (CSS Tanner graph, non-CSS Tanner graph or detector error model graph).</p>
+<p><strong>Step 2: Upload files</strong></p>
+<p>To view a Tanner graph you will need to upload your code’s parity check matrix (or matrices). For a detector error model graph you will need to upload an explained error model from Stim. These files must be formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>) or the graph will not be drawn.</p>
+<p>You do not need to provide error/syndrome data in order to view the graph.</p>
 <p><strong>Step 3: Click “Draw graph”</strong></p>
-<p>A loading message will be displayed while your graph is being built (this may take a while for large graphs). If you cannot see the graph and no loading message is displayed then your PCMs are probaly not formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>).</p>
-<p>Once the graph is done loading it will appear in the middle of the screen. Qubits are displayed as black circles, X stabilisers as blue squares and Z stabilisers as red squares. You can click on nodes to select them (shift-click to select multiple nodes), click and drag them to move them around or right-click for various contextual actions depending on what you have selected (see <a class="reference internal" href="context.html"><span class="doc">Context Menu Notes</span></a> for some notes on these). Using the buttons in the top right you can:</p>
+<p>A loading message will be displayed while your graph is being built (this may take a while for large graphs). If you cannot see the graph and no loading message is displayed then your files are probaly not formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>).</p>
+<p>Once the graph is done loading it will appear in the middle of the screen. Colour conventions are as follows</p>
+<ul class="simple">
+<li><p><em>CSS codes</em>: Qubits are displayed as black circles, X stabilisers as blue squares and Z stabilisers as red squares.</p></li>
+<li><p><em>non-CSS codes</em>: Qubits are displayed as black circles and stabilisers as white squares. Blue/green/red edges between stabilisers and qubits indicate that the support of that stabiliser on that qubit is Pauli X/Y/Z.</p></li>
+<li><p><em>Detector error models</em>:Error mechanisms are displayed as black circles and detectors as red squares.</p></li>
+</ul>
+<p>You can click on nodes to select them (shift-click to select multiple nodes), click and drag them to move them around or right-click for various contextual actions depending on what you have selected (see <a class="reference internal" href="context.html"><span class="doc">Context Menu Notes</span></a> for some notes on these). Using the buttons in the top right you can:</p>
 <ul class="simple">
 <li><p>Use the <em>Reset</em> button to redraw the graph. This is useful if you have hidden large parts of it and want to get them back.</p></li>
 <li><p>Use the <em>Charge</em> button to change the node separation (see <a class="reference internal" href="fdg.html"><span class="doc">About the Force-Directed Graph</span></a> for more).</p></li>
-<li><p>Use the <em>Toggle IDs</em> button to display node IDs when you hover over them. IDs are assigned based on ordering of qubits and stabilisers in the PCMs.</p></li>
-<li><p>Use the <em>Swap colours</em> button to swap the colouring of X and Z stabilisers if you prefer the opposite convention.</p></li>
+<li><p>Use the <em>Toggle IDs</em> button to display node IDs when you hover over them. For Tanner graphs IDs are assigned based on ordering of qubits and stabilisers in the PCMs. For detector error models error information will also be displayed when hovering over error mechanism nodes.</p></li>
+<li><p>Use the <em>Swap colours</em> button to swap the colours associated to Pauli X and Z if you prefer the opposite convention.</p></li>
 <li><p>Use the <em>Lock nodes</em> button to freeze the nodes in their current positions (see <a class="reference internal" href="lock.html"><span class="doc">Locking Nodes</span></a> for more).</p></li>
-<li><p>Use the <em>Load data</em> button to load new error/syndrome data without redrawing the graph (see <a class="reference internal" href="data.html"><span class="doc">Displaying Error and Syndrome Data</span></a> for more).</p></li>
+<li><p>Use the <em>Load data</em> button to load new error/syndrome data without redrawing the graph (see <a class="reference internal" href="data.html"><span class="doc">Displaying Simulation Data</span></a> for more).</p></li>
 </ul>
-<p>The arrows in the bottom right will not do anything unless you upload error/syndrome data. For more on this see <a class="reference internal" href="data.html"><span class="doc">Displaying Error and Syndrome Data</span></a>.</p>
+<p>The arrows in the bottom right will not do anything unless you upload error/syndrome data. For more on this see <a class="reference internal" href="data.html"><span class="doc">Displaying Simulation Data</span></a>.</p>
 </section>
 
 
@@ -73,7 +79,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="formatting.html">Formatting Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fdg.html">About the Force-Directed Graph</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">Displaying Error and Syndrome Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Displaying Simulation Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="context.html">Context Menu Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lock.html">Locking Nodes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="images.html">Downloading Images</a></li>

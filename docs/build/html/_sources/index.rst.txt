@@ -6,7 +6,7 @@
 QEsee/docs
 ==========
 
-QEsee is an interactive visualiser for Tanner graphs of quantum error correcting codes. 
+QEsee is an interactive visualiser for graph representations of quantum error correcting codes. 
 
 Contents
 --------

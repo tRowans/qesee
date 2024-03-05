@@ -5,8 +5,6 @@ Known Issues and Future Features
 
 * Support for large codes: QEsee crashes when attempting to draw graphs larger than ~1000 nodes. I'm not sure if this is a limitation of QEsee's code or of D3 (see :doc:`fdg`), but if it is the latter then there may not be much that can be done. One option in this case would be to allow the drawing of only parts of the graph, so e.g. you could be given the option to draw only qubits with errors and their neighbourhoods, which would keep the number of nodes in the simulation to a more managable level. 
 
-* Support for non-CSS codes: QEsee presently requires separate X and Z parity check matrices. Reworking this to allow for non-CSS codes with only a single PCM should not be technically difficult, but some decisions need to be made about how best to visualise the graph. The most obvious way would be to colour-code the links of the graph depending on which single-qubit Pauli they represent, but it's not immediately obvious how to do this without reducing the clarity of the error/syndrome visualisation features. 
-
 * Support for more error types: Displaying qubit erasures on the graph should be very easy (relevant qubits can just be greyed-out). For coherent errors the affected qubits could be highlighted, but whether this is useful or not is a different question. 
 
 * Support for customising downloaded image: It would be nice to be able to choose node/link colours, styles, etc when downloading the graph as an SVG. 

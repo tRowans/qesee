@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Displaying Error and Syndrome Data &#8212; QEsee  documentation</title>
+    <title>Displaying Simulation Data &#8212; QEsee  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -31,12 +31,24 @@
 
           <div class="body" role="main">
             
-  <section id="displaying-error-and-syndrome-data">
-<h1>Displaying Error and Syndrome Data<a class="headerlink" href="#displaying-error-and-syndrome-data" title="Permalink to this heading">¶</a></h1>
-<p>Error and syndrome data from decoding simulations can be uploaded using the buttons at the bottom of the screen. This data can be uploaded either before drawing the graph (in which case it will be automatically displayed once the graph is drawn) or afterwards (in which case you will need to click the “load data” button to update the displayed data). Error and syndrome data files must be formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>).</p>
-<p>Any combination of X error, Z error, X stabiliser syndrome and Z stabiliser syndrome data can be uploaded and viewed, but if you upload multiple files they must all have the same number of rows (corresponding to the same number of simulation timesteps to be visualised). Attempting to upload and view files with different numbers of rows will result in an error.</p>
-<p>Qubits with X/Y/Z errors will be drawn with a thick blue/green/red border. Stabilisers with a measurement outcome of -1 will be drawn with a thick black border. If a qubit with an X error is connected to a -1 Z stabiliser they will be linked by a thick blue edge (and similarly for Z errors and X stabilisers). X/Z colours can be swapped using the “Swap colours” button.</p>
-<p>You can step forwards and backwards through simulation data using the arrow buttons in the bottom right of the image, or using j (back) and k (forward). This may be more convenient if you wish to fast-forward/rewind through many timesteps as you can hold down j/k to move quickly through the data. The index of the currently displayed timestep and the total number of timesteps are displayed in the top left.</p>
+  <section id="displaying-simulation-data">
+<h1>Displaying Simulation Data<a class="headerlink" href="#displaying-simulation-data" title="Permalink to this heading">¶</a></h1>
+<p>Data from decoding simulations can be uploaded using the buttons at the bottom of the screen. This data can be uploaded either before drawing the graph (in which case it will be automatically displayed once the graph is drawn) or afterwards (in which case you will need to click the “load data” button to update the displayed data). Data files must be formatted correctly (see <a class="reference internal" href="formatting.html"><span class="doc">Formatting Files</span></a>).</p>
+<p>You can step forwards and backwards through simulation data using the arrow buttons in the bottom right of the image, or using j (back) and k (forward). This may be more convenient if you wish to step forwards/backwards through many steps as you can hold down j/k to move quickly through the data. The index of the currently displayed step and the total number of steps are displayed in the top left.</p>
+<p>Any combination of error/correction and syndrome data can be uploaded and viewed, but if you upload multiple files they must all have the same number of rows (corresponding to the same number of steps to be visualised). Attempting to upload and view files with different numbers of rows will result in an error.</p>
+<p><strong>Tanner Graphs</strong></p>
+<p>Qubits with X/Y/Z errors will be drawn with a thick blue/green/red border. Stabilisers with a measurement outcome of -1 will be drawn with a thick black border. Edges connecting qubits with errors to -1 stabilisers that detect these errors will be drawn as thick blue/green/red edges depending on whether the stabiliser acts on the qubit as Pauli X/Y/Z. For non-CSS codes the colours used to draw these edges are brighter than the colours used to draw edges in the error free case.</p>
+<p><strong>Detector Graphs</strong></p>
+<p>Detectors which detect errors will be drawn with a thick black border. Error mechanisms identified as the cause of these syndromes by the decoder will be drawn with a thick red border and connected to corresponding detectors by thick red edges.</p>
+<p>When <em>Toggle IDs</em> is turned on, hovering over error mechanism nodes will show information about this error. The information has the following format</p>
+<p>e <strong>i</strong> = <strong>P_1jP_2k…</strong> from [<strong>MECHANISM(p) a, b,…</strong>] at t = <strong>T</strong></p>
+<p>where</p>
+<ul class="simple">
+<li><p><strong>i</strong> is the index of the error mechanism. This is based on the ordering of error mechanisms in the uploaded error model file, which in turn should be based on the ordering of error mechanisms assigned by Stim (unless you have obtained this file in some strange way).</p></li>
+<li><p><strong>P_1jP_2k…</strong> is a representative Pauli operator for the error mechanism, with <strong>P_m</strong> = X/Y/Z and <strong>j</strong>, <strong>k</strong>, etc the indices of the qubits these operators act on.</p></li>
+<li><p><strong>MECHANISM(p) a, b,…</strong> is the Stim error mechanism (X_ERROR, DEPOLARISE1, etc) responsible for the error, acting on qubits <strong>a, b,…</strong> with probability <strong>p</strong>.</p></li>
+<li><p><strong>T</strong> is the TICK at which the error mechanism occurs.</p></li>
+</ul>
 </section>
 
 
@@ -60,7 +72,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qsg.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="formatting.html">Formatting Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fdg.html">About the Force-Directed Graph</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Displaying Error and Syndrome Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Displaying Simulation Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="context.html">Context Menu Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lock.html">Locking Nodes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="images.html">Downloading Images</a></li>

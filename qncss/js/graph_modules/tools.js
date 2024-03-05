@@ -45,7 +45,7 @@ export function assignLinkClass(sourceId,targetId,graphBundle) {
     var sourceState = d3.select('#'+sourceId).attr('class')[1];
     var targetState = d3.select('#'+targetId).attr('class')[1];
     var cl = graphBundle.link_type_lookup[sourceId + targetId];
-    if (sourceState === '1' && targetState !== 'i') {
+    if (sourceState === '1' && targetState !== 'i' && cl !== targetState) {
         cl = cl + '1';
     }
     else { cl = cl + '0'; }
