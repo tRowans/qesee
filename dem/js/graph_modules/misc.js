@@ -23,7 +23,7 @@ export function displayNodeInfo(event, d, graphBundle) {
             .attr('x', event.pageX)
             .attr('y', event.pageY)
             .attr('width', function() {
-                return 10 + 7*(label.length) + 5;
+                return 10 + 7*(label.length) + 10;
             })
             .attr('height', '30')
             .attr('fill', 'white');
