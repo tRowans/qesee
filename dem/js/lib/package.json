@@ -1,0 +1,54 @@
+{
+  "name": "@vanillaes/csv",
+  "version": "3.0.1",
+  "description": "A modern, fast, RFC 4180 compliant parser for JS",
+  "keywords": [
+    "esm",
+    "esmodule",
+    "csv",
+    "csv-parser",
+    "rfc4180"
+  ],
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Evan Plaice",
+      "email": "evan.plaice@gmail.com",
+      "url": "http://evanplaice.com"
+    },
+    {
+      "name": "Colton Ehrman",
+      "email": "coltonje95@gmail.com",
+      "url": "http://coltonehrman.com"
+    }
+  ],
+  "repository": "http://github.com/vanillaes/csv",
+  "type": "module",
+  "exports": {
+    "import": "./index.js",
+    "browser": "./index.min.js"
+  },
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "tape-es",
+    "test:watch": "tape-watch-es",
+    "lint": "esmtk lint",
+    "types": "npx -p typescript tsc index.js  -t esnext --allowJS --checkJS --skipLibCheck --noEmit",
+    "build": "npm run build:min && npm run build:typings",
+    "build:min": "esmtk minify index.js index.min.js",
+    "build:typings": "npx -p typescript tsc index.js  -t esnext --allowJS --checkJS --skipLibCheck --declaration --emitDeclarationOnly --noEmitOnError",
+    "clean": "npm run clean:builds && npm run clean:typings",
+    "clean:builds": "npx rimraf index.min.js",
+    "clean:typings": "npx rimraf *.d.ts",
+    "package": "npx rimraf package && npm pack | tail -n 1 | xargs tar -xf",
+    "preversion": "npm test && npm run lint && npm run types",
+    "postversion": "git push --follow-tags"
+  },
+  "devDependencies": {
+    "esmtk": "^0.5.13",
+    "tape-es": "^1.2.16"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

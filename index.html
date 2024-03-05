@@ -5,46 +5,29 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" href="css/style.css">
         <link rel="shortcut icon" href="#">
-        <script src="https://d3js.org/d3.v7.min.js"></script>
     </head>
 
     <body> 
-        <svg id="svg"></svg>
-       
         <div> 
-            <div id="PCMstuff">
-                <div>
-                    Upload H_X
-                    <input type="file" name="inputHX" id="inputHX">
-                </div>
-                <div>
-                    Upload H_Z
-                    <input type="file" name="inputHZ" id="inputHZ">
-                </div>
-                <button id="draw">Draw graph</button>
-                <button id="download">Save SVG</button>
+            <div id="welcome">
+                <p id="heading">
+                Welcome to QEsee!
+                </p>
+                What kind of graph would you like to draw?
+
+                <a href="qcss/">Draw the Tanner graph of a CSS code from two parity check matrices</a>
+
+                <a href="qncss/">Draw the Tanner graph of a non-CSS code from a single parity check matrix</a>
+
+                <a href="dem/">Draw a detector error graph using a DEM file from Stim</a>
             </div>
 
-            <div id="Datastuff">
-                <div>
-                    Upload X Errors
-                    <input type="file" name="inputXError" id="inputXError">
-                </div>
-                <div>
-                    Upload Z Errors
-                    <input type="file" name="inputZError" id="inputZError">
-                </div>
-                <div>
-                    Upload X Stabiliser Syndrome
-                    <input type="file" name="inputXSyndrome" id="inputXSyndrome">
-                </div>
-                <div>
-                    Upload Z Stabiliser Syndrome
-                    <input type="file" name="inputZSyndrome" id="inputZSyndrome">
-                </div>
-            </div>
-            
             <div id="credits">
+
+
+
+
+
                 QEsee is developed and maintained 
                 by <a href="mailto:thomas.scruby@oist.jp">Tom Scruby</a> using <a href="https://d3js.org" target="_blank">D3.js</a> and <a href="https://github.com/vanillaes/csv" target="_blank">CSV</a>
 
@@ -56,8 +39,6 @@
             </div>
         </div>
  
-        <script type="module" src="js/main.js"></script>
-
     </body>
 
 </html>

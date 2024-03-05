@@ -1,0 +1,101 @@
+body {
+    background-color: #444444;
+    overflow-x: scroll;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+#PCMstuff{ 
+    float: left;
+    color: white;
+}
+
+#Datastuff{
+    float: left;
+    color: white;
+}
+
+#credits {
+    float: right;
+    text-align: right;
+    white-space: pre-wrap;
+    color: white;
+}
+
+a:link {
+    color: #0096FF;
+}
+
+a:visited {
+    color: #0096FF;
+}
+
+button {
+    display: block;
+}
+
+/*
+ * Node style codes are "abc" where:
+ *   a = node type (e,d = error mechanism, detector)
+ *   b = node status (0,1 = correction not applied/applied to error mechanism or inactive/active detector)
+ *   c = selected y/n
+*/
+
+.e0n {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: black;
+}
+.e1n {
+    stroke: #FF2400;
+    stroke-width: 3px;
+    fill: black;
+}
+/* These four are all the same style but link class is found using node class 
+ * and it needs error information (0/1) even if this does not affect node colour
+*/
+.e0y {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: black;
+}
+.e1y {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: black;
+}
+
+.d0n {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: #FF2400;
+}
+.d1n {
+    stroke: black;
+    stroke-width: 4px;
+    fill: #FF2400;
+}
+/* Need to include 0/1 info for selected nodes even if does not affect style, as above*/
+.d0y {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: #FF2400;
+}
+.d1y {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: #FF2400;
+}
+
+/*Links connecting corrections to active detectors which they flip are coloured appropriately*/
+
+.noErr {
+    stroke: white;
+    stroke-opacity: 0.6;
+    stroke-width: 3;
+}
+.err {
+    stroke: #FF2400;
+    stroke-opacity: 1;
+    stroke-width: 4;
+}

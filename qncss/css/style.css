@@ -1,0 +1,145 @@
+body {
+    background-color: #444444;
+    overflow-x: scroll;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+#PCMstuff{ 
+    float: left;
+    color: white;
+}
+
+#Datastuff{
+    float: left;
+    color: white;
+}
+
+#credits {
+    float: right;
+    text-align: right;
+    white-space: pre-wrap;
+    color: white;
+}
+
+a:link {
+    color: #0096FF;
+}
+
+a:visited {
+    color: #0096FF;
+}
+
+button {
+    display: block;
+}
+
+/*
+ * Node style codes are "abc" where:
+ *   a = node type (q,s = qubit, stabiliser)
+ *   b = node status (i,x,y,z = error types for qubits, 0,1 = +1,-1 measurement outcomes for stabilisers)
+ *   c = selected y/n
+*/
+
+.qin {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: black;
+}
+.qxn {
+    stroke: #4D4DFF;
+    stroke-width: 3px;
+    fill: black;
+}
+.qzn {
+    stroke: #FF2400;
+    stroke-width: 3px;
+    fill: black;
+}
+.qyn {
+    stroke: #00FF40;
+    stroke-width: 3px;
+    fill: black;
+}
+/* These four are all the same style but link class is found using node class 
+ * and it needs error information (i,x,y,z) even if this does not affect node colour
+*/
+.qiy {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: black;
+}
+.qxy {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: black;
+}
+.qzy {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: black;
+}
+.qyy {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: black;
+}
+
+.s0n {
+    stroke: black;
+    stroke-width: 1.5px;
+    fill: #fff;
+}
+.s1n {
+    stroke: black;
+    stroke-width: 4px;
+    fill: #fff;
+}
+/* Need to include 0/1 info for selected nodes even if does not affect style, as above*/
+.s0y {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: #fff;
+}
+.s1y {
+    stroke: #FFD700;
+    stroke-width: 4px;
+    fill: #fff;
+}
+
+/*
+ * Link style codes are "ab" where:
+ *   a = pauli type (x,y,z)
+ *   b = link status (1 for links connecting error qubits to -1 stabilisers, 0 otherwise)
+*/
+
+.x0 {
+    stroke: #87CEFA;
+    stroke-opacity: 0.6;
+    stroke-width: 3;
+}
+.x1 {
+    stroke: #4D4DFF;
+    stroke-opacity: 1;
+    stroke-width: 5;
+}
+.y0 {
+    stroke: #32de84;
+    stroke-opacity: 0.6;
+    stroke-width: 3;
+}
+.y1 {
+    stroke: #00FF40;
+    stroke-opacity: 1;
+    stroke-width: 5;
+}
+.z0 {
+    stroke: #EE204D;
+    stroke-opacity: 0.6;
+    stroke-width: 3;
+}
+.z1 {
+    stroke: #FF2400;
+    stroke-opacity: 1;
+    stroke-width: 5;
+}
