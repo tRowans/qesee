@@ -141,11 +141,6 @@ button {
     stroke-opacity: 1;
     stroke-width: 4;
 }
-.yErr {
-    stroke: #00FF40;
-    stroke-opacity: 1;
-    stroke-width: 4;
-}
 .zErr {
     stroke: #4D4DFF; 
     stroke-opacity: 1; 

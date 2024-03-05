@@ -51,12 +51,10 @@ export function assignNodeClass(id, graphBundle) {
 export function assignLinkClass(sourceId,targetId) {
     var sourceState = d3.select('#'+sourceId).attr('class')[1];
     var targetState = d3.select('#'+targetId).attr('class')[1];
-    if (sourceState === '1') {
-        if (targetState === 'x' && sourceId[0] !== 'x') return 'xErr';
-        else if (targetState === 'z' && sourceId[0] !== 'z') return 'zErr';
-        else if (targetState === 'y') return 'yErr';
-    }
-    return 'noErr';
+    if (targetState !== 'i' && sourceState === '1' && sourceId[0] !== targetState) {
+            return (sourceId[0] + 'Err');
+        }
+    else return 'noErr';
 }
 
 export function assignRX(id) {
