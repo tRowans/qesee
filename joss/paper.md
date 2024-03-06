@@ -24,19 +24,19 @@ The field of quantum error correction has traditionally been dominated by the st
 
 QEsee is designed to provide insight into the structure of non-topological codes by providing meaningful visualisations of thier Tanner graphs (although it can also be useful for visualising topological codes). Specifically, QEsee uses the force-directed graph functionality provided by D3 [@d3] to draw graphs where node positions are determined by a simple physics simulation with repulsive forces between nodes and links acting as constraints. This causes the graphs to naturally arrange themselves in minimum energy configurations that reveal information about the underlying structure of the codes. For instance, here are the $X$ and $Z$ subgraphs of a small lifted product code as drawn by QEsee
 
-![X](figures/lp_small_x.pdf)
-![Z](figures/lp_small_z.pdf)
+![X](figures/lp_small_x.png)
+![Z](figures/lp_small_z.png)
 
 where we can see the symmetry between the $X$ and $Z$ cases, as well as how qubits and stabilisers (nodes of the graph) arrange into clusters due to the product structure. As another example, here is the full graph for the [[416,18,20]] code described in [@Roffe:2023]
 
-![\[\[416,18,20\]\] lifted product code](figures/lp_big.pdf)
+![\[\[416,18,20\]\] lifted product code](figures/lp_big.png)
 
 This graph has an order-13 rotational symmetry, the same order as the ring used in its construction. 
 
 This second example also shows how the precise details of the structure can become very hard to understand if the graph is large. To help with this, QEsee allows you to hide any subset of nodes in the graph and display only those you are interested in. Here are the subgraphs showing how the support of a given $X$ stabiliser from the above code overlaps with other $X$ and $Z$ stabilisers
 
-![X](figures/lp_big_x.pdf)
-![Z](figures/lp_big_z.pdf)
+![X](figures/lp_big_x.png)
+![Z](figures/lp_big_z.png)
 
 Visualising code structures can be useful, but often we are much more interested in how errors are propagated or corrected within a code. These questions are commonly studied numerically in decoding simulations, and QEsee also allows for visualisation of data from these simulations. Error and syndrome vectors for each timestep of the simulation can be uploaded and will be drawn on the graph, and users can then step backwards and forwards through this data to verify that their decoding algorithm is working correctly and to understand what kind of errors cause it to fail. 
 
