@@ -45,4 +45,7 @@ The current version of QEsee can draw Tanner graphs of both CSS and non-CSS code
 Finally, all images produced by QEsee can be easily downloaded as svg files, making QEsee useful for both studying codes/decoders and creating figures for publications. 
 
 # Acknowledgements
+
 TRS is supported by the JST Moonshot R&D Grant [grant number JPMJMS2061]. QEsee uses D3.js [@d3] for force-directed graph simulation and CSV [@csv] for parsing .csv files. Thanks to Joschka Roffe, Bohan Lu, Shin Nishio and Arthur Pesah for testing the software and providing feedback.
+
+# References
