@@ -6,6 +6,7 @@ tags:
   - visualisation tools
 authors:
   name: Thomas R. Scruby
+  equal-contrib: true
   affiliation: 1
   corresponding: true
 affiliations:
