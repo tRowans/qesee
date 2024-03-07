@@ -46,6 +46,6 @@ Finally, all images produced by QEsee can be easily downloaded as svg files, mak
 
 # Acknowledgements
 
-TRS is supported by the JST Moonshot R&D Grant [grant number JPMJMS2061]. QEsee uses D3.js [@d3] for force-directed graph simulation and CSV [@csv] for parsing .csv files. Thanks to Joschka Roffe, Bohan Lu, Shin Nishio and Arthur Pesah for testing the software and providing feedback.
+TRS is supported by the JST Moonshot R&D Grant [grant number JPMJMS2061]. QEsee uses D3.js [@d3] for force-directed graph simulation and CSV [@CSV] for parsing .csv files. Thanks to Joschka Roffe, Bohan Lu, Shin Nishio and Arthur Pesah for testing the software and providing feedback.
 
 # References
