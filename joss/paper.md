@@ -11,7 +11,7 @@ authors:
 affiliations:
   - name: Okinawa Institute of Science and Technology 
     index: 1
-date: 05 March 2024
+date: 07 March 2024
 bibliography: paper.bib
 ---
 
@@ -24,7 +24,7 @@ The field of quantum error correction has traditionally been dominated by the st
 
 QEsee is designed to provide insight into the structure of non-topological codes by providing meaningful visualisations of thier Tanner graphs (although it can also be useful for visualising topological codes). Specifically, QEsee uses the force-directed graph functionality provided by D3 [@d3] to draw graphs where node positions are determined by a simple physics simulation with repulsive forces between nodes and links acting as constraints. This causes the graphs to naturally arrange themselves in minimum energy configurations that reveal information about the underlying structure of the codes. For instance, here are the $X$ and $Z$ subgraphs of a small lifted product code as drawn by QEsee (black circles = qubits, blue/red squares = $X$/$Z$ stabilisers)
 
-![X and Z subgraphs of a small listed product code](figures/lp_small.png){ width=60% }
+![X and Z subgraphs of a small lifted product code](figures/lp_small.png){ width=60% }
 
 where we can see the symmetry between the $X$ and $Z$ cases, as well as how qubits and stabilisers arrange into clusters due to the product structure. As another example, here is the full graph for the [[416,18,20]] code described in [@Roffe:2023]
 
