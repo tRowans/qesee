@@ -5,10 +5,10 @@ tags:
   - quantum error correction
   - visualisation tools
 authors:
-  name: Thomas R. Scruby
-  equal-contrib: true
-  affiliation: 1
-  corresponding: true
+  - name: Thomas R. Scruby
+    equal-contrib: true
+    affiliation: 1
+    corresponding: true
 affiliations:
   - name: Okinawa Institute of Science and Technology 
     index: 1
